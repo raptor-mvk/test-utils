@@ -84,20 +84,6 @@ class ExtraAssertionsTests extends TestCase
     }
 
     /**
-     * Проверяет, что утверждение _assertArraysAreSame_ отвергает разные массивы.
-     *
-     * @param array $expected   ожидаемый массив
-     * @param array $actual     полученный массив
-     *
-     * @dataProvider differentArraysDataProvider
-     */
-    public function testAssertArraysAreSameDeclinesDifferentArrays(array $expected, array $actual): void
-    {
-        $this->expectException(ExpectationFailedException::class);
-        static::assertArraysAreSame($expected, $actual);
-    }
-
-    /**
      * Проверяет, что утверждение _assertArraysAreSame_ отвергает разные массивы и выводит сообщение об ошибке.
      *
      * @param array $expected   ожидаемый массив
@@ -141,20 +127,6 @@ class ExtraAssertionsTests extends TestCase
         array $expected,
         array $actual
     ): void {
-        static::assertArraysAreSameIgnoringOrder($expected, $actual);
-    }
-
-    /**
-     * Проверяет, что утверждение _assertArraysAreSameIgnoringOrder_ отвергает разные массивы.
-     *
-     * @param array $expected   ожидаемый массив
-     * @param array $actual     полученный массив
-     *
-     * @dataProvider differentArraysDataProvider
-     */
-    public function testAssertArraysAreSameIgnoringOrderDeclinesDifferentArrays(array $expected, array $actual): void
-    {
-        $this->expectException(ExpectationFailedException::class);
         static::assertArraysAreSameIgnoringOrder($expected, $actual);
     }
 
