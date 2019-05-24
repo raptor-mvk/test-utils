@@ -9,12 +9,12 @@ use Mockery\MockInterface;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
-use Raptor\Test\DataLoader\BaseDataLoader;
 use Raptor\Test\DataLoader\DataProcessor\DataProcessor;
 use Raptor\Test\Exceptions\DataFileNotFoundException;
 use Raptor\Test\Exceptions\DataParseException;
 use Raptor\Test\ExtraAssertions;
 use RaptorTests\Test\DataLoader\Utils\TestDataContainer;
+use RaptorTests\Test\DataLoader\Utils\TestDataLoader;
 use stdClass;
 
 /**
@@ -63,7 +63,7 @@ class BaseDataLoaderTests extends TestCase
 
         /** @var DataProcessor $dataProcessorMock */
         $dataProcessorMock = Mockery::mock(DataProcessor::class);
-        $dataLoader = new BaseDataLoader(TestDataContainer::class, $dataProcessorMock, $filename);
+        $dataLoader = new TestDataLoader(TestDataContainer::class, $dataProcessorMock, $filename);
 
         $dataLoader->load();
     }
@@ -81,7 +81,7 @@ class BaseDataLoaderTests extends TestCase
         /** @var DataProcessor|MockInterface $dataProcessorMock */
         $dataProcessorMock = Mockery::mock(DataProcessor::class);
         $dataProcessorMock->shouldReceive('process')->andThrow(new DataParseException($message));
-        $dataLoader = new BaseDataLoader(TestDataContainer::class, $dataProcessorMock, $this->filename);
+        $dataLoader = new TestDataLoader(TestDataContainer::class, $dataProcessorMock, $this->filename);
 
         $dataLoader->load();
     }
@@ -94,7 +94,7 @@ class BaseDataLoaderTests extends TestCase
         /** @var DataProcessor|MockInterface $dataProcessorMock */
         $dataProcessorMock = Mockery::mock(DataProcessor::class);
         $dataProcessorMock->shouldReceive('process')->withArgs([$this->contents])->once();
-        $dataLoader = new BaseDataLoader(stdClass::class, $dataProcessorMock, $this->filename);
+        $dataLoader = new TestDataLoader(stdClass::class, $dataProcessorMock, $this->filename);
 
         $dataLoader->load();
     }
@@ -122,7 +122,7 @@ class BaseDataLoaderTests extends TestCase
         /** @var DataProcessor|MockInterface $dataProcessorMock */
         $dataProcessorMock = Mockery::mock(DataProcessor::class);
         $dataProcessorMock->shouldReceive('process')->andReturn($testData);
-        $dataLoader = new BaseDataLoader(TestDataContainer::class, $dataProcessorMock, $this->filename);
+        $dataLoader = new TestDataLoader(TestDataContainer::class, $dataProcessorMock, $this->filename);
 
         $actualData = $dataLoader->load();
 
@@ -145,7 +145,7 @@ class BaseDataLoaderTests extends TestCase
         /** @var DataProcessor|MockInterface $dataProcessorMock */
         $dataProcessorMock = Mockery::mock(DataProcessor::class);
         $dataProcessorMock->shouldReceive('process')->andReturn($testData);
-        $dataLoader = new BaseDataLoader(TestDataContainer::class, $dataProcessorMock, $this->filename);
+        $dataLoader = new TestDataLoader(TestDataContainer::class, $dataProcessorMock, $this->filename);
 
         $loadedData = $dataLoader->load();
 

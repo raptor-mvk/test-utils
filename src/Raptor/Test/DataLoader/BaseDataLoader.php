@@ -14,7 +14,7 @@ use Throwable;
  *
  * @copyright 2019, raptor_MVK
  */
-class BaseDataLoader implements DataLoader
+abstract class BaseDataLoader implements DataLoader
 {
     /** @var string $containerClass          наименование класса контейнера для данных */
     private $containerClass;
