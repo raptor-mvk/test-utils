@@ -12,6 +12,8 @@ namespace Raptor\Test;
  */
 trait ExtraAssertions
 {
+    use ExtraUtils;
+
     /**
      * Утверждение, проверяющее, что два массива полностью совпадают.
      *
