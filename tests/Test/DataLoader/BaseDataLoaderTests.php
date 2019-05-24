@@ -9,13 +9,11 @@ use Mockery\MockInterface;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
-use Raptor\Test\DataLoader\DataProcessor\DataProcessor;
+use Raptor\Test\DataLoader\BaseDataLoader;
+use Raptor\Test\DataProcessor\DataProcessor;
 use Raptor\Test\Exceptions\DataFileNotFoundException;
 use Raptor\Test\Exceptions\DataParseException;
 use Raptor\Test\ExtraAssertions;
-use RaptorTests\Test\DataLoader\Utils\TestDataContainer;
-use RaptorTests\Test\DataLoader\Utils\TestDataLoader;
-use stdClass;
 
 /**
  * Класс с тестами для базовой реализации загрузчика данных `BaseDataLoader`.
@@ -63,9 +61,9 @@ class BaseDataLoaderTests extends TestCase
 
         /** @var DataProcessor $dataProcessorMock */
         $dataProcessorMock = Mockery::mock(DataProcessor::class);
-        $dataLoader = new TestDataLoader(TestDataContainer::class, $dataProcessorMock, $filename);
+        $dataLoader = new BaseDataLoader($dataProcessorMock);
 
-        $dataLoader->load();
+        $dataLoader->load($filename);
     }
 
     /**
@@ -81,9 +79,9 @@ class BaseDataLoaderTests extends TestCase
         /** @var DataProcessor|MockInterface $dataProcessorMock */
         $dataProcessorMock = Mockery::mock(DataProcessor::class);
         $dataProcessorMock->shouldReceive('process')->andThrow(new DataParseException($message));
-        $dataLoader = new TestDataLoader(TestDataContainer::class, $dataProcessorMock, $this->filename);
+        $dataLoader = new BaseDataLoader($dataProcessorMock);
 
-        $dataLoader->load();
+        $dataLoader->load($this->filename);
     }
 
     /**
@@ -94,9 +92,9 @@ class BaseDataLoaderTests extends TestCase
         /** @var DataProcessor|MockInterface $dataProcessorMock */
         $dataProcessorMock = Mockery::mock(DataProcessor::class);
         $dataProcessorMock->shouldReceive('process')->withArgs([$this->contents])->once();
-        $dataLoader = new TestDataLoader(stdClass::class, $dataProcessorMock, $this->filename);
+        $dataLoader = new BaseDataLoader($dataProcessorMock);
 
-        $dataLoader->load();
+        $dataLoader->load($this->filename);
     }
 
     /**
@@ -114,28 +112,6 @@ class BaseDataLoaderTests extends TestCase
     }
 
     /**
-     * Проверяет, что метод _load_ возвращает массив содержащий только элементы, являющиеся экземплярами контейнеров.
-     */
-    public function testLoadReturnsArrayContainingOnlyDataContainers(): void
-    {
-        $testData = $this->getTestData();
-        /** @var DataProcessor|MockInterface $dataProcessorMock */
-        $dataProcessorMock = Mockery::mock(DataProcessor::class);
-        $dataProcessorMock->shouldReceive('process')->andReturn($testData);
-        $dataLoader = new TestDataLoader(TestDataContainer::class, $dataProcessorMock, $this->filename);
-
-        $actualData = $dataLoader->load();
-
-        $allElementsAreInstancesOfContainer = true;
-        foreach ($actualData as $element) {
-            $allElementsAreInstancesOfContainer = $allElementsAreInstancesOfContainer &&
-                ($element instanceof TestDataContainer);
-        }
-        $message = 'Все элементы массива должны быть экземплярами контейнера';
-        static::assertTrue($allElementsAreInstancesOfContainer, $message);
-    }
-
-    /**
      * Проверяет, что метод _load_ возвращает массив, полученный из результата вызова метода _process_ обработчика
      * данных оборачиванием элементов массива в контейнеры.
      */
@@ -145,15 +121,10 @@ class BaseDataLoaderTests extends TestCase
         /** @var DataProcessor|MockInterface $dataProcessorMock */
         $dataProcessorMock = Mockery::mock(DataProcessor::class);
         $dataProcessorMock->shouldReceive('process')->andReturn($testData);
-        $dataLoader = new TestDataLoader(TestDataContainer::class, $dataProcessorMock, $this->filename);
+        $dataLoader = new BaseDataLoader($dataProcessorMock);
 
-        $loadedData = $dataLoader->load();
+        $actualData = $dataLoader->load($this->filename);
 
-        $actualData = [];
-        foreach ($loadedData as $key => $element) {
-            /** @var TestDataContainer $element */
-            $actualData[$key] = $element->getData();
-        }
         static::assertArraysAreSame($testData, $actualData);
     }
 }

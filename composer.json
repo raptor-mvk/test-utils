@@ -3,6 +3,7 @@
   "description": "Testing utils for PHP",
   "require": {
     "php": ">=7.3.0",
+    "symfony/console": "^4.0",
     "ext-json": "*"
   },
   "require-dev": {

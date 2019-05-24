@@ -15,11 +15,13 @@ use Raptor\Test\Exceptions\DataFileNotFoundException;
 interface DataLoader
 {
     /**
-     * Загружает данные из файла в массив для провайдера данных для теста.
+     * Загружает данные из файла, обрабатывает и возвращает массив.
      *
-     * @return array                        набор тестов
+     * @param string    $filename           наименование и путь к файлу с данными
+     *
+     * @return array                        массив с обработанными данными
      *
      * @throws DataFileNotFoundException    не найден файл с данными
      */
-    public function load(): array;
+    public function load(string $filename): array;
 }

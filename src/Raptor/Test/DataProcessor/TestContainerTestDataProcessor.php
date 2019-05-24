@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Raptor\Test\DataLoader\DataProcessor;
+namespace Raptor\Test\DataProcessor;
 
-use JsonException;
 use Raptor\Test\Exceptions\DataParseException;
+use Raptor\Test\TestContainer\TestContainer;
 
 /**
  * Обработчик тестовых данных в формате JSON.
@@ -13,14 +13,8 @@ use Raptor\Test\Exceptions\DataParseException;
  *
  * @copyright 2019, raptor_MVK
  */
-class JSONDataProcessor implements DataProcessor
+class TestContainerTestDataProcessor extends AbstractJSONTestDataProcessor
 {
-    /** @var string CHILDREN_KEY     ключ для служебного поля, содержащего дочерние элементы */
-    private const CHILDREN_KEY = '_children';
-
-    /** @var string NAME_KEY        ключ для служебного поля, содержащего наименование теста */
-    private const NAME_KEY = '_name';
-
     /**
      * Обрабатывает элемент, являющийся объектом и содержащий дочерние элементы.
      *
@@ -137,25 +131,6 @@ class JSONDataProcessor implements DataProcessor
     }
 
     /**
-     * Декодирует JSON-строку и возвращает данные в виде ассоциативного массива.
-     *
-     * @param string    $json       JSON-строка
-     *
-     * @return array                декодированные данные
-     *
-     * @throws DataParseException   ошибка обработки данных
-     */
-    private function decodeData(string $json): array
-    {
-        try {
-            return json_decode($json, true, 512, JSON_THROW_ON_ERROR);
-        } /** @noinspection PhpRedundantCatchClauseInspection __approved__ */ catch (JsonException $e) {
-            /** JsonException может быть выброшено */
-            throw new DataParseException('Ошибка при разборе JSON-данных', 0, $e);
-        }
-    }
-
-    /**
      * Выполняет обработку тестовых данных.
      *
      * @param string    $data       строка с тестовыми данными
@@ -167,6 +142,11 @@ class JSONDataProcessor implements DataProcessor
     public function process(string $data): array
     {
         $decodedData = $this->decodeData($data);
-        return $this->processArrayElement($decodedData, 'root');
+        $processedData = $this->processArrayElement($decodedData, 'root');
+        $result = [];
+        foreach ($processedData as $testName => $testData) {
+            $result[$testName] = new TestContainer($testData);
+        }
+        return $result;
     }
 }

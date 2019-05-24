@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Raptor\Test\DataLoader\DataProcessor;
+namespace Raptor\Test\DataProcessor;
 
 use Raptor\Test\Exceptions\DataParseException;
 

@@ -4,9 +4,10 @@ declare(strict_types=1);
 namespace RaptorTests\Test\DataLoader;
 
 use PHPUnit\Framework\TestCase;
-use Raptor\Test\DataLoader\DataProcessor\JSONDataProcessor;
+use Raptor\Test\DataProcessor\TestContainerTestDataProcessor;
 use Raptor\Test\Exceptions\DataParseException;
 use Raptor\Test\ExtraAssertions;
+use Raptor\Test\TestContainer\TestContainer;
 
 /**
  * Класс с тестами для обработчика файла данных в формате JSON `JSONDataProcessor`.
@@ -15,7 +16,7 @@ use Raptor\Test\ExtraAssertions;
  *
  * @copyright 2019, raptor_MVK
  */
-class JSONDataProcessorTests extends TestCase
+class TestContainerDataProcessorTests extends TestCase
 {
     use ExtraAssertions;
 
@@ -29,7 +30,7 @@ class JSONDataProcessorTests extends TestCase
         $this->expectExceptionMessageRegExp('/^Ошибка при разборе JSON-данных$/');
 
         $data = '[{"some_field}]';
-        $dataProcessor = new JSONDataProcessor();
+        $dataProcessor = new TestContainerTestDataProcessor();
 
         $dataProcessor->process($data);
     }
@@ -71,7 +72,7 @@ class JSONDataProcessorTests extends TestCase
         $this->expectException(DataParseException::class);
         $this->expectExceptionMessageRegExp("/^Ожидается массив, получен объект на уровне $level$/");
 
-        $dataProcessor = new JSONDataProcessor();
+        $dataProcessor = new TestContainerTestDataProcessor();
 
         $dataProcessor->process($json);
     }
@@ -112,7 +113,7 @@ class JSONDataProcessorTests extends TestCase
         $this->expectException(DataParseException::class);
         $this->expectExceptionMessageRegExp("/^Не задано наименование теста на уровне $level$/");
 
-        $dataProcessor = new JSONDataProcessor();
+        $dataProcessor = new TestContainerTestDataProcessor();
 
         $dataProcessor->process($json);
     }
@@ -153,7 +154,7 @@ class JSONDataProcessorTests extends TestCase
         $this->expectException(DataParseException::class);
         $this->expectExceptionMessageRegExp("/^Наименование не является строкой на уровне $level$/");
 
-        $dataProcessor = new JSONDataProcessor();
+        $dataProcessor = new TestContainerTestDataProcessor();
 
         $dataProcessor->process($json);
     }
@@ -193,7 +194,7 @@ class JSONDataProcessorTests extends TestCase
         $this->expectException(DataParseException::class);
         $this->expectExceptionMessageRegExp("/^Пустое наименование на уровне $level$/");
 
-        $dataProcessor = new JSONDataProcessor();
+        $dataProcessor = new TestContainerTestDataProcessor();
 
         $dataProcessor->process($json);
     }
@@ -233,7 +234,7 @@ class JSONDataProcessorTests extends TestCase
         $this->expectException(DataParseException::class);
         $this->expectExceptionMessageRegExp("/^Обнаружено неуникальное наименование $name$/");
 
-        $dataProcessor = new JSONDataProcessor();
+        $dataProcessor = new TestContainerTestDataProcessor();
 
         $dataProcessor->process($json);
     }
@@ -276,7 +277,7 @@ class JSONDataProcessorTests extends TestCase
         $this->expectException(DataParseException::class);
         $this->expectExceptionMessageRegExp("/^Неизвестное служебное поле $field на уровне $level$/");
 
-        $dataProcessor = new JSONDataProcessor();
+        $dataProcessor = new TestContainerTestDataProcessor();
 
         $dataProcessor->process($json);
     }
@@ -319,7 +320,7 @@ class JSONDataProcessorTests extends TestCase
         $this->expectException(DataParseException::class);
         $this->expectExceptionMessageRegExp("/^Задано и наименование, и дочерние элементы на уровне $level$/");
 
-        $dataProcessor = new JSONDataProcessor();
+        $dataProcessor = new TestContainerTestDataProcessor();
 
         $dataProcessor->process($json);
     }
@@ -353,11 +354,11 @@ class JSONDataProcessorTests extends TestCase
     }
 
     /**
-     * Готовит корректный тест, возвращающий несколько тестовых наборов на разных уровнях.
+     * Готовит входящие данные для теста, возвращающего несколько тестовых наборов на разных уровнях.
      *
-     * @return array    тестовый набор данных в формате [ json, expected ]
+     * @return string    входящие данные для теста
      */
-    private function prepareMultiResultTest(): array
+    private function prepareMultiResultTestData(): string
     {
         $firstDataChildren = [['_name' => 'test1', 'middle' => 'value1'], ['_name' => 'test2', 'middle' => 'value2']];
         $firstData = [['top' => 'first', 'bottom' => 'first', '_children' => $firstDataChildren]];
@@ -366,6 +367,17 @@ class JSONDataProcessorTests extends TestCase
         $secondData =
             [['top' => 'second', '_children' => [['middle' => 'second', '_children' => $secondDataGrandchildren]]]];
         $thirdData = [['top' => 'third', 'middle' => 'third', 'bottom' => 'third', '_name' => 'test5']];
+        return json_encode(array_merge($firstData, $secondData, $thirdData));
+    }
+
+    /**
+     * Готовит корректный тест, возвращающий несколько тестовых наборов на разных уровнях.
+     *
+     * @return array    тестовый набор данных в формате [ json, expected ]
+     */
+    private function prepareMultiResultTest(): array
+    {
+        $testData = $this->prepareMultiResultTestData();
         $expected = [
             'test1' => ['top' => 'first', 'bottom' => 'first', 'middle' => 'value1'],
             'test2' => ['top' => 'first', 'bottom' => 'first', 'middle' => 'value2'],
@@ -373,7 +385,26 @@ class JSONDataProcessorTests extends TestCase
             'test4' => ['top' => 'second', 'middle' => 'second', 'bottom' => 'value4'],
             'test5' => ['top' => 'third', 'middle' => 'third', 'bottom' => 'third']
         ];
-        return [json_encode(array_merge($firstData, $secondData, $thirdData)), $expected];
+        return [$testData, $expected];
+    }
+
+    /**
+     * Проверяет, что метод _process_ возвращает массив, элементы которого являются экземплярами _TestContainer_.
+     *
+     * @dataProvider correctDataProvider
+     */
+    public function testProcessReturnsResultWithTestContainersAsElements(): void
+    {
+        $testData = $this->prepareMultiResultTestData();
+        $dataProcessor = new TestContainerTestDataProcessor();
+
+        $actual = $dataProcessor->process($testData);
+
+        $result = true;
+        foreach ($actual as $value) {
+            $result = $result && ($value instanceof TestContainer);
+        }
+        static::assertTrue($result, 'Все элементы результирующего массива должны быть экземплярами TestContainer');
     }
 
     /**
@@ -400,9 +431,15 @@ class JSONDataProcessorTests extends TestCase
      */
     public function testProcessReturnsCorrectResult(string $json, array $expected): void
     {
-        $dataProcessor = new JSONDataProcessor();
+        $dataProcessor = new TestContainerTestDataProcessor();
 
-        $actual = $dataProcessor->process($json);
+        $processed = $dataProcessor->process($json);
+
+        $actual = [];
+        foreach ($processed as $key => $value) {
+            /** @var TestContainer $value */
+            $actual[$key] = $value->getAllData();
+        }
         static::assertArraysAreSame($expected, $actual);
     }
 }
