@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Raptor\Test\DataLoader;
 
+use Raptor\Test\Exceptions\DataFileNotFoundException;
+
 /**
  * Интерфейс загрузчика данных.
  *
@@ -13,9 +15,11 @@ namespace Raptor\Test\DataLoader;
 interface DataLoader
 {
     /**
-     * Загружает данные в контейнер.
+     * Загружает данные из файла в массив для провайдера данных для теста.
      *
-     * @return object   загруженный контейнер с данными
+     * @return array                        набор тестов
+     *
+     * @throws DataFileNotFoundException    не найден файл с данными
      */
-    public function load(): object;
+    public function load(): array;
 }
