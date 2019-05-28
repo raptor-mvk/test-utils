@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Raptor\Test\ExtraAssertions;
 
 /**
- * Класс с тестами для трейта `ExtraAssertions`.
+ * Класс с тестами для трейта _ExtraAssertions_.
  *
  * @author Михаил Каморин aka raptor_MVK
  *
@@ -43,11 +43,11 @@ class ExtraAssertionsTests extends TestCase
     {
         return [
             'just different' => [['весна', '2', 3], [4, 'лето', '3'], 'different arrays'],
-            'scalar, different order' => [[4, 16, 7], [7, 16, 4], 'scalar, different order'],
-            'nested scalar, different order' => [
+            'simple, different order' => [[4, 16, 7], [7, 16, 4], 'scalar, different order'],
+            'nested simple, different order' => [
                 [1, [4, 6], [4, [8, 3]]],
                 [[4, 6], [4, [8, 3]], 1],
-                'nested scalar, different order'
+                'nested simple, different order'
             ],
             'array and subarray' => [[1, 2, 3], [1, 2], 'subarray'],
             'integer and integer in quotes' => [[1, '2', 3], [1, 2, 3], 'integer in string'],
@@ -59,7 +59,7 @@ class ExtraAssertionsTests extends TestCase
     /**
      * Проверяет, что утверждение _assertArraysAreSame_ принимает одинаковые массивы.
      *
-     * @param array     $array  ожидаемый и полученный массив
+     * @param array    $array    ожидаемый и полученный массив
      *
      * @dataProvider equalArraysWithDifferentOrderDataProvider
      */
@@ -72,8 +72,8 @@ class ExtraAssertionsTests extends TestCase
      * Проверяет, что утверждение _assertArraysAreSame_ отвергает одинаковые массивы с разным порядком следования
      * элементов.
      *
-     * @param array $expected   ожидаемый массив
-     * @param array $actual     полученный массив
+     * @param array    $expected    ожидаемый массив
+     * @param array    $actual      полученный массив
      *
      * @dataProvider equalArraysWithDifferentOrderDataProvider
      */
@@ -87,9 +87,9 @@ class ExtraAssertionsTests extends TestCase
     /**
      * Проверяет, что утверждение _assertArraysAreSame_ отвергает разные массивы и выводит сообщение об ошибке.
      *
-     * @param array     $expected   ожидаемый массив
-     * @param array     $actual     полученный массив
-     * @param string    $message    сообщение об ошибке
+     * @param array     $expected    ожидаемый массив
+     * @param array     $actual      полученный массив
+     * @param string    $message     сообщение об ошибке
      *
      * @dataProvider differentArraysDataProvider
      */
@@ -108,7 +108,7 @@ class ExtraAssertionsTests extends TestCase
     /**
      * Проверяет, что утверждение _assertArraysAreSameIgnoringOrder_ принимает одинаковые массивы.
      *
-     * @param array     $array  ожидаемый и полученный массив
+     * @param array    $array    ожидаемый и полученный массив
      *
      * @dataProvider equalArraysWithDifferentOrderDataProvider
      */
@@ -121,8 +121,8 @@ class ExtraAssertionsTests extends TestCase
      * Проверяет, что утверждение _assertArraysAreSameIgnoringOrder_ приниает одинаковые массивы с разным порядком
      * следования элементов.
      *
-     * @param array     $expected   ожидаемый массив
-     * @param array     $actual     полученный массив
+     * @param array    $expected    ожидаемый массив
+     * @param array    $actual      полученный массив
      *
      * @dataProvider equalArraysWithDifferentOrderDataProvider
      */
@@ -137,9 +137,9 @@ class ExtraAssertionsTests extends TestCase
      * Проверяет, что утверждение _assertArraysAreSameIgnoringOrder_ отвергает разные массивы и выводит сообщение об
      * ошибке.
      *
-     * @param array     $expected   ожидаемый массив
-     * @param array     $actual     полученный массив
-     * @param string    $message    сообщение об ошибке
+     * @param array     $expected    ожидаемый массив
+     * @param array     $actual      полученный массив
+     * @param string    $message     сообщение об ошибке
      *
      * @dataProvider differentArraysDataProvider
      */

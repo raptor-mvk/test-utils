@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Raptor\Test;
 
 use Raptor\Test\Exceptions\BadMethodException;
-use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
 
@@ -18,15 +17,15 @@ use ReflectionMethod;
 trait ExtraUtils
 {
     /**
-     * @brief Вызывает защищённый или приватный метод объекта.
+     * Вызывает защищённый или приватный метод объекта.
      *
-     * @param object        $object         объект
-     * @param string        $methodName     имя метода
-     * @param array|null    $parameters     параметры метода
+     * @param object        $object        объект
+     * @param string        $methodName    имя метода
+     * @param array|null    $parameters    параметры метода
      *
-     * @return mixed                        возвращаемое значение метода
+     * @return mixed    возвращаемое значение метода
      *
-     * @throws BadMethodException           неверно указанный метод
+     * @throws BadMethodException    неверно указанный метод
      */
     public static function invokeMethod(object $object, string $methodName, ?array $parameters = null)
     {
@@ -39,5 +38,4 @@ trait ExtraUtils
             throw new BadMethodException("Указан отсутствующий метод $methodName", 0, $e);
         }
     }
-
 }

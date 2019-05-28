@@ -11,12 +11,13 @@ use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
 use Raptor\Test\DataLoader\BaseDataLoader;
 use Raptor\Test\DataProcessor\DataProcessor;
+use Raptor\Test\DataProcessor\TestContainerWrapperDataProcessor;
 use Raptor\Test\Exceptions\DataFileNotFoundException;
 use Raptor\Test\Exceptions\DataParseException;
 use Raptor\Test\ExtraAssertions;
 
 /**
- * Класс с тестами для базовой реализации загрузчика данных `BaseDataLoader`.
+ * Класс с тестами для базовой реализации загрузчика данных _BaseDataLoader_.
  *
  * @author Михаил Каморин aka raptor_MVK
  *
@@ -26,13 +27,13 @@ class BaseDataLoaderTests extends TestCase
 {
     use MockeryPHPUnitIntegration, ExtraAssertions;
 
-    /** @var vfsStreamDirectory     $root       виртуальная файловая система */
+    /** @var vfsStreamDirectory    $root    виртуальная файловая система */
     private $root;
 
-    /** @var string                 $filename   имя временного JSON-файла с тестовыми данными */
+    /** @var string    $filename    имя временного JSON-файла с тестовыми данными */
     private $filename;
 
-    /** @var string                 $contents   содержимое временного JSON-файла с тестовыми данными */
+    /** @var string    $contents    содержимое временного JSON-файла с тестовыми данными */
     private $contents;
 
     /**
@@ -48,6 +49,36 @@ class BaseDataLoaderTests extends TestCase
         $this->contents = json_encode(['some_key' => 'some_value']);
         $this->root->addChild(vfsStream::newFile($this->filename)->withContent($this->contents));
         $this->filename = $this->root->url() . "/$this->filename";
+    }
+
+    /**
+     * Проверяет, что метод _getDataProcessorClass_ возвращает корректный класс.
+     *
+     * @param DataProcessor    $dataProcessor    обработчик данных
+     * @param string           $expectedClass    ожидаемый класс обработчика данных
+     *
+     * @dataProvider dataProcessorClassDataProvider
+     */
+    public function testGetDataProcessorClassReturnsCorrectClass(
+        DataProcessor $dataProcessor,
+        string $expectedClass
+    ): void {
+        $dataLoader = new BaseDataLoader($dataProcessor);
+        $actualClass = $dataLoader->getDataProcessorClass();
+        static::assertSame($expectedClass, $actualClass);
+    }
+
+    /**
+     * Предоставляет тестовые данные для тестирования метода _getDataProcessorClass_.
+     *
+     * @return array    массив тестовых данных в формате [ [ dataProcessor, expectedClass ], ... ]
+     */
+    public function dataProcessorClassDataProvider(): array
+    {
+        $result = [
+            'wrapper' => [new TestContainerWrapperDataProcessor(), TestContainerWrapperDataProcessor::class]
+        ];
+        return $result;
     }
 
     /**
@@ -98,20 +129,6 @@ class BaseDataLoaderTests extends TestCase
     }
 
     /**
-     * Возвращает тестовые данные для подмены результата вызова метода _process_ обработчика данных.
-     *
-     * @return array    тестовые данные
-     */
-    private function getTestData(): array
-    {
-        return [
-            'test1' => ['param1' => 'some_value'],
-            'test2' => ['param1' => 'other_value', 'param2' => 'no_value'],
-            'test3' => ['param1' => 'last_value', 'param2' => 'extra_value', 'param5' => ['empty_value', 'this_value']]
-        ];
-    }
-
-    /**
      * Проверяет, что метод _load_ возвращает массив, полученный из результата вызова метода _process_ обработчика
      * данных оборачиванием элементов массива в контейнеры.
      */
@@ -126,5 +143,19 @@ class BaseDataLoaderTests extends TestCase
         $actualData = $dataLoader->load($this->filename);
 
         static::assertArraysAreSame($testData, $actualData);
+    }
+
+    /**
+     * Возвращает тестовые данные для подмены результата вызова метода _process_ обработчика данных.
+     *
+     * @return array    тестовые данные
+     */
+    private function getTestData(): array
+    {
+        return [
+            'test1' => ['param1' => 'some_value'],
+            'test2' => ['param1' => 'other_value', 'param2' => 'no_value'],
+            'test3' => ['param1' => 'last_value', 'param2' => 'extra_value', 'param5' => ['empty_value', 'this_value']]
+        ];
     }
 }

@@ -9,7 +9,7 @@ use Raptor\Test\ExtraUtils;
 use RaptorTests\Test\Utils\InvokeMethodTestObject;
 
 /**
- * Класс с тестами для трейта `ExtraUtils`.
+ * Класс с тестами для трейта _ExtraUtils_.
  *
  * @author Михаил Каморин aka raptor_MVK
  *
@@ -51,9 +51,9 @@ class ExtraUtilsTests extends TestCase
     /**
      * Проверяет, что метод _invokeMethod_ вызывает требуемый метод с заданными параметрами.
      *
-     * @param string    $method         наименование метода
-     * @param array     $parameters     параметры метода
-     * @param string    $expected       ожидаемый результат
+     * @param string    $method        наименование метода
+     * @param array     $parameters    параметры метода
+     * @param string    $expected      ожидаемый результат
      *
      * @dataProvider invokeMethodDataProvider
      */

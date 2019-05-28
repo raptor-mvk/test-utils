@@ -17,9 +17,9 @@ trait ExtraAssertions
     /**
      * Утверждение, проверяющее, что два массива полностью совпадают.
      *
-     * @param array $expected       ожидаемый массив
-     * @param array $actual         полученный массив
-     * @param string|null $message  сообщение об ошибке, выдаваемое в случае различий между массивами
+     * @param array          $expected    ожидаемый массив
+     * @param array          $actual      полученный массив
+     * @param string|null    $message     сообщение об ошибке, выдаваемое в случае различий между массивами
      */
     public static function assertArraysAreSame(array $expected, array $actual, ?string $message = null): void
     {
@@ -32,9 +32,9 @@ trait ExtraAssertions
      * Утверждение, проверяющее, что два массива содержат одинаковые элементы без учёта их порядка для ассоциативных
      * массивов.
      *
-     * @param array $expected       ожидаемый массив
-     * @param array $actual         полученный массив
-     * @param string|null $message  сообщение об ошибке, выдаваемое в случае различий между массивами
+     * @param array          $expected    ожидаемый массив
+     * @param array          $actual      полученный массив
+     * @param string|null    $message     сообщение об ошибке, выдаваемое в случае различий между массивами
      */
     public static function assertArraysAreSameIgnoringOrder(
         array $expected,

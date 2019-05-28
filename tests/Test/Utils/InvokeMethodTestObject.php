@@ -15,22 +15,23 @@ class InvokeMethodTestObject
     /**
      * Переворачивает строку.
      *
-     * @param string    $input  исходная строка
+     * @param string    $input    исходная строка
      *
-     * @return string           перевёрнутая строка
+     * @return string    перевёрнутая строка
      */
     protected function reverse(string $input): string
     {
         return strrev($input);
     }
 
+    /** @noinspection PhpUnusedPrivateMethodInspection __approved__  используется при тестировании */
     /**
      * Повторяет строку заданное число раз.
      *
-     * @param string    $input  исходная строка
-     * @param int       $count  количество повторений
+     * @param string    $input    исходная строка
+     * @param int       $count    количество повторений
      *
-     * @return string           результирующая строка
+     * @return string    результирующая строка
      */
     private function repeat(string $input, int $count): string
     {

@@ -16,13 +16,13 @@ use Throwable;
  */
 class BaseDataLoader implements DataLoader
 {
-    /** @var DataProcessor $dataProcessor    обработчик данных */
+    /** @var DataProcessor    $dataProcessor    обработчик данных */
     private $dataProcessor;
 
     /**
      * Конструктор загрузчика данных.
      *
-     * @param DataProcessor $dataProcessor  обработчик данных
+     * @param DataProcessor    $dataProcessor    обработчик данных
      */
     public function __construct(DataProcessor $dataProcessor)
     {
@@ -34,9 +34,9 @@ class BaseDataLoader implements DataLoader
     /**
      * Загружает данные из файла, обрабатывает и возвращает массив.
      *
-     * @param string    $filename   наименование и путь к файлу с данными
+     * @param string    $filename    наименование и путь к файлу с данными
      *
-     * @return array                массив с обработанными данными
+     * @return array    массив с обработанными данными
      *
      * @throws DataFileNotFoundException    не найден файл с данными
      */
@@ -53,5 +53,15 @@ class BaseDataLoader implements DataLoader
             /** проброс исключения на уровень выше, новые классы исключений не добавляются */
             throw $e;
         }
+    }
+
+    /**
+     * Возвращает класс процессора данных.
+     *
+     * @return string    класс процессора данных
+     */
+    public function getDataProcessorClass(): string
+    {
+        return \get_class($this->dataProcessor);
     }
 }

@@ -17,11 +17,18 @@ interface DataLoader
     /**
      * Загружает данные из файла, обрабатывает и возвращает массив.
      *
-     * @param string    $filename           наименование и путь к файлу с данными
+     * @param string    $filename    наименование и путь к файлу с данными
      *
-     * @return array                        массив с обработанными данными
+     * @return array    массив с обработанными данными
      *
      * @throws DataFileNotFoundException    не найден файл с данными
      */
     public function load(string $filename): array;
+
+    /**
+     * Возвращает класс процессора данных.
+     *
+     * @return string    класс процессора данных
+     */
+    public function getDataProcessorClass(): string;
 }

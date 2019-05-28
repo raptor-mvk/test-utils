@@ -17,11 +17,11 @@ interface DataProcessor
     /**
      * Выполняет обработку тестовых данных.
      *
-     * @param string    $data       строка с тестовыми данными
+     * @param string    $data    строка с тестовыми данными
      *
-     * @return array                преобразованные и обработанные данные
+     * @return array    преобразованные и обработанные данные
      *
-     * @throws DataParseException   ошибка обработки данных
+     * @throws DataParseException    ошибка обработки данных
      */
     public function process(string $data): array;
 }

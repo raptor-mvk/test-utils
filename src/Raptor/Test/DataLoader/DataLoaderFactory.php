@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Raptor\Test\DataLoader;
 
-use Raptor\Test\DataProcessor\DataProcessorFactory;
+use Raptor\Test\DataProcessor\TestContainerWrapperDataProcessor;
 
 /**
  * Фабрика загрузчиков данных.
@@ -14,27 +14,14 @@ use Raptor\Test\DataProcessor\DataProcessorFactory;
  */
 class DataLoaderFactory
 {
-    /** @var DataProcessorFactory $dataProcessorFactory */
-    private $dataProcessorFactory;
-
-    /**
-     * Конструктор фабрики.
-     *
-     * @param DataProcessorFactory  $dataProcessorFactory   фабрика обработчиков данных
-     */
-    public function __construct(DataProcessorFactory $dataProcessorFactory)
-    {
-        $this->dataProcessorFactory = $dataProcessorFactory;
-    }
-
     /**
      * Создаёт загрузчик данных в массив, содержащий контейнеры данных для тестов.
      *
-     * @return DataLoader   загрузчик данных
+     * @return DataLoader    загрузчик данных
      */
     public function createTestContainerDataLoader(): DataLoader
     {
-        $dataProcessor = $this->dataProcessorFactory->createTestContainerDataProcessor();
+        $dataProcessor = new TestContainerWrapperDataProcessor();
         return new BaseDataLoader($dataProcessor);
     }
 }
