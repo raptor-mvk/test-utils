@@ -19,20 +19,6 @@ class TestDataContainerTests extends TestCase
     use ExtraAssertions;
 
     /**
-     * Предоставляет тестовые данные для тестирования метода _allData_.
-     *
-     * @return array    массив тестовых данных в формате [ [ data ], ... ]
-     */
-    public function allDataDataProvider(): array
-    {
-        return [
-            'empty' => [[]],
-            'linear' => [['some_field' => 'some_value', 'other_field' => 'other_value']],
-            'multi-dimension' => [['field' => 'value', 'children' => ['property' => 'type']]]
-        ];
-    }
-
-    /**
      * Проверяет, что метод _allData_ возвращает все данные.
      *
      * @param array    $data    входящие и ожидаемые данные
@@ -49,20 +35,16 @@ class TestDataContainerTests extends TestCase
     }
 
     /**
-     * Предоставляет тестовые данные для тестирования геттеров.
+     * Предоставляет тестовые данные для тестирования метода _allData_.
      *
-     * @return array    массив тестовых данных в формате [ [ data, getter, expected ], ... ]
+     * @return array    массив тестовых данных в формате [ [ data ], ... ]
      */
-    public function getterDataProvider(): array
+    public function allDataDataProvider(): array
     {
         return [
-            'int' => [['int_field' => 6], 'getIntField', 6],
-            'float' => [['float_field' => 16.36], 'getFloatField', 16.36],
-            'bool' => [['is_bool' => true], 'isBool', true],
-            'string' => [['string_field' => 'some_string'], 'getStringField', 'some_string'],
-            'array' => [['array_field' => ['a' => 3, 'b' => 6]], 'getArrayField', ['a' => 3, 'b' => 6]],
-            'null' => [['field' => null], 'getField', null],
-            'incorrect_getter' => [[], 'getField', null]
+            'empty' => [[]],
+            'linear' => [['some_field' => 'some_value', 'other_field' => 'other_value']],
+            'multi-dimension' => [['field' => 'value', 'children' => ['property' => 'type']]]
         ];
     }
 
@@ -83,5 +65,23 @@ class TestDataContainerTests extends TestCase
 
         $assertion = \is_array($expected) ? 'assertArraysAreSame' : 'assertSame';
         $this->$assertion($expected, $actual);
+    }
+
+    /**
+     * Предоставляет тестовые данные для тестирования геттеров.
+     *
+     * @return array    массив тестовых данных в формате [ [ data, getter, expected ], ... ]
+     */
+    public function getterDataProvider(): array
+    {
+        return [
+            'int' => [['int_field' => 6], 'getIntField', 6],
+            'float' => [['float_field' => 16.36], 'getFloatField', 16.36],
+            'bool' => [['is_bool' => true], 'isBool', true],
+            'string' => [['string_field' => 'some_string'], 'getStringField', 'some_string'],
+            'array' => [['array_field' => ['a' => 3, 'b' => 6]], 'getArrayField', ['a' => 3, 'b' => 6]],
+            'null' => [['field' => null], 'getField', null],
+            'incorrect_getter' => [[], 'getField', null]
+        ];
     }
 }

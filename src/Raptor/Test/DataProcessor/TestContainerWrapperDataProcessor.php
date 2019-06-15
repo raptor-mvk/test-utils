@@ -13,7 +13,7 @@ use Raptor\Test\TestDataContainer\TestDataContainer;
  *
  * @copyright 2019, raptor_MVK
  */
-final class TestContainerWrapperDataProcessor extends AbstractJSONTestDataProcessor
+class TestContainerWrapperDataProcessor extends AbstractJSONTestDataProcessor
 {
     /**
      * Обрабатывает тестовый набор данных (элемент, содержащий служебное поле _name), предполагая, что он корректен

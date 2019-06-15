@@ -9,7 +9,7 @@ use Raptor\Test\ExtraAssertions;
 
 /**
  * Класс с тестами для обработчика тестовых данных в формате JSON, используемый для генератора вспомогательного файла
- * для IDE `TestContainerGeneratorDataProcessor`.
+ * для IDE _TestContainerGeneratorDataProcessor_.
  *
  * @author Михаил Каморин aka raptor_MVK
  *

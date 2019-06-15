@@ -34,21 +34,6 @@ class ExtraUtilsTests extends TestCase
     }
 
     /**
-     * Предоставляет тестовые данные для метода _invokeMethod_.
-     *
-     * @return array    массив тестовых данных в формате [ [ method, parameters, expected ], ... ]
-     */
-    public function invokeMethodDataProvider(): array
-    {
-        $palindrome = 'delia saw I was ailed';
-        $count = 2;
-        return [
-            'protected' => ['reverse', [$palindrome], $palindrome],
-            'private' => ['repeat', [$palindrome, $count], str_repeat($palindrome, $count)]
-        ];
-    }
-
-    /**
      * Проверяет, что метод _invokeMethod_ вызывает требуемый метод с заданными параметрами.
      *
      * @param string    $method        наименование метода
@@ -64,5 +49,20 @@ class ExtraUtilsTests extends TestCase
         $actual = static::invokeMethod($object, $method, $parameters);
 
         static::assertSame($expected, $actual);
+    }
+
+    /**
+     * Предоставляет тестовые данные для метода _invokeMethod_.
+     *
+     * @return array    массив тестовых данных в формате [ [ method, parameters, expected ], ... ]
+     */
+    public function invokeMethodDataProvider(): array
+    {
+        $palindrome = 'delia saw I was ailed';
+        $count = 2;
+        return [
+            'protected' => ['reverse', [$palindrome], $palindrome],
+            'private' => ['repeat', [$palindrome, $count], str_repeat($palindrome, $count)]
+        ];
     }
 }

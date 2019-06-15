@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Raptor\Test\DataLoader;
 
+use Raptor\Test\DataProcessor\TestContainerGeneratorDataProcessor;
 use Raptor\Test\DataProcessor\TestContainerWrapperDataProcessor;
 
 /**
@@ -19,9 +20,20 @@ class DataLoaderFactory
      *
      * @return DataLoader    загрузчик данных
      */
-    public function createTestContainerDataLoader(): DataLoader
+    public static function createTestContainerWrapperDataLoader(): DataLoader
     {
         $dataProcessor = new TestContainerWrapperDataProcessor();
+        return new BaseDataLoader($dataProcessor);
+    }
+
+    /**
+     * Создаёт загрузчик данных в формате JSON, используемый для генератора вспомогательного файла для IDE.
+     *
+     * @return DataLoader    загрузчик данных
+     */
+    public static function createTestContainerGeneratorDataLoader(): DataLoader
+    {
+        $dataProcessor = new TestContainerGeneratorDataProcessor();
         return new BaseDataLoader($dataProcessor);
     }
 }

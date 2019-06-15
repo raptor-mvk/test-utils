@@ -41,21 +41,6 @@ class TestContainerGeneratorDataProcessor extends AbstractJSONTestDataProcessor
     ];
 
     /**
-     * Получает новый тип, если текущий тип не совпадает с обрабатываемым.
-     *
-     * @param string    $currentType    текущий тип
-     * @param string    $checkedType    обрабатываемый тип
-     *
-     * @return string    новый тип
-     */
-    private function getNewType(string $checkedType, string $currentType): string
-    {
-        return ((($currentType === self::INT_TYPE) && ($checkedType === self::FLOAT_TYPE)) ||
-            (($currentType === self::FLOAT_TYPE) && ($checkedType === self::INT_TYPE))) ? static::FLOAT_TYPE :
-            static::MIXED_TYPE;
-    }
-
-    /**
      * Обрабатывает тестовый набор данных (элемент, содержащий служебное поле _name), предполагая, что он корректен
      * (без обработки ошибок).
      *
@@ -77,5 +62,20 @@ class TestContainerGeneratorDataProcessor extends AbstractJSONTestDataProcessor
                 $this->addProcessed($field, $newType);
             }
         }
+    }
+
+    /**
+     * Получает новый тип, если текущий тип не совпадает с обрабатываемым.
+     *
+     * @param string    $currentType    текущий тип
+     * @param string    $checkedType    обрабатываемый тип
+     *
+     * @return string    новый тип
+     */
+    private function getNewType(string $checkedType, string $currentType): string
+    {
+        return ((($currentType === self::INT_TYPE) && ($checkedType === self::FLOAT_TYPE)) ||
+            (($currentType === self::FLOAT_TYPE) && ($checkedType === self::INT_TYPE))) ? static::FLOAT_TYPE :
+            static::MIXED_TYPE;
     }
 }

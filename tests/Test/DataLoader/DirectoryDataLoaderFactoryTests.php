@@ -4,32 +4,31 @@ declare(strict_types=1);
 namespace RaptorTests\Test\DataLoader;
 
 use PHPUnit\Framework\TestCase;
-use Raptor\Test\DataLoader\DataLoader;
-use Raptor\Test\DataLoader\DataLoaderFactory;
+use Raptor\Test\DataLoader\DirectoryDataLoader;
+use Raptor\Test\DataLoader\DirectoryDataLoaderFactory;
 use Raptor\Test\DataProcessor\TestContainerGeneratorDataProcessor;
-use Raptor\Test\DataProcessor\TestContainerWrapperDataProcessor;
 
 /**
- * Класс с тестами для фабрики загрузчиков данных.
+ * Класс с тестами для фабрики загрузчиков данных из всех файлов (по маске) в директории.
  *
  * @author Михаил Каморин aka raptor_MVK
  *
  * @copyright 2019, raptor_MVK
  */
-class DataLoaderFactoryTests extends TestCase
+class DirectoryDataLoaderFactoryTests extends TestCase
 {
     /**
-     * Проверяет, что фабричный метод возвращает экземпляр _DataLoader_.
+     * Проверяет, что фабричный метод возвращает экземпляр _DirectoryDataLoader_.
      *
      * @param string    $factoryMethod    наименование фабричного метода
      *
      * @dataProvider factoryMethodsProvider
      */
-    public function testFactoryMethodReturnsBaseDataLoaderInstance(string $factoryMethod): void
+    public function testFactoryMethodReturnsBaseDirectoryDataLoaderInstance(string $factoryMethod): void
     {
-        $actual = DataLoaderFactory::$factoryMethod();
+        $actual = DirectoryDataLoaderFactory::$factoryMethod();
 
-        static::assertInstanceOf(DataLoader::class, $actual);
+        static::assertInstanceOf(DirectoryDataLoader::class, $actual);
     }
 
     /**
@@ -40,8 +39,8 @@ class DataLoaderFactoryTests extends TestCase
     public function factoryMethodsProvider(): array
     {
         return [
-            'wrapper' => ['createTestContainerWrapperDataLoader', TestContainerWrapperDataProcessor::class],
-            'generator' => ['createTestContainerGeneratorDataLoader', TestContainerGeneratorDataProcessor::class]
+            'createTestContainerGeneratorDataLoader' =>
+                ['createTestContainerGeneratorDataLoader', TestContainerGeneratorDataProcessor::class]
         ];
     }
 
@@ -57,10 +56,10 @@ class DataLoaderFactoryTests extends TestCase
         string $factoryMethod,
         string $expectedDataProcessorClass
     ): void {
-        /** @var DataLoader $dataLoader */
-        $dataLoader = DataLoaderFactory::$factoryMethod();
+        /** @var DirectoryDataLoader $directoryDataLoader */
+        $directoryDataLoader = DirectoryDataLoaderFactory::$factoryMethod();
 
-        $actualDataProcessorClass = $dataLoader->getDataProcessorClass();
+        $actualDataProcessorClass = $directoryDataLoader->getDataProcessorClass();
 
         static::assertSame($expectedDataProcessorClass, $actualDataProcessorClass);
     }

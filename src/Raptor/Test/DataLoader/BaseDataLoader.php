@@ -5,7 +5,6 @@ namespace Raptor\Test\DataLoader;
 
 use Raptor\Test\DataProcessor\DataProcessor;
 use Raptor\Test\Exceptions\DataFileNotFoundException;
-use Throwable;
 
 /**
  * Базовая реализация загрузчика данных.
@@ -29,8 +28,6 @@ class BaseDataLoader implements DataLoader
         $this->dataProcessor = $dataProcessor;
     }
 
-    /** @noinspection PhpDocMissingThrowsInspection __approved__ */
-    /** проброс исключения на уровень выше, новые классы исключений не добавляются */
     /**
      * Загружает данные из файла, обрабатывает и возвращает массив.
      *
@@ -42,17 +39,11 @@ class BaseDataLoader implements DataLoader
      */
     public function load(string $filename): array
     {
-        try {
-            $data = file_get_contents($filename);
-            return $this->dataProcessor->process($data);
-        } catch (Throwable $e) {
-            if (strpos($e->getMessage(), 'No such file or directory') !== false) {
-                throw new DataFileNotFoundException("Не найден файл с данными $filename", 0, $e);
-            }
-            /** @noinspection PhpUnhandledExceptionInspection __approved__ */
-            /** проброс исключения на уровень выше, новые классы исключений не добавляются */
-            throw $e;
+        if (!is_readable($filename) || !is_file($filename)) {
+            throw new DataFileNotFoundException("Не найден файл с данными $filename");
         }
+        $data = file_get_contents($filename);
+        return $this->dataProcessor->process($data);
     }
 
     /**

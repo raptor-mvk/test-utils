@@ -11,7 +11,7 @@ use Raptor\Test\TestDataContainer\TestDataContainer;
 
 /**
  * Класс с тестами для обработчика тестовых данных в формате JSON, используемый для загрузки данных в контейнеры
- * `TestContainerWrapperDataProcessor`.
+ * _TestContainerWrapperDataProcessor_.
  *
  * @author Михаил Каморин aka raptor_MVK
  *

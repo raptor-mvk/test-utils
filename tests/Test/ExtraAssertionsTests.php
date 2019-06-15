@@ -19,27 +19,119 @@ class ExtraAssertionsTests extends TestCase
     use ExtraAssertions;
 
     /**
-     * Провайдер данных, предоставляющий одинаковые массивы с разным порядком следования элементов.
+     * Проверяет, что утверждение _assertArraysAreSame_ принимает заданные массивы.
+     *
+     * @param array    $expected    ожидаемый массив
+     * @param array    $actual      полученный массив
+     *
+     * @dataProvider acceptableArraysAreSameDataProvider
+     */
+    public function testAssertArraysAreSameAcceptsProvidedArrays(array $expected, array $actual): void
+    {
+        static::assertArraysAreSame($expected, $actual);
+    }
+
+    /**
+     * Провайдер данных, предоставляющий тестовые данные, которые утверждение _assertArraysAreSame_ должно принимать.
      *
      * @return array    массив тестовых данных в формате [ [ expected, actual ], ... ].
      */
-    public function equalArraysWithDifferentOrderDataProvider(): array
+    public function acceptableArraysAreSameDataProvider(): array
+    {
+        return $this->prepareSameArraysTestData();
+    }
+
+    /**
+     * Готовит тестовые данные с одинаковыми массивами.
+     *
+     * @return array    массив тестовых данных в формате [ [ expected, actual ], ... ].
+     */
+    private function prepareSameArraysTestData(): array
+    {
+        $associative = ['пять' => 346, 'семь' => 644];
+        $nestedAssociative = ['a' => ['b' => 'c'], 'd' => ['e' => ['f' => 'g']]];
+        return [
+            'associative' => [$associative, $associative],
+            'nested associative' => [$nestedAssociative, $nestedAssociative]
+        ];
+    }
+
+    /**
+     * Проверяет, что утверждение _assertArraysAreSame_ отвергает заданные массивы.
+     *
+     * @param array     $expected    ожидаемый массив
+     * @param array     $actual      полученный массив
+     * @param string    $message     сообщение об ошибке
+     *
+     * @dataProvider rejectableArraysAreSameDataProvider
+     */
+    public function testAssertArraysAreSameDeclinesProvidedArrays(array $expected, array $actual, string $message): void
+    {
+        $messageRegExp = "/^$message\n.*$/";
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageRegExp($messageRegExp);
+
+        static::assertArraysAreSame($expected, $actual, $message);
+    }
+
+    /**
+     * Провайдер данных, предоставляющий тестовые данные, которые утверждение _assertArraysAreSame_ должно отвергать.
+     *
+     * @return array    массив тестовых данных в формате [ [ expected, actual ], ... ].
+     */
+    public function rejectableArraysAreSameDataProvider(): array
+    {
+        return array_merge(
+            $this->prepareEqualArraysWithDifferentOrderTestData(),
+            $this->prepareEqualArraysWithDifferentOrderOnLowerLevelsTestData(),
+            $this->prepareDifferentArraysTestData()
+        );
+    }
+
+    /**
+     * Готовит тестовые данные с одинаковыми массивами с разным порядком следования элементов на верхнем уровне.
+     *
+     * @return array    массив тестовых данных в формате [ [ expected, actual, message ], ... ].
+     */
+    public function prepareEqualArraysWithDifferentOrderTestData(): array
     {
         return [
-            'associative' => [['пять' => 346, 'семь' => 644], ['семь' => 644, 'пять' => 346]],
+            'associative' => [['два' => 1253, 'четыре' => 367], ['четыре' => 367, 'два' => 1253], 'ошибка № 463'],
             'nested associative' => [
                 ['a' => ['b' => 'c'], 'd' => ['e' => ['f' => 'g']]],
-                ['d' => ['e' => ['f' => 'g']], 'a' => ['b' => 'c']]
+                ['d' => ['e' => ['f' => 'g']], 'a' => ['b' => 'c']],
+                'странная ошибка'
             ]
         ];
     }
 
     /**
-     * Провайдер данных, предоставляющий разные массивы и сообщения об ошибке.
+     * Готовит тестовые данные с одинаковыми массивами с разным порядком следования элементов на более низких уровнях.
+     *
+     * @return array    массив тестовых данных в формате [ [ expected, actual, message ], ... ].
+     */
+    public function prepareEqualArraysWithDifferentOrderOnLowerLevelsTestData(): array
+    {
+        return [
+            'second_level' => [
+                ['a' => ['b' => 'c', 'd' => 'e'], 'f' => ['g' => ['h' => 'i']]],
+                ['a' => ['d' => 'e', 'b' => 'c'], 'f' => ['g' => ['h' => 'i']]],
+                'уровень 2'
+            ],
+            'third_level' => [
+                ['a' => ['b' => 'c', 'd' => ['e' => 'f', 'g' => 'h']], 'i' => ['j' => ['k' => 'l']]],
+                ['a' => ['b' => 'c', 'd' => ['g' => 'h', 'e' => 'f']], 'i' => ['j' => ['k' => 'l']]],
+                'уровень 3'
+            ]
+        ];
+    }
+
+    /**
+     * Готовит тестовые данные с разными массивами.
      *
      * @return array    массив тестовых данных в формате [ [ expected, actual, message ], ... ]
      */
-    public function differentArraysDataProvider(): array
+    public function prepareDifferentArraysTestData(): array
     {
         return [
             'just different' => [['весна', '2', 3], [4, 'лето', '3'], 'different arrays'],
@@ -57,93 +149,42 @@ class ExtraAssertionsTests extends TestCase
     }
 
     /**
-     * Проверяет, что утверждение _assertArraysAreSame_ принимает одинаковые массивы.
-     *
-     * @param array    $array    ожидаемый и полученный массив
-     *
-     * @dataProvider equalArraysWithDifferentOrderDataProvider
-     */
-    public function testAssertArraysAreSameAcceptsEqualArrays(array $array): void
-    {
-        static::assertArraysAreSame($array, $array);
-    }
-
-    /**
-     * Проверяет, что утверждение _assertArraysAreSame_ отвергает одинаковые массивы с разным порядком следования
-     * элементов.
+     * Проверяет, что утверждение _assertArraysAreSameIgnoringOrder_ принимает заданные массивы.
      *
      * @param array    $expected    ожидаемый массив
      * @param array    $actual      полученный массив
      *
-     * @dataProvider equalArraysWithDifferentOrderDataProvider
+     * @dataProvider acceptableArraysAreSameIgnoringOrderDataProvider
      */
-    public function testAssertArraysAreSameDeclinesEqualArraysWithDifferentOrder(array $expected, array $actual): void
+    public function testAssertArraysAreSameIgnoringOrderAcceptsProvidedArrays(array $expected, array $actual): void
     {
-        $this->expectException(ExpectationFailedException::class);
-
-        static::assertArraysAreSame($expected, $actual);
-    }
-
-    /**
-     * Проверяет, что утверждение _assertArraysAreSame_ отвергает разные массивы и выводит сообщение об ошибке.
-     *
-     * @param array     $expected    ожидаемый массив
-     * @param array     $actual      полученный массив
-     * @param string    $message     сообщение об ошибке
-     *
-     * @dataProvider differentArraysDataProvider
-     */
-    public function testAssertArraysAreSameDeclinesDifferentArraysWithCorrectMessage(
-        array $expected,
-        array $actual,
-        string $message
-    ): void {
-        $messageRegExp = "/^$message\n.*$/";
-        $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessageRegExp($messageRegExp);
-
-        static::assertArraysAreSame($expected, $actual, $message);
-    }
-
-    /**
-     * Проверяет, что утверждение _assertArraysAreSameIgnoringOrder_ принимает одинаковые массивы.
-     *
-     * @param array    $array    ожидаемый и полученный массив
-     *
-     * @dataProvider equalArraysWithDifferentOrderDataProvider
-     */
-    public function testAssertArraysAreSameIgnoringOrderAcceptsEqualArrays(array $array): void
-    {
-        static::assertArraysAreSameIgnoringOrder($array, $array);
-    }
-
-    /**
-     * Проверяет, что утверждение _assertArraysAreSameIgnoringOrder_ приниает одинаковые массивы с разным порядком
-     * следования элементов.
-     *
-     * @param array    $expected    ожидаемый массив
-     * @param array    $actual      полученный массив
-     *
-     * @dataProvider equalArraysWithDifferentOrderDataProvider
-     */
-    public function testAssertArraysAreSameIgnoringOrderAcceptsEqualArraysWithDifferentOrder(
-        array $expected,
-        array $actual
-    ): void {
         static::assertArraysAreSameIgnoringOrder($expected, $actual);
     }
 
     /**
-     * Проверяет, что утверждение _assertArraysAreSameIgnoringOrder_ отвергает разные массивы и выводит сообщение об
-     * ошибке.
+     * Провайдер данных, предоставляющий тестовые данные, которые утверждение _assertArraysAreSameIgnoringOrder_ должно
+     * принимать.
+     *
+     * @return array    массив тестовых данных в формате [ [ expected, actual ], ... ].
+     */
+    public function acceptableArraysAreSameIgnoringOrderDataProvider(): array
+    {
+        return array_merge(
+            $this->prepareSameArraysTestData(),
+            $this->prepareEqualArraysWithDifferentOrderTestData()
+        );
+    }
+
+    /**
+     * Проверяет, что утверждение _assertArraysAreSameIgnoringOrder_ отвергает заданные массивы.
      *
      * @param array     $expected    ожидаемый массив
      * @param array     $actual      полученный массив
      * @param string    $message     сообщение об ошибке
      *
-     * @dataProvider differentArraysDataProvider
+     * @dataProvider rejectableArraysAreSameIgnoringOrderDataProvider
      */
-    public function testAssertArraysAreSameIgnoringOrderDeclinesDifferentArraysWithCorrectMessage(
+    public function testAssertArraysAreSameIgnoringOrderDeclinesProvidedArrays(
         array $expected,
         array $actual,
         string $message
@@ -153,5 +194,80 @@ class ExtraAssertionsTests extends TestCase
         $this->expectExceptionMessageRegExp($messageRegExp);
 
         static::assertArraysAreSameIgnoringOrder($expected, $actual, $message);
+    }
+
+    /**
+     * Провайдер данных, предоставляющий тестовые данные, которые утверждение _assertArraysAreSameIgnoringOrder_ должно
+     * отвергать.
+     *
+     * @return array    массив тестовых данных в формате [ [ expected, actual ], ... ].
+     */
+    public function rejectableArraysAreSameIgnoringOrderDataProvider(): array
+    {
+        return array_merge(
+            $this->prepareEqualArraysWithDifferentOrderOnLowerLevelsTestData(),
+            $this->prepareDifferentArraysTestData()
+        );
+    }
+    /**
+     * Проверяет, что утверждение _assertArraysAreSameIgnoringOrderRecursively_ принимает заданные массивы.
+     *
+     * @param array    $expected    ожидаемый массив
+     * @param array    $actual      полученный массив
+     *
+     * @dataProvider acceptableArraysAreSameIgnoringOrderRecursivelyDataProvider
+     */
+    public function testAssertArraysAreSameIgnoringOrderRecursivelyAcceptsProvidedArrays(
+        array $expected,
+        array $actual
+    ): void {
+        static::assertArraysAreSameIgnoringOrderRecursively($expected, $actual);
+    }
+
+    /**
+     * Провайдер данных, предоставляющий тестовые данные, которые утверждение
+     * _assertArraysAreSameIgnoringOrderRecursively_ должно принимать.
+     *
+     * @return array    массив тестовых данных в формате [ [ expected, actual ], ... ].
+     */
+    public function acceptableArraysAreSameIgnoringOrderRecursivelyDataProvider(): array
+    {
+        return array_merge(
+            $this->prepareSameArraysTestData(),
+            $this->prepareEqualArraysWithDifferentOrderTestData(),
+            $this->prepareEqualArraysWithDifferentOrderOnLowerLevelsTestData()
+        );
+    }
+
+    /**
+     * Проверяет, что утверждение _assertArraysAreSameIgnoringOrderRecursively_ отвергает заданные массивы.
+     *
+     * @param array     $expected    ожидаемый массив
+     * @param array     $actual      полученный массив
+     * @param string    $message     сообщение об ошибке
+     *
+     * @dataProvider rejectableArraysAreSameIgnoringOrderRecursivelyDataProvider
+     */
+    public function testAssertArraysAreSameIgnoringOrderRecursivelyDeclinesProvidedArrays(
+        array $expected,
+        array $actual,
+        string $message
+    ): void {
+        $messageRegExp = "/^$message\n.*$/";
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageRegExp($messageRegExp);
+
+        static::assertArraysAreSameIgnoringOrderRecursively($expected, $actual, $message);
+    }
+
+    /**
+     * Провайдер данных, предоставляющий тестовые данные, которые утверждение
+     * _assertArraysAreSameIgnoringOrderRecursively_ должно отвергать.
+     *
+     * @return array    массив тестовых данных в формате [ [ expected, actual ], ... ].
+     */
+    public function rejectableArraysAreSameIgnoringOrderRecursivelyDataProvider(): array
+    {
+        return $this->prepareDifferentArraysTestData();
     }
 }
