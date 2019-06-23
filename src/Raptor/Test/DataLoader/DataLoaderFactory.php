@@ -23,7 +23,7 @@ class DataLoaderFactory
     public static function createTestContainerWrapperDataLoader(): DataLoader
     {
         $dataProcessor = new TestContainerWrapperDataProcessor();
-        return new BaseDataLoader($dataProcessor);
+        return new DataLoader($dataProcessor);
     }
 
     /**
@@ -34,6 +34,6 @@ class DataLoaderFactory
     public static function createTestContainerGeneratorDataLoader(): DataLoader
     {
         $dataProcessor = new TestContainerGeneratorDataProcessor();
-        return new BaseDataLoader($dataProcessor);
+        return new DataLoader($dataProcessor);
     }
 }

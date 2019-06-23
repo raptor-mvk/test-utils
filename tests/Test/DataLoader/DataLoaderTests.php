@@ -6,51 +6,33 @@ namespace RaptorTests\Test\DataLoader;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
-use Raptor\Test\DataLoader\BaseDataLoader;
+use PHPUnit\Framework\TestCase;
 use Raptor\Test\DataLoader\DataLoader;
 use Raptor\Test\DataProcessor\DataProcessor;
 use Raptor\Test\DataProcessor\TestContainerGeneratorDataProcessor;
 use Raptor\Test\DataProcessor\TestContainerWrapperDataProcessor;
 use Raptor\Test\Exceptions\DataFileNotFoundException;
 use Raptor\Test\ExtraAssertions;
+use Raptor\Test\WithVFS;
 
 /**
- * Класс с тестами для базовой реализации загрузчика данных _BaseDataLoader_.
+ * Класс с тестами для загрузчика данных _DataLoader_.
  *
  * @author Михаил Каморин aka raptor_MVK
  *
  * @copyright 2019, raptor_MVK
  */
-class BaseDataLoaderTests extends AbstractTestCaseWithVFS
+class DataLoaderTests extends TestCase
 {
-    use MockeryPHPUnitIntegration, ExtraAssertions;
-
-    /** @var string    NONEXISTENT_FILE    имя несуществующего JSON-файла */
-    private const NONEXISTENT_FILE = 'nonexistent.json';
-
-    /** @var string    ACCESSIBLE_FILE    имя доступного для чтения JSON-файла */
-    private const ACCESSIBLE_FILE = 'accessible.json';
-
-    /** @var string    FORBIDDEN_FILE    имя недоступного для чтения JSON-файла */
-    private const FORBIDDEN_FILE = 'forbidden.json';
-
-    /** @var string    ACCESSIBLE_DIR    имя доступной для чтения директории */
-    private const ACCESSIBLE_DIR = 'dir';
-
-    /** @var string    $contents    содержимое временного JSON-файла с тестовыми данными */
-    private $contents;
+    use MockeryPHPUnitIntegration, ExtraAssertions, WithVFS;
 
     /**
-     * Готовит виртуальную файловую систему.
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess) __approved__ статический интерфейс vfsStream
+     * Подготовка тестового окружения.
      */
-    protected function prepareVirtualFileSystem(): void
+    protected function setUp(): void
     {
-        $this->contents = json_encode(['some_key' => 'some_value']);
-        $this->addFileToVFS(static::ACCESSIBLE_FILE, null, $this->contents);
-        $this->addFileToVFS(static::FORBIDDEN_FILE, 0);
-        $this->addDirectoryToVFS(static::ACCESSIBLE_DIR);
+        parent::setUp();
+        $this->setupVFS();
     }
 
     /**
@@ -65,7 +47,7 @@ class BaseDataLoaderTests extends AbstractTestCaseWithVFS
         DataProcessor $dataProcessor,
         string $expectedClass
     ): void {
-        $dataLoader = new BaseDataLoader($dataProcessor);
+        $dataLoader = new DataLoader($dataProcessor);
         $actualClass = $dataLoader->getDataProcessorClass();
         static::assertSame($expectedClass, $actualClass);
     }
@@ -89,14 +71,15 @@ class BaseDataLoaderTests extends AbstractTestCaseWithVFS
      */
     public function testLoadThrowsDataFileNotFoundForNonExistingFile(): void
     {
-        $escapedFilename = $this->getEscapedFullPath(static::NONEXISTENT_FILE);
+        $filename = 'nonexistent.json';
+        $escapedFilename = $this->getEscapedFullPath($filename);
         $this->expectException(DataFileNotFoundException::class);
         $this->expectExceptionMessageRegExp("/^Не найден файл с данными $escapedFilename$/");
 
-        $filename = $this->getFullPath(static::NONEXISTENT_FILE);
+        $fullFilename = $this->getFullPath($filename);
         $dataLoader = $this->prepareDataLoader();
 
-        $dataLoader->load($filename);
+        $dataLoader->load($fullFilename);
     }
 
     /**
@@ -113,7 +96,7 @@ class BaseDataLoaderTests extends AbstractTestCaseWithVFS
         if ($dataProcessorMockCallback !== null) {
             $dataProcessorMockCallback($dataProcessorMock);
         }
-        return new BaseDataLoader($dataProcessorMock);
+        return new DataLoader($dataProcessorMock);
     }
 
     /**
@@ -122,14 +105,16 @@ class BaseDataLoaderTests extends AbstractTestCaseWithVFS
      */
     public function testLoadThrowsDataFileNotFoundForNonReadableFile(): void
     {
-        $escapedFilename = $this->getEscapedFullPath(static::FORBIDDEN_FILE);
+        $filename = 'forbidden.json';
+        $this->addFileToVFS($filename, 0);
+        $escapedFilename = $this->getEscapedFullPath($filename);
         $this->expectException(DataFileNotFoundException::class);
         $this->expectExceptionMessageRegExp("/^Не найден файл с данными $escapedFilename$/");
 
-        $filename = $this->getFullPath(static::FORBIDDEN_FILE);
+        $fullFilename = $this->getFullPath($filename);
         $dataLoader = $this->prepareDataLoader();
 
-        $dataLoader->load($filename);
+        $dataLoader->load($fullFilename);
     }
 
     /**
@@ -138,14 +123,16 @@ class BaseDataLoaderTests extends AbstractTestCaseWithVFS
      */
     public function testLoadThrowsDataFileNotFoundForDirectoryInsteadOfFile(): void
     {
-        $escapedFilename = $this->getEscapedFullPath(static::ACCESSIBLE_DIR);
+        $dirname = 'accessible_dir';
+        $this->addDirectoryToVFS($dirname);
+        $escapedFilename = $this->getEscapedFullPath($dirname);
         $this->expectException(DataFileNotFoundException::class);
         $this->expectExceptionMessageRegExp("/^Не найден файл с данными $escapedFilename$/");
 
-        $filename = $this->getFullPath(static::ACCESSIBLE_DIR);
+        $fullFilename = $this->getFullPath($dirname);
         $dataLoader = $this->prepareDataLoader();
 
-        $dataLoader->load($filename);
+        $dataLoader->load($fullFilename);
     }
 
     /**
@@ -153,13 +140,16 @@ class BaseDataLoaderTests extends AbstractTestCaseWithVFS
      */
     public function testLoadCallsDataProcessorProcess(): void
     {
-        $filename = $this->getFullPath(self::ACCESSIBLE_FILE);
-        $dataProcessorMockCallback = function (MockInterface $dataProcessorMock) {
-            $dataProcessorMock->shouldReceive('process')->withArgs([$this->contents])->once();
+        $filename = 'accessible.json';
+        $contents = json_encode(['some_key' => 'some_value']);
+        $this->addFileToVFS($filename, null, $contents);
+        $fullFilename = $this->getFullPath($filename);
+        $dataProcessorMockCallback = static function (MockInterface $dataProcessorMock) use ($contents) {
+            $dataProcessorMock->shouldReceive('process')->withArgs([$contents])->once();
         };
         $dataLoader = $this->prepareDataLoader($dataProcessorMockCallback);
 
-        $dataLoader->load($filename);
+        $dataLoader->load($fullFilename);
     }
 
     /**
@@ -168,14 +158,16 @@ class BaseDataLoaderTests extends AbstractTestCaseWithVFS
      */
     public function testLoadReturnsResultOfProcessWithWrappedElements(): void
     {
+        $filename = 'accessible_too.json';
+        $this->addFileToVFS($filename);
         $processMockData = $this->getProcessMockData();
-        $filename = $this->getFullPath(self::ACCESSIBLE_FILE);
+        $fullFilename = $this->getFullPath($filename);
         $dataProcessorMockCallback = static function (MockInterface $dataProcessorMock) use ($processMockData) {
             $dataProcessorMock->shouldReceive('process')->andReturn($processMockData);
         };
         $dataLoader = $this->prepareDataLoader($dataProcessorMockCallback);
 
-        $actualData = $dataLoader->load($filename);
+        $actualData = $dataLoader->load($fullFilename);
 
         static::assertArraysAreSame($processMockData, $actualData);
     }

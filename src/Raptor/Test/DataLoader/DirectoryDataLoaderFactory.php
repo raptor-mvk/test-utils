@@ -16,10 +16,12 @@ class DirectoryDataLoaderFactory
      * Создаёт загрузчик данных из всех файлов (по маске) в директории для генерации вспомогательного файла для IDE.
      *
      * @return DirectoryDataLoader    загрузчик данных из всех файлов (по маске) в директории
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess) __approved__ фабричный метод createTestContainerGeneratorDataLoader
      */
     public static function createTestContainerGeneratorDataLoader(): DirectoryDataLoader
     {
         $dataLoader = DataLoaderFactory::createTestContainerGeneratorDataLoader();
-        return new BaseDirectoryDataLoader($dataLoader);
+        return new DirectoryDataLoader($dataLoader);
     }
 }

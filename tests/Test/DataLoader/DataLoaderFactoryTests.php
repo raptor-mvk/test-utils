@@ -24,8 +24,10 @@ class DataLoaderFactoryTests extends TestCase
      * @param string    $factoryMethod    наименование фабричного метода
      *
      * @dataProvider factoryMethodsProvider
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess) __approved__ фабричный метод класса DataLoaderFactory
      */
-    public function testFactoryMethodReturnsBaseDataLoaderInstance(string $factoryMethod): void
+    public function testFactoryMethodReturnsDataLoaderInstance(string $factoryMethod): void
     {
         $actual = DataLoaderFactory::$factoryMethod();
 
@@ -52,6 +54,8 @@ class DataLoaderFactoryTests extends TestCase
      * @param string    $expectedDataProcessorClass    ожидаемый класс обработчика данных
      *
      * @dataProvider factoryMethodsProvider
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess) __approved__ фабричный метод класса DataLoaderFactory
      */
     public function testFactoryMethodUsesCorrectDataProcessor(
         string $factoryMethod,

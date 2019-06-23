@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Raptor\Test\DataProcessor;
 
+use function is_string;
 use JsonException;
 use Raptor\Test\Exceptions\DataParseException;
 
@@ -150,7 +151,7 @@ abstract class AbstractJSONTestDataProcessor implements DataProcessor
             throw new DataParseException("Не задано наименование теста на уровне $level");
         }
         $name = $element[self::NAME_KEY];
-        if (!\is_string($name)) {
+        if (!is_string($name)) {
             throw new DataParseException("Наименование не является строкой на уровне $level");
         }
         if ($name === '') {

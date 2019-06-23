@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Raptor\Test;
 
+use function get_class;
 use Raptor\Test\Exceptions\BadMethodException;
 use ReflectionException;
 use ReflectionMethod;
@@ -29,7 +30,7 @@ trait ExtraUtils
      */
     public static function invokeMethod(object $object, string $methodName, ?array $parameters = null)
     {
-        $class = \get_class($object);
+        $class = get_class($object);
         try {
             $method = new ReflectionMethod($class, $methodName);
             $method->setAccessible(true);

@@ -59,9 +59,10 @@ class ExtraUtilsTests extends TestCase
     public function invokeMethodDataProvider(): array
     {
         $palindrome = 'delia saw I was ailed';
+        $extra = 'a';
         $count = 2;
         return [
-            'protected' => ['reverse', [$palindrome], $palindrome],
+            'protected' => ['reverse', [$palindrome.$extra], $extra.$palindrome],
             'private' => ['repeat', [$palindrome, $count], str_repeat($palindrome, $count)]
         ];
     }

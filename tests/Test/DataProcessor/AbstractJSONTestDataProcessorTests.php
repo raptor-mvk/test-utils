@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace RaptorTests\Test\DataProcessor;
 
+use function is_array;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Raptor\Test\DataProcessor\AbstractJSONTestDataProcessor;
@@ -47,7 +48,7 @@ class AbstractJSONTestDataProcessorTests extends TestCase
         static::invokeMethod($dataProcessor, 'addProcessed', [$key, $value]);
         $actual = static::invokeMethod($dataProcessor, 'getProcessed', [$key]);
 
-        $assertion = \is_array($value) ? 'assertArraysAreSame' : 'assertSame';
+        $assertion = is_array($value) ? 'assertArraysAreSame' : 'assertSame';
         $this->$assertion($value, $actual);
     }
 

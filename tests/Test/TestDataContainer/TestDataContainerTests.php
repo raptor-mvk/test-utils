@@ -1,8 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace RaptorTests\Test\TestContainer;
+namespace RaptorTests\Test\TestDataContainer;
 
+use function is_array;
 use PHPUnit\Framework\TestCase;
 use Raptor\Test\ExtraAssertions;
 use Raptor\Test\TestDataContainer\TestDataContainer;
@@ -63,7 +64,7 @@ class TestDataContainerTests extends TestCase
 
         $actual = $container->$getter();
 
-        $assertion = \is_array($expected) ? 'assertArraysAreSame' : 'assertSame';
+        $assertion = is_array($expected) ? 'assertArraysAreSame' : 'assertSame';
         $this->$assertion($expected, $actual);
     }
 

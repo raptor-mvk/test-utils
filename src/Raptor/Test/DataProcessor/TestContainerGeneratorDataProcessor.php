@@ -44,8 +44,8 @@ class TestContainerGeneratorDataProcessor extends AbstractJSONTestDataProcessor
      * Обрабатывает тестовый набор данных (элемент, содержащий служебное поле _name), предполагая, что он корректен
      * (без обработки ошибок).
      *
-     * @param array $element обрабатываемый элемент
-     * @param array|null $default значения по умолчанию с вышестоящих уровней
+     * @param array         $element    обрабатываемый элемент
+     * @param array|null    $default    значения по умолчанию с вышестоящих уровней
      */
     protected function processTestCase(array $element, ?array $default = null): void
     {

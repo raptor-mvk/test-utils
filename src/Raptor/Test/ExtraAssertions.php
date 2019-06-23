@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Raptor\Test;
 
+use function is_array;
+
 /**
  * Трейт с утверждениями и вспомогательными методами для тестирования.
  *
@@ -57,7 +59,7 @@ trait ExtraAssertions
     {
         ksort($array);
         foreach ($array as $key => $value) {
-            if (\is_array($value)) {
+            if (is_array($value)) {
                 static::ksortRecursive($array[$key]);
             }
         }
@@ -81,5 +83,18 @@ trait ExtraAssertions
         $expectedString = json_encode($expected, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         $actualString = json_encode($actual, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         static::assertSame($expectedString, $actualString, $message ?? '');
+    }
+
+    /**
+     * Утверждение, проверяющее, что строка совпадает с содержимым файла.
+     *
+     * @param string         $filename    путь к файлу
+     * @param string         $actual      полученная строка
+     * @param string|null    $message     сообщение об ошибке, выдаваемое в случае различий между файлом и строкой
+     */
+    public static function assertStringIsSameAsFile(string $filename, string $actual, ?string $message = null): void
+    {
+        $expectedString = file_get_contents($filename);
+        static::assertSame($expectedString, $actual, $message ?? '');
     }
 }

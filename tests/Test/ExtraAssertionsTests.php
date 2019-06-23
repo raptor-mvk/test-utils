@@ -6,6 +6,7 @@ namespace RaptorTests\Test;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use Raptor\Test\ExtraAssertions;
+use Raptor\Test\WithVFS;
 
 /**
  * Класс с тестами для трейта _ExtraAssertions_.
@@ -16,7 +17,16 @@ use Raptor\Test\ExtraAssertions;
  */
 class ExtraAssertionsTests extends TestCase
 {
-    use ExtraAssertions;
+    use ExtraAssertions, WithVFS;
+
+    /**
+     * Подготовка тестового окружения.
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->setupVFS();
+    }
 
     /**
      * Проверяет, что утверждение _assertArraysAreSame_ принимает заданные массивы.
@@ -269,5 +279,34 @@ class ExtraAssertionsTests extends TestCase
     public function rejectableArraysAreSameIgnoringOrderRecursivelyDataProvider(): array
     {
         return $this->prepareDifferentArraysTestData();
+    }
+
+    /**
+     * Проверяет, что утверждение _assertStringIsSameAsFile_ принимает строку, совпадающую с содержимым файла.
+     */
+    public function testAssertStringIsSameAsFileAcceptsCorrectString(): void
+    {
+        $content = 'some_string';
+        $filename = 'correct.txt';
+        $this->addFileToVFS($filename, null, $content);
+        $path = $this->getFullPath($filename);
+
+        static::assertStringIsSameAsFile($path, $content);
+    }
+
+    /**
+     * Проверяет, что утверждение _assertStringIsSameAsFile_ отвергает строку, не совпадающую с содержимым файла.
+     */
+    public function testAssertStringIsSameAsFileRejectsIncorrectString(): void {
+        $message = 'String is wrong';
+        $messageRegExp = "/^$message\n.*$/";
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageRegExp($messageRegExp);
+
+        $filename = 'incorrect.txt';
+        $this->addFileToVFS($filename, null, 'some_string');
+        $path = $this->getFullPath($filename);
+
+        static::assertStringIsSameAsFile($path, 'other_string', $message);
     }
 }

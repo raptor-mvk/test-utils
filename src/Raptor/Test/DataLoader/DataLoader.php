@@ -3,17 +3,32 @@ declare(strict_types=1);
 
 namespace Raptor\Test\DataLoader;
 
+use function get_class;
+use Raptor\Test\DataProcessor\DataProcessor;
 use Raptor\Test\Exceptions\DataFileNotFoundException;
 
 /**
- * Интерфейс загрузчика данных.
+ * Загрузчик данных.
  *
  * @author Михаил Каморин aka raptor_MVK
  *
  * @copyright 2019, raptor_MVK
  */
-interface DataLoader
+class DataLoader
 {
+    /** @var DataProcessor    $dataProcessor    обработчик данных */
+    private $dataProcessor;
+
+    /**
+     * Конструктор загрузчика данных.
+     *
+     * @param DataProcessor    $dataProcessor    обработчик данных
+     */
+    public function __construct(DataProcessor $dataProcessor)
+    {
+        $this->dataProcessor = $dataProcessor;
+    }
+
     /**
      * Загружает данные из файла, обрабатывает и возвращает массив.
      *
@@ -23,12 +38,22 @@ interface DataLoader
      *
      * @throws DataFileNotFoundException    не найден файл с данными
      */
-    public function load(string $filename): array;
+    public function load(string $filename): array
+    {
+        if (!is_readable($filename) || !is_file($filename)) {
+            throw new DataFileNotFoundException("Не найден файл с данными $filename");
+        }
+        $data = file_get_contents($filename);
+        return $this->dataProcessor->process($data);
+    }
 
     /**
      * Возвращает класс процессора данных.
      *
      * @return string    класс процессора данных
      */
-    public function getDataProcessorClass(): string;
+    public function getDataProcessorClass(): string
+    {
+        return get_class($this->dataProcessor);
+    }
 }
