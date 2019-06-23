@@ -1,0 +1,12 @@
+/**
+ * @method int getIntValue()
+ * @method float getFloatValue()
+ * @method bool isBoolValue()
+ * @method bool isCorrect()
+ * @method string getStringValue()
+ * @method array getArrayValue()
+ * @method mixed getMixedValue()
+ */
+class FileOneDataContainer
+{
+}

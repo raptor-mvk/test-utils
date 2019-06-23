@@ -1,0 +1,16 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types=1);
+
+require __DIR__.'/vendor/autoload.php';
+
+use Raptor\Test\Command\GenerateTestCommand;
+use Symfony\Component\Console\Application;
+
+$application = new Application();
+$command = new GenerateTestCommand();
+$application->add($command);
+$application->setDefaultCommand($command->getName(), true);
+
+/** @noinspection PhpUnhandledExceptionInspection __approved__ не будем обрабатывать ошибки */
+$application->run();

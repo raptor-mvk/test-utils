@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Raptor\Test;
 
+use function is_array;
+
 /**
  * Трейт с утверждениями и вспомогательными методами для тестирования.
  *
@@ -12,12 +14,14 @@ namespace Raptor\Test;
  */
 trait ExtraAssertions
 {
+    use ExtraUtils;
+
     /**
      * Утверждение, проверяющее, что два массива полностью совпадают.
      *
-     * @param array $expected       ожидаемый массив
-     * @param array $actual         полученный массив
-     * @param string|null $message  сообщение об ошибке, выдаваемое в случае различий между массивами
+     * @param array          $expected    ожидаемый массив
+     * @param array          $actual      полученный массив
+     * @param string|null    $message     сообщение об ошибке, выдаваемое в случае различий между массивами
      */
     public static function assertArraysAreSame(array $expected, array $actual, ?string $message = null): void
     {
@@ -27,11 +31,12 @@ trait ExtraAssertions
     }
 
     /**
-     * Утверждение, проверяющее, что два массива содержат одинаковые элементы в произвольном порядке.
+     * Утверждение, проверяющее, что два массива содержат одинаковые элементы без учёта их порядка на верхнем уровне для
+     * ассоциативных массивов.
      *
-     * @param array $expected       ожидаемый массив
-     * @param array $actual         полученный массив
-     * @param string|null $message  сообщение об ошибке, выдаваемое в случае различий между массивами
+     * @param array          $expected    ожидаемый массив
+     * @param array          $actual      полученный массив
+     * @param string|null    $message     сообщение об ошибке, выдаваемое в случае различий между массивами
      */
     public static function assertArraysAreSameIgnoringOrder(
         array $expected,
@@ -43,5 +48,53 @@ trait ExtraAssertions
         $expectedString = json_encode($expected, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         $actualString = json_encode($actual, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         static::assertSame($expectedString, $actualString, $message ?? '');
+    }
+
+    /**
+     * Рекурсивно сортирует массив по ключу.
+     *
+     * @param array    $array    сортируемый массив
+     */
+    private static function ksortRecursive(array &$array): void
+    {
+        ksort($array);
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                static::ksortRecursive($array[$key]);
+            }
+        }
+    }
+
+    /**
+     * Утверждение, проверяющее, что два массива содержат одинаковые элементы без учёта их порядка на всех уровнях для
+     * ассоциативных массивов.
+     *
+     * @param array          $expected    ожидаемый массив
+     * @param array          $actual      полученный массив
+     * @param string|null    $message     сообщение об ошибке, выдаваемое в случае различий между массивами
+     */
+    public static function assertArraysAreSameIgnoringOrderRecursively(
+        array $expected,
+        array $actual,
+        ?string $message = null
+    ): void {
+        static::ksortRecursive($expected);
+        static::ksortRecursive($actual);
+        $expectedString = json_encode($expected, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        $actualString = json_encode($actual, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        static::assertSame($expectedString, $actualString, $message ?? '');
+    }
+
+    /**
+     * Утверждение, проверяющее, что строка совпадает с содержимым файла.
+     *
+     * @param string         $filename    путь к файлу
+     * @param string         $actual      полученная строка
+     * @param string|null    $message     сообщение об ошибке, выдаваемое в случае различий между файлом и строкой
+     */
+    public static function assertStringIsSameAsFile(string $filename, string $actual, ?string $message = null): void
+    {
+        $expectedString = file_get_contents($filename);
+        static::assertSame($expectedString, $actual, $message ?? '');
     }
 }
