@@ -15,8 +15,8 @@
     "slevomat/coding-standard": "~4.0"
   },
   "autoload": {
-    "psr-0": {
-      "Raptor": "src/"
+    "psr-4": {
+      "Raptor\\": "src/"
     }
   },
   "autoload-dev": {
