@@ -9,9 +9,7 @@ use Raptor\TestUtils\ExtraAssertions;
 use Raptor\TestUtils\TestDataContainer\TestDataContainer;
 
 /**
- * Класс с тестами для контейнера с тестовыми данными.
- *
- * @author Михаил Каморин aka raptor_MVK
+ * @author Mikhail Kamorin aka raptor_MVK
  *
  * @copyright 2019, raptor_MVK
  */
@@ -20,9 +18,9 @@ class TestDataContainerTests extends TestCase
     use ExtraAssertions;
 
     /**
-     * Проверяет, что метод _allData_ возвращает все данные.
+     * Checks that method _allData_ returns array passed to constructor.
      *
-     * @param array    $data    входящие и ожидаемые данные
+     * @param array $data
      *
      * @dataProvider allDataDataProvider
      */
@@ -36,9 +34,9 @@ class TestDataContainerTests extends TestCase
     }
 
     /**
-     * Предоставляет тестовые данные для тестирования метода _allData_.
+     * Provides test data for testing method _allData_.
      *
-     * @return array    массив тестовых данных в формате [ [ data ], ... ]
+     * @return array [ [ data ], ... ]
      */
     public function allDataDataProvider(): array
     {
@@ -50,11 +48,11 @@ class TestDataContainerTests extends TestCase
     }
 
     /**
-     * Проверяет, что геттеры возвращают корректные значения.
+     * Checks that getters return correct values.
      *
-     * @param array     $data        входящие данные
-     * @param string    $getter      наименование геттера
-     * @param mixed     $expected    ожидаемый результат
+     * @param array $data
+     * @param string $getter
+     * @param mixed $expected
      *
      * @dataProvider getterDataProvider
      */
@@ -69,9 +67,9 @@ class TestDataContainerTests extends TestCase
     }
 
     /**
-     * Предоставляет тестовые данные для тестирования геттеров.
+     * Provides test data for testing getters.
      *
-     * @return array    массив тестовых данных в формате [ [ data, getter, expected ], ... ]
+     * @return array [ [ data, getter, expected ], ... ]
      */
     public function getterDataProvider(): array
     {

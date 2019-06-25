@@ -10,10 +10,7 @@ use Raptor\TestUtils\ExtraAssertions;
 use Raptor\TestUtils\TestDataContainer\TestDataContainer;
 
 /**
- * Класс с тестами для обработчика тестовых данных в формате JSON, используемый для загрузки данных в контейнеры
- * _TestContainerWrapperDataProcessor_.
- *
- * @author Михаил Каморин aka raptor_MVK
+ * @author Mikhail Kamorin aka raptor_MVK
  *
  * @copyright 2019, raptor_MVK
  */
@@ -22,10 +19,10 @@ class TestContainerWrapperDataProcessorTests extends TestCase
     use ExtraAssertions;
 
     /**
-     * Проверяет, что метод _process_ выбрасывает исключение _DataParseException_ с соответствующим сообщением.
+     * Checks that method _process_ throws _DataParseException_ with appropriate message.
      *
-     * @param string    $json                  входящий JSON
-     * @param string    $messageRegExp         регулярное выражение для проверки сообщения об ошибке
+     * @param string $json
+     * @param string $messageRegExp regular expression used to verify exception's message
      *
      * @dataProvider dataParseExceptionDataProvider
      */
@@ -40,23 +37,23 @@ class TestContainerWrapperDataProcessorTests extends TestCase
     }
 
     /**
-     * Предоставляет тестовые данные для проверки выбрасываемого исключения _DataParseException_.
+     * Provides test data to verify that _DataParseException_ is thrown.
      *
-     * @return array    массив тестовых данных в формате [ [ json, messageRegExp ], ... ]
+     * @return array [ [ json, messageRegExp ], ... ]
      */
     public function dataParseExceptionDataProvider(): array
     {
         return array_merge(
-            $this->notUniqueNameDataProvider()
+            $this->prepareNonUniqueNameTestData()
         );
     }
 
     /**
-     * Предоставляет тестовые данные с неуникальными строковыми значениями в элементе для наименования.
+     * Prepares test data with non-unique values of service field _\_name_.
      *
-     * @return array    массив тестовых данных в формате [ [ json, messageRegExp ], ... ]
+     * @return array [ [ json, messageRegExp ], ... ]
      */
-    private function notUniqueNameDataProvider(): array
+    private function prepareNonUniqueNameTestData(): array
     {
         $topLevelJson = json_encode([['_name' => 'test1'], ['_name' => 'test1']]);
         $secondLevelJson = json_encode([['_name' => 'test1'], ['_children' => [['_name' => 'test1']]]]);
@@ -71,7 +68,7 @@ class TestContainerWrapperDataProcessorTests extends TestCase
     }
 
     /**
-     * Проверяет, что метод _process_ возвращает массив, элементы которого являются экземплярами _TestContainer_.
+     * Checks that method _process_ returns array consists of instances of _TestContainer_.
      *
      * @dataProvider correctDataProvider
      */
@@ -86,13 +83,13 @@ class TestContainerWrapperDataProcessorTests extends TestCase
         foreach ($actual as $value) {
             $result = $result && ($value instanceof TestDataContainer);
         }
-        static::assertTrue($result, 'Все элементы результирующего массива должны быть экземплярами TestContainer');
+        static::assertTrue($result, 'All elements of resulting array should be instances of TestContainer');
     }
 
     /**
-     * Предоставляет корректные тестовые данные для метода _process_.
+     * Provides correct test data for testing method _process_.
      *
-     * @return array    массив тестовых данных в формате [ [ json, expected ], ... ]
+     * @return array [ [ json, expected ], ... ]
      */
     public function correctDataProvider(): array
     {
@@ -104,9 +101,9 @@ class TestContainerWrapperDataProcessorTests extends TestCase
     }
 
     /**
-     * Готовит корректный тест, проверяющий установку значений по умолчанию из вышестоящих уровней.
+     * Prepares correct test data to verify that default values correctly pass from higher levels.
      *
-     * @return array    тестовый набор данных в формате [ json, expected ]
+     * @return array [ [ json, expected ], ... ]
      */
     private function prepareDefaultValuesTestData(): array
     {
@@ -117,9 +114,9 @@ class TestContainerWrapperDataProcessorTests extends TestCase
     }
 
     /**
-     * Готовит корректный тест, проверяющий замену значений по умолчанию из вышестоящих уровней.
+     * Prepares correct test data to verify that default values correctly overridden by values from lower levels.
      *
-     * @return array    тестовый набор данных в формате [ json, expected ]
+     * @return array [ [ json, expected ], ... ]
      */
     private function prepareOverriddenValuesTestData(): array
     {
@@ -132,9 +129,9 @@ class TestContainerWrapperDataProcessorTests extends TestCase
     }
 
     /**
-     * Готовит корректный тест, возвращающий несколько тестовых наборов на разных уровнях.
+     * Prepares correct test data that returns several test cases at different levels.
      *
-     * @return array    тестовый набор данных в формате [ json, expected ]
+     * @return array [ [ json, expected ], ... ]
      */
     private function prepareMultiResultTestData(): array
     {
@@ -150,9 +147,9 @@ class TestContainerWrapperDataProcessorTests extends TestCase
     }
 
     /**
-     * Готовит входящие данные для теста, возвращающего несколько тестовых наборов на разных уровнях.
+     * Prepares JSON input string that should be processed as several test cases at different levels.
      *
-     * @return string    входящие данные для теста
+     * @return string
      */
     private function prepareMultiResultTestJson(): string
     {
@@ -167,10 +164,10 @@ class TestContainerWrapperDataProcessorTests extends TestCase
     }
 
     /**
-     * Проверяет, что метод _process_ возвращает коректный результат.
+     * Checks that method _process_ returns correct result.
      *
-     * @param string    $json        JSON-строка для обработки
-     * @param array     $expected    ожидаемый результат
+     * @param string $json
+     * @param array $expected
      *
      * @dataProvider correctDataProvider
      */

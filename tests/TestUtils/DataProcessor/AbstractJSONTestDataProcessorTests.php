@@ -10,9 +10,7 @@ use Raptor\TestUtils\DataProcessor\AbstractJSONTestDataProcessor;
 use Raptor\TestUtils\ExtraAssertions;
 
 /**
- * Класс с тестами для абстрактного класса обработчика JSON-файлов
- *
- * @author Михаил Каморин aka raptor_MVK
+ * @author Mikhail Kamorin aka raptor_MVK
  *
  * @copyright 2019, raptor_MVK
  */
@@ -21,7 +19,7 @@ class AbstractJSONTestDataProcessorTests extends TestCase
     use ExtraAssertions;
 
     /**
-     * Проверяет, что метод _getProcessed_ возвращает _null_, если ключ не был добавлен до этого.
+     * Checks that method _getProcessed_ returns _null_, if key has not been added previously.
      */
     public function testGetProcessedReturnsNullForNotAddedKey(): void
     {
@@ -29,14 +27,14 @@ class AbstractJSONTestDataProcessorTests extends TestCase
 
         $actual = static::invokeMethod($dataProcessor, 'getProcessed', ['some_key']);
 
-        static::assertNull($actual, 'Метод getProcessed должен возвращать null для ещё не добавленного ключа');
+        static::assertNull($actual, 'Method getProcessed should return null for non-existent key');
     }
 
     /**
-     * Проверяет, что пара _getProcessed_ / _addProcessed_ работает корректно.
+     * Checks that both methods _getProcessed_ and _addProcessed_ work correctly.
      *
-     * @param string    $key      ключ
-     * @param mixed     $value    значение
+     * @param string $key
+     * @param mixed $value
      *
      * @dataProvider addProcessedDataProvider
      */
@@ -53,9 +51,9 @@ class AbstractJSONTestDataProcessorTests extends TestCase
     }
 
     /**
-     * Предоставляет тестовые данные для тестирования метода _addProcessed_.
+     * Provides test data for testing method _addProcessed_.
      *
-     * @return array    массив тестовых данных в формате [ [ key, value ], ... ]
+     * @return array [ [ key, value ], ... ]
      */
     public function addProcessedDataProvider(): array
     {
@@ -69,7 +67,7 @@ class AbstractJSONTestDataProcessorTests extends TestCase
     }
 
     /**
-     * Проверяет, что метод _hasProcessed_ возвращает _false_, если ключ не был добавлен до этого.
+     * Checks that method _hasProcessed_ returns _false_, if key has not been added previously.
      */
     public function testHasProcessedReturnsFalseForNotAddedKey(): void
     {
@@ -77,11 +75,11 @@ class AbstractJSONTestDataProcessorTests extends TestCase
 
         $actual = static::invokeMethod($dataProcessor, 'hasProcessed', ['some_key']);
 
-        static::assertFalse($actual, 'Метод hasProcessed должен возвращать false для ещё не добавленного ключа');
+        static::assertFalse($actual, 'Method hasProcessed should not return false for non-existent key');
     }
 
     /**
-     * Проверяет, что метод _hasProcessed_ возвращает _true_, если ключ был добавлен до этого.
+     * Checks that method _hasProcessed_ returns _true_, if key has already been added.
      */
     public function testHasProcessedReturnsTrueForAddedKey(): void
     {
@@ -91,6 +89,6 @@ class AbstractJSONTestDataProcessorTests extends TestCase
 
         $actual = static::invokeMethod($dataProcessor, 'hasProcessed', [$key]);
 
-        static::assertTrue($actual, 'Метод hasProcessed должен возвращать true для уже добавленного ключа');
+        static::assertTrue($actual, 'Method hasProcessed should return true for existent key');
     }
 }

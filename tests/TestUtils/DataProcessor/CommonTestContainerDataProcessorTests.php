@@ -11,9 +11,9 @@ use Raptor\TestUtils\Exceptions\DataParseException;
 use Raptor\TestUtils\ExtraAssertions;
 
 /**
- * Класс с общими тестами для обработчиков тестовых данных в формате JSON.
+ * Common tests for all JSON string data processors.
  *
- * @author Михаил Каморин aka raptor_MVK
+ * @author Mikhail Kamorin aka raptor_MVK
  *
  * @copyright 2019, raptor_MVK
  */
@@ -22,11 +22,11 @@ class CommonTestContainerDataProcessorTests extends TestCase
     use ExtraAssertions;
 
     /**
-     * Проверяет, что метод _process_ выбрасывает исключение _DataParseException_ с соответствующим сообщением.
+     * Checks that method _process_ throws _DataParseException_ with corresponding message.
      *
-     * @param string    $dataProcessorClass    класс обработчика данных
-     * @param string    $json                  входящий JSON
-     * @param string    $messageRegExp         регулярное выражение для проверки сообщения об ошибке
+     * @param string $dataProcessorClass
+     * @param string $json
+     * @param string $messageRegExp regular expression used to validate exception's message
      *
      * @dataProvider dataParseExceptionDataProvider
      */
@@ -45,9 +45,9 @@ class CommonTestContainerDataProcessorTests extends TestCase
     }
 
     /**
-     * Предоставляет тестовые данные для проверки выбрасываемого исключения _DataParseException_.
+     * Provides test data to verify that _DataParseException_ is thrown.
      *
-     * @return array    массив тестовых данных в формате [ [ dataProcessorClass, json, messageRegExp ], ... ]
+     * @return array [ [ dataProcessorClass, json, messageRegExp ], ... ]
      */
     public function dataParseExceptionDataProvider(): array
     {
@@ -66,9 +66,9 @@ class CommonTestContainerDataProcessorTests extends TestCase
     }
 
     /**
-     * Готовит тестовые данные для проверки выбрасываемого исключения _DataParseException_.
+     * Prepares test data to verify that _DataParseException_ is thrown.
      *
-     * @return array    массив тестовых данных в формате [ [ json, messageRegExp ], ... ]
+     * @return array [ [ json, messageRegExp ], ... ]
      */
     private function prepareDataParseExceptionTestData(): array
     {
@@ -85,9 +85,9 @@ class CommonTestContainerDataProcessorTests extends TestCase
     }
 
     /**
-     * Готовит тестовые данные для проверки синтаксической ошибки в JSON.
+     * Prepares test data to verify JSON syntax error.
      *
-     * @return array    массив тестовых данных в формате [ [ json, messageRegExp ], ... ]
+     * @return array [ [ json, messageRegExp ], ... ]
      */
     private function prepareJsonSyntaxErrorTestData(): array
     {
@@ -95,9 +95,9 @@ class CommonTestContainerDataProcessorTests extends TestCase
     }
 
     /**
-     * Готовит тестовые данные с не-массивами там, где ожидается массив.
+     * Prepares test data with JSON objects instead of JSON arrays.
      *
-     * @return array    массив тестовых данных в формате [ [ json, messageRegExp ], ... ]
+     * @return array [ [ json, messageRegExp ], ... ]
      */
     private function prepareNotArrayTestData(): array
     {
@@ -116,9 +116,9 @@ class CommonTestContainerDataProcessorTests extends TestCase
     }
 
     /**
-     * Готовит тестовые данные с отсутствующими именами объектов, не содержащих поля _\_children_ на разных уровнях.
+     * Prepares test data with JSON objects without _\_name_ and _\_children_ service fields.
      *
-     * @return array    массив тестовых данных в формате [ [ json, messageRegExp ], ... ]
+     * @return array [ [ json, messageRegExp ], ... ]
      */
     private function prepareObjectWithoutNameTestData(): array
     {
@@ -135,9 +135,9 @@ class CommonTestContainerDataProcessorTests extends TestCase
     }
 
     /**
-     * Готовит тестовые данные с не-строковыми значениями в элементе для наименования.
+     * Prepares test data with non-string values of the service field _\_name_.
      *
-     * @return array    массив тестовых данных в формате [ [ json, messageRegExp ], ... ]
+     * @return array [ [ json, messageRegExp ], ... ]
      */
     private function prepareNotStringNameTestData(): array
     {
@@ -155,9 +155,9 @@ class CommonTestContainerDataProcessorTests extends TestCase
     }
 
     /**
-     * Готовит тестовые данные с пустыми строковыми значениями в элементе для наименования.
+     * Prepares test data with empty values of the service field _\_name_.
      *
-     * @return array    массив тестовых данных в формате [ [ json, messageRegExp ], ... ]
+     * @return array [ [ json, messageRegExp ], ... ]
      */
     private function prepareEmptyNameTestData(): array
     {
@@ -174,9 +174,9 @@ class CommonTestContainerDataProcessorTests extends TestCase
     }
 
     /**
-     * Готовит тестовые данные с неизвестными специальными полями.
+     * Prepares test data with unknown service fields.
      *
-     * @return array    массив тестовых данных в формате [ [ json, messageRegExp ], ... ]
+     * @return array [ [ json, messageRegExp ], ... ]
      */
     private function prepareUnknownSpecialFieldTestData(): array
     {
@@ -198,9 +198,9 @@ class CommonTestContainerDataProcessorTests extends TestCase
     }
 
     /**
-     * Готовит тестовые данные с некорректными именами полей.
+     * Prepares test data with incorrect field names.
      *
-     * @return array    массив тестовых данных в формате [ [ json, messageRegExp ], ... ]
+     * @return array [ [ json, messageRegExp ], ... ]
      */
     private function prepareIncorrectFieldNameTestData(): array
     {
@@ -223,9 +223,9 @@ class CommonTestContainerDataProcessorTests extends TestCase
     }
 
     /**
-     * Готовит тестовые данные с наименованием и дочерними элементами в одном объекте.
+     * Prepares test data with both _\_name_ and _\_children_ service fields filled.
      *
-     * @return array    массив тестовых данных в формате [ [ json, messageRegExp ], ... ]
+     * @return array [ [ json, messageRegExp ], ... ]
      */
     private function prepareNameAndChildrenTestData(): array
     {

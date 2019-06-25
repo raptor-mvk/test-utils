@@ -9,9 +9,7 @@ use Raptor\TestUtils\ExtraAssertions;
 use Raptor\TestUtils\WithVFS;
 
 /**
- * Класс с тестами для трейта _WithVFS_.
- *
- * @author Михаил Каморин aka raptor_MVK
+ * @author Mikhail Kamorin aka raptor_MVK
  *
  * @copyright 2019, raptor_MVK
  */
@@ -20,8 +18,8 @@ class WithVFSTests extends TestCase
     use WithVFS, ExtraAssertions;
 
     /**
-     * Проверяет, что метод _getFullPath_ выбрасывает исключение _VFSNotInitializedException_, если предварительно не
-     * вызван метод _setupVFS_.
+     * Checks that method _getFullPath_ throws _VFSNotInitializedException_, if method _setupVFS_ has not been called
+     * previously.
      */
     public function testGetFullPathThrowsVFSNotInitializedWithoutSetupVFS(): void
     {
@@ -32,8 +30,8 @@ class WithVFSTests extends TestCase
     }
 
     /**
-     * Проверяет, что метод _getEscapedFullPath_ выбрасывает исключение _VFSNotInitializedException_, если
-     * предварительно не вызван метод _setupVFS_.
+     * Checks that method _getEscapedFullPath_ throws _VFSNotInitializedException_, if method _setupVFS_ has not been
+     * called previously.
      */
     public function testGetEscapedFullPathThrowsVFSNotInitializedWithoutSetupVFS(): void
     {
@@ -44,7 +42,7 @@ class WithVFSTests extends TestCase
     }
 
     /**
-     * Проверяет, что метод _getEscapedFullPath_ возвращает путь, не содержащий не экранированных символов /.
+     * Checks that method _getEscapedFullPath_ returns path without non-escaped slashes.
      */
     public function testGetEscapedFullPathReturnsPathWithoutNotEscapedSlashes(): void
     {
@@ -56,8 +54,8 @@ class WithVFSTests extends TestCase
     }
 
     /**
-     * Проверяет, что метод _addFileToVFS_ выбрасывает исключение _VFSNotInitializedException_, если предварительно не
-     * вызван метод _setupVFS_.
+     * Checks that method _addFileToVFS_ throws _VFSNotInitializedException_, if method _setupVFS_ has not been called
+     * previously.
      */
     public function testAddFileToVFSThrowsVFSNotInitializedWithoutSetupVFS(): void
     {
@@ -68,7 +66,7 @@ class WithVFSTests extends TestCase
     }
 
     /**
-     * Проверяет, что метод _addFileToVFS_ добавляет файл.
+     * Checks that method _addFileToVFS_ adds file to virtual file system.
      */
     public function testAddFileToVFSAddsFile(): void
     {
@@ -84,7 +82,7 @@ class WithVFSTests extends TestCase
     }
 
     /**
-     * Проверяет, что метод _addFileToVFS_ добавляет файл с содержимым.
+     * Checks that method _addFileToVFS_ adds file with contents to virtual file system.
      */
     public function testAddFileToVFSAddsFileWithContent(): void
     {
@@ -101,7 +99,7 @@ class WithVFSTests extends TestCase
     }
 
     /**
-     * Проверяет, что метод _addFileToVFS_ добавляет файл с правами доступа.
+     * Checks that method _addFileToVFS_ adds file with permissions to virtual file system.
      */
     public function testAddFileToVFSAddsFileWithPermissions(): void
     {
@@ -118,8 +116,8 @@ class WithVFSTests extends TestCase
     }
 
     /**
-     * Проверяет, что метод _addDirectoryToVFS_ выбрасывает исключение _VFSNotInitializedException_, если предварительно
-     * не вызван метод _setupVFS_.
+     * Checks that method _addDirectoryToVFS_ throws _VFSNotInitializedException_, if method _setupVFS_ has not been
+     * called previously.
      */
     public function testAddDirectoryToVFSThrowsVFSNotInitializedWithoutSetupVFS(): void
     {
@@ -130,7 +128,7 @@ class WithVFSTests extends TestCase
     }
 
     /**
-     * Проверяет, что метод _addDirectoryToVFS_ добавляет директорию.
+     * Checks that method _addDirectoryToVFS_ adds directory to virtual file system.
      */
     public function testAddDirectoryToVFSAddsFile(): void
     {
@@ -146,7 +144,7 @@ class WithVFSTests extends TestCase
     }
 
     /**
-     * Проверяет, что метод _addDirectoryToVFS_ добавляет директорию с правами.
+     * Checks that method _addDirectoryToVFS_ adds directory with permissions to virtual file system.
      */
     public function testAddDirectoryToVFSAddsDirectoryWithPermissions(): void
     {
@@ -163,10 +161,23 @@ class WithVFSTests extends TestCase
     }
 
     /**
-     * Проверяет, что метод _addStructure_ добавляет структуру директорий в файловую систему.
+     * Checks that method _addStructureToVFS_ throws _VFSNotInitializedException_, if method _setupVFS_ has not been
+     * called previously.
+     */
+    public function testAddStructureToVFSThrowsVFSNotInitializedWithoutSetupVFS(): void
+    {
+        $this->expectException(VFSNotInitializedException::class);
+        $this->expectExceptionMessageRegExp('/^Method setupVFS should be used\.$/');
+        $structure = ['any_folder' => []];
+
+        $this->addStructureToVFS($structure);
+    }
+
+    /**
+     * Checks that method _addStructure_ adds directory structure to virtual file system.
      *
-     * @param string    $path      путь к элементу
-     * @param bool      $isFile    _true_, если элемент должен быть файлом, _false_, если директорией
+     * @param string $path path to tested file/directory
+     * @param bool $isFile _true_, if tested element is file, _false_ otherwise
      *
      * @dataProvider addStructureDataProvider
      */
@@ -179,15 +190,15 @@ class WithVFSTests extends TestCase
 
         $fullFilename = $this->getFullPath($path);
         $actualResult = $isFile ? is_file($fullFilename) : is_dir($fullFilename);
-        $message = "$path должен быть" . ($isFile ? 'файлом' : 'директорией');
+        $message = "$path should be" . ($isFile ? 'file' : 'directory');
 
         static::assertTrue($actualResult, $message);
     }
 
     /**
-     * Предоставляет данные для проверки метода _addStructure_ в формате [ path, is_file].
+     * Provides test data for testing method _addStructure_.
      *
-     * @return array    данные для проверки метода _addStructure_
+     * @return array [ [ path, is_file ], ... ]
      */
     public function addStructureDataProvider(): array
     {
@@ -204,9 +215,9 @@ class WithVFSTests extends TestCase
     }
 
     /**
-     * Готовит структуру директорий для добавления в виртуальную файловую систему.
+     * Prepares directory structure to add to virtual file system.
      *
-     * @return array    структура директорий
+     * @return array
      */
     private function prepareStructure(): array
     {
@@ -226,10 +237,10 @@ class WithVFSTests extends TestCase
     }
 
     /**
-     * Проверяет, что метод _addStructure_ добавляет содержимое в файлы из структуры директорий.
+     * Checks that method _addStructure_ writes contents to files from directory structure.
      *
-     * @param string    $path       путь к элементу
-     * @param string    $content    содержимое файла
+     * @param string $path path to tested file
+     * @param string $content expected file content
      *
      * @dataProvider addStructureContentDataProvider
      */
@@ -246,10 +257,9 @@ class WithVFSTests extends TestCase
     }
 
     /**
-     * Предоставляет данные для проверки содержимого файлов, добавленных методом _addStructure_ в формате [ path,
-     * content ].
+     * Provides test data for testing contents of files that were added by method _addStructure_.
      *
-     * @return array    данные для проверки метода _addStructure_
+     * @return array [ [ path, content ], ... ]
      */
     public function addStructureContentDataProvider(): array
     {

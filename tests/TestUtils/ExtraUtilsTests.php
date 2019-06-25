@@ -9,9 +9,7 @@ use Raptor\TestUtils\ExtraUtils;
 use RaptorTests\TestUtils\Utils\InvokeMethodTestObject;
 
 /**
- * Класс с тестами для трейта _ExtraUtils_.
- *
- * @author Михаил Каморин aka raptor_MVK
+ * @author Mikhail Kamorin aka raptor_MVK
  *
  * @copyright 2019, raptor_MVK
  */
@@ -20,7 +18,7 @@ class ExtraUtilsTests extends TestCase
     use ExtraUtils;
 
     /**
-     * Проверяет, что метод _invokeMethod_ выбрасывает исключение _BadMethodException_, если указан неверный метод.
+     * Checks that method _invokeMethod_ throws _BadMethodException_, if given method is non-existent.
      */
     public function testInvokeMethodThrowsReflectionExceptionWhenMethodIsIncorrect(): void
     {
@@ -34,11 +32,11 @@ class ExtraUtilsTests extends TestCase
     }
 
     /**
-     * Проверяет, что метод _invokeMethod_ вызывает требуемый метод с заданными параметрами.
+     * Checks that method _invokeMethod_ invokes the given method with given parameters.
      *
-     * @param string    $method        наименование метода
-     * @param array     $parameters    параметры метода
-     * @param string    $expected      ожидаемый результат
+     * @param string $method
+     * @param array $parameters
+     * @param string $expected
      *
      * @dataProvider invokeMethodDataProvider
      */
@@ -52,9 +50,9 @@ class ExtraUtilsTests extends TestCase
     }
 
     /**
-     * Предоставляет тестовые данные для метода _invokeMethod_.
+     * Provides test data for testing method _invokeMethod_.
      *
-     * @return array    массив тестовых данных в формате [ [ method, parameters, expected ], ... ]
+     * @return array [ [ method, parameters, expected ], ... ]
      */
     public function invokeMethodDataProvider(): array
     {

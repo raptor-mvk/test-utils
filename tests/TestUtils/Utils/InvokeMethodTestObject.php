@@ -4,20 +4,20 @@ declare(strict_types=1);
 namespace RaptorTests\TestUtils\Utils;
 
 /**
- * Класс для тестирования метода _ExtraUtils::invokeMethod_
+ * Service class for testing _ExtraUtils::invokeMethod_
  *
- * @author Михаил Каморин aka raptor_MVK
+ * @author Mikhail Kamorin aka raptor_MVK
  *
  * @copyright 2019, raptor_MVK
  */
 class InvokeMethodTestObject
 {
     /**
-     * Переворачивает строку.
+     * Reverses input string.
      *
-     * @param string    $input    исходная строка
+     * @param string $input
      *
-     * @return string    перевёрнутая строка
+     * @return string
      */
     protected function reverse(string $input): string
     {
@@ -26,12 +26,12 @@ class InvokeMethodTestObject
 
     /** @noinspection PhpUnusedPrivateMethodInspection __approved__  used for testing purposes only */
     /**
-     * Повторяет строку заданное число раз.
+     * Repeats the given string given number of times.
      *
-     * @param string    $input    исходная строка
-     * @param int       $count    количество повторений
+     * @param string $input
+     * @param int $count
      *
-     * @return string    результирующая строка
+     * @return string
      */
     private function repeat(string $input, int $count): string
     {

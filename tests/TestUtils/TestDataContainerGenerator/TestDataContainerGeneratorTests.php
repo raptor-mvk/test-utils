@@ -11,9 +11,7 @@ use Raptor\TestUtils\ExtraAssertions;
 use Raptor\TestUtils\TestDataContainerGenerator\TestDataContainerGenerator;
 
 /**
- * Класс с тестами для генератора вспомогательного файла для IDE `TestDataContainerGenerator`.
- *
- * @author Михаил Каморин aka raptor_MVK
+ * @author Mikhail Kamorin aka raptor_MVK
  *
  * @copyright 2019, raptor_MVK
  */
@@ -22,10 +20,10 @@ class TestDataContainerGeneratorTests extends TestCase
     use ExtraAssertions;
 
     /**
-     * Проверяет, что метод _generate_ возвращает корректный результат.
+     * Checks that method _generate_ returns correct result.
      *
-     * @param array     $directoryDataLoaderResult    возвращаемый загрузчиком данных результат
-     * @param string    $referenceFilename    имя референсного файла с ожидаемым результатам
+     * @param array $directoryDataLoaderResult
+     * @param string $referenceFilename name of the reference file with expected result
      *
      * @dataProvider generateDataProvider
      */
@@ -45,10 +43,9 @@ class TestDataContainerGeneratorTests extends TestCase
     }
 
     /**
-     * Предоставляет данные для тестирования метода _generate_ в формате
-     * [ directoryDataLoaderResult, expectedReferenceFilename ].
+     * Provides test data for testing method _generate_.
      *
-     * @return array    тестовые данные
+     * @return array [ [ directoryDataLoaderResult, expectedReferenceFilename ], ... ]
      */
     public function generateDataProvider(): array
     {
@@ -65,9 +62,9 @@ class TestDataContainerGeneratorTests extends TestCase
     }
 
     /**
-     * Готовит данные для загрузчика данных с полями всех типов.
+     * Prepares test data with all data types.
      *
-     * @return array    данные для загрузчика данных
+     * @return array
      */
     private function prepareDirectoryDataLoaderAllTypesClassData(): array
     {
@@ -83,9 +80,9 @@ class TestDataContainerGeneratorTests extends TestCase
     }
 
     /**
-     * Готовит данные для загрузчика данных для второго класса.
+     * Prepares test data for second class.
      *
-     * @return array    данные для загрузчика данных
+     * @return array
      */
     private function prepareDirectoryDataLoaderSecondClassData(): array
     {

@@ -8,10 +8,7 @@ use Raptor\TestUtils\DataProcessor\TestContainerGeneratorDataProcessor;
 use Raptor\TestUtils\ExtraAssertions;
 
 /**
- * Класс с тестами для обработчика тестовых данных в формате JSON, используемый для генератора вспомогательного файла
- * для IDE _TestContainerGeneratorDataProcessor_.
- *
- * @author Михаил Каморин aka raptor_MVK
+ * @author Mikhail Kamorin aka raptor_MVK
  *
  * @copyright 2019, raptor_MVK
  */
@@ -20,10 +17,10 @@ class TestContainerGeneratorDataProcessorTests extends TestCase
     use ExtraAssertions;
 
     /**
-     * Проверяет, что метод _process_ возвращает коректный результат.
+     * Checks that method _process_ returns correct result.
      *
-     * @param string    $json        JSON-строка для обработки
-     * @param array     $expected    ожидаемый результат
+     * @param string $json
+     * @param array $expected
      *
      * @dataProvider correctDataProvider
      */
@@ -37,9 +34,9 @@ class TestContainerGeneratorDataProcessorTests extends TestCase
     }
 
     /**
-     * Предоставляет корректные тестовые данные для метода _process_.
+     * Provides correct test data for testing method _process_.
      *
-     * @return array    массив тестовых данных в формате [ [ json, expected ], ... ]
+     * @return array [ [ json, expected ], ... ]
      */
     public function correctDataProvider(): array
     {
@@ -52,9 +49,9 @@ class TestContainerGeneratorDataProcessorTests extends TestCase
     }
 
     /**
-     * Готовит тестовые данные, где поля встречаются единожды.
+     * Prepares test data, where each field appears only once.
      *
-     * @return array    массив тестовых данных в формате [ [ json, expected ], ... ]
+     * @return array [ [ json, expected ], ... ]
      */
     private function prepareSingleOccurrenceTestData(): array
     {
@@ -77,9 +74,9 @@ class TestContainerGeneratorDataProcessorTests extends TestCase
     }
 
     /**
-     * Готовит тестовые данные, где поля встречаются несколько раз с одинаковым типом.
+     * Prepares test data, where fields appear several times with same type.
      *
-     * @return array    массив тестовых данных в формате [ [ json, expected ], ... ]
+     * @return array [ [ json, expected ], ... ]
      */
     private function prepareMultiOccurrenceWithSameTypeTestData(): array
     {
@@ -101,9 +98,9 @@ class TestContainerGeneratorDataProcessorTests extends TestCase
     }
 
     /**
-     * Готовит тестовые данные, где поля встречаются несколько раз с разными типами.
+     * Prepares test data, where fields appear several times with different types.
      *
-     * @return array    массив тестовых данных в формате [ [ json, expected ], ... ]
+     * @return array [ [ json, expected ], ... ]
      */
     private function prepareMultiOccurrenceWithDifferentTypeTestData(): array
     {
@@ -124,9 +121,9 @@ class TestContainerGeneratorDataProcessorTests extends TestCase
     }
 
     /**
-     * Готовит тестовые данные, где поля встречаются несколько раз с типами (float, int) в разном порядке.
+     * Prepares test data, where fields appear several times with types float and int in a different order.
      *
-     * @return array    массив тестовых данных в формате [ [ json, expected ], ... ]
+     * @return array [ [ json, expected ], ... ]
      */
     private function prepareMultiOccurrenceWithFloatAndIntTestData(): array
     {

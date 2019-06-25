@@ -9,9 +9,7 @@ use Raptor\TestUtils\ExtraAssertions;
 use Raptor\TestUtils\WithVFS;
 
 /**
- * Класс с тестами для трейта _ExtraAssertions_.
- *
- * @author Михаил Каморин aka raptor_MVK
+ * @author Mikhail Kamorin aka raptor_MVK
  *
  * @copyright 2019, raptor_MVK
  */
@@ -19,9 +17,6 @@ class ExtraAssertionsTests extends TestCase
 {
     use ExtraAssertions, WithVFS;
 
-    /**
-     * Подготовка тестового окружения.
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -29,10 +24,10 @@ class ExtraAssertionsTests extends TestCase
     }
 
     /**
-     * Проверяет, что утверждение _assertArraysAreSame_ принимает заданные массивы.
+     * Checks that assertion _assertArraysAreSame_ accepts given arrays.
      *
-     * @param array    $expected    ожидаемый массив
-     * @param array    $actual      полученный массив
+     * @param array $expected
+     * @param array $actual
      *
      * @dataProvider acceptableArraysAreSameDataProvider
      */
@@ -42,9 +37,9 @@ class ExtraAssertionsTests extends TestCase
     }
 
     /**
-     * Провайдер данных, предоставляющий тестовые данные, которые утверждение _assertArraysAreSame_ должно принимать.
+     * Provides test data that assertion _assertArraysAreSame_ should accept.
      *
-     * @return array    массив тестовых данных в формате [ [ expected, actual ], ... ].
+     * @return array [ [ expected, actual ], ... ]
      */
     public function acceptableArraysAreSameDataProvider(): array
     {
@@ -52,13 +47,13 @@ class ExtraAssertionsTests extends TestCase
     }
 
     /**
-     * Готовит тестовые данные с одинаковыми массивами.
+     * Prepares test data with same arrays.
      *
-     * @return array    массив тестовых данных в формате [ [ expected, actual ], ... ].
+     * @return array [ [ expected, actual ], ... ].
      */
     private function prepareSameArraysTestData(): array
     {
-        $associative = ['пять' => 346, 'семь' => 644];
+        $associative = ['five' => 346, 'seven' => 644];
         $nestedAssociative = ['a' => ['b' => 'c'], 'd' => ['e' => ['f' => 'g']]];
         return [
             'associative' => [$associative, $associative],
@@ -67,11 +62,11 @@ class ExtraAssertionsTests extends TestCase
     }
 
     /**
-     * Проверяет, что утверждение _assertArraysAreSame_ отвергает заданные массивы.
+     * Checks that assertion _assertArraysAreSame_ declines given arrays with appropriate error message.
      *
-     * @param array     $expected    ожидаемый массив
-     * @param array     $actual      полученный массив
-     * @param string    $message     сообщение об ошибке
+     * @param array $expected
+     * @param array $actual
+     * @param string $message expected error message
      *
      * @dataProvider rejectableArraysAreSameDataProvider
      */
@@ -85,9 +80,9 @@ class ExtraAssertionsTests extends TestCase
     }
 
     /**
-     * Провайдер данных, предоставляющий тестовые данные, которые утверждение _assertArraysAreSame_ должно отвергать.
+     * Provides test data that assertion _assertArraysAreSame_ should decline.
      *
-     * @return array    массив тестовых данных в формате [ [ expected, actual ], ... ].
+     * @return array [ [ expected, actual ], ... ]
      */
     public function rejectableArraysAreSameDataProvider(): array
     {
@@ -99,26 +94,26 @@ class ExtraAssertionsTests extends TestCase
     }
 
     /**
-     * Готовит тестовые данные с одинаковыми массивами с разным порядком следования элементов на верхнем уровне.
+     * Prepares test data with arrays that contain same elements with different order at the top level.
      *
-     * @return array    массив тестовых данных в формате [ [ expected, actual, message ], ... ].
+     * @return array [ [ expected, actual, message ], ... ]
      */
     public function prepareEqualArraysWithDifferentOrderTestData(): array
     {
         return [
-            'associative' => [['два' => 1253, 'четыре' => 367], ['четыре' => 367, 'два' => 1253], 'ошибка № 463'],
+            'associative' => [['two' => 1253, 'four' => 367], ['four' => 367, 'two' => 1253], 'error #463'],
             'nested associative' => [
                 ['a' => ['b' => 'c'], 'd' => ['e' => ['f' => 'g']]],
                 ['d' => ['e' => ['f' => 'g']], 'a' => ['b' => 'c']],
-                'странная ошибка'
+                'strange error'
             ]
         ];
     }
 
     /**
-     * Готовит тестовые данные с одинаковыми массивами с разным порядком следования элементов на более низких уровнях.
+     * Prepares test data with arrays that contain same elements with different order at the lower levels.
      *
-     * @return array    массив тестовых данных в формате [ [ expected, actual, message ], ... ].
+     * @return array [ [ expected, actual, message ], ... ]
      */
     public function prepareEqualArraysWithDifferentOrderOnLowerLevelsTestData(): array
     {
@@ -126,25 +121,25 @@ class ExtraAssertionsTests extends TestCase
             'second_level' => [
                 ['a' => ['b' => 'c', 'd' => 'e'], 'f' => ['g' => ['h' => 'i']]],
                 ['a' => ['d' => 'e', 'b' => 'c'], 'f' => ['g' => ['h' => 'i']]],
-                'уровень 2'
+                'level 2'
             ],
             'third_level' => [
                 ['a' => ['b' => 'c', 'd' => ['e' => 'f', 'g' => 'h']], 'i' => ['j' => ['k' => 'l']]],
                 ['a' => ['b' => 'c', 'd' => ['g' => 'h', 'e' => 'f']], 'i' => ['j' => ['k' => 'l']]],
-                'уровень 3'
+                'level 3'
             ]
         ];
     }
 
     /**
-     * Готовит тестовые данные с разными массивами.
+     * Prepares test data with different arrays.
      *
-     * @return array    массив тестовых данных в формате [ [ expected, actual, message ], ... ]
+     * @return array [ [ expected, actual, message ], ... ]
      */
     public function prepareDifferentArraysTestData(): array
     {
         return [
-            'just different' => [['весна', '2', 3], [4, 'лето', '3'], 'different arrays'],
+            'just different' => [['spring', '2', 3], [4, 'summer', '3'], 'different arrays'],
             'simple, different order' => [[4, 16, 7], [7, 16, 4], 'scalar, different order'],
             'nested simple, different order' => [
                 [1, [4, 6], [4, [8, 3]]],
@@ -159,10 +154,10 @@ class ExtraAssertionsTests extends TestCase
     }
 
     /**
-     * Проверяет, что утверждение _assertArraysAreSameIgnoringOrder_ принимает заданные массивы.
+     * Checks that assertion _assertArraysAreSameIgnoringOrder_ accepts the given arrays.
      *
-     * @param array    $expected    ожидаемый массив
-     * @param array    $actual      полученный массив
+     * @param array $expected
+     * @param array $actual
      *
      * @dataProvider acceptableArraysAreSameIgnoringOrderDataProvider
      */
@@ -172,10 +167,9 @@ class ExtraAssertionsTests extends TestCase
     }
 
     /**
-     * Провайдер данных, предоставляющий тестовые данные, которые утверждение _assertArraysAreSameIgnoringOrder_ должно
-     * принимать.
+     * Provides test data that assertion _assertArraysAreSameIgnoringOrder_ should accept.
      *
-     * @return array    массив тестовых данных в формате [ [ expected, actual ], ... ].
+     * @return array [ [ expected, actual ], ... ]
      */
     public function acceptableArraysAreSameIgnoringOrderDataProvider(): array
     {
@@ -186,11 +180,11 @@ class ExtraAssertionsTests extends TestCase
     }
 
     /**
-     * Проверяет, что утверждение _assertArraysAreSameIgnoringOrder_ отвергает заданные массивы.
+     * Checks that assertion _assertArraysAreSameIgnoringOrder_ declines the given arrays.
      *
-     * @param array     $expected    ожидаемый массив
-     * @param array     $actual      полученный массив
-     * @param string    $message     сообщение об ошибке
+     * @param array $expected
+     * @param array $actual
+     * @param string $message expected error message
      *
      * @dataProvider rejectableArraysAreSameIgnoringOrderDataProvider
      */
@@ -207,10 +201,9 @@ class ExtraAssertionsTests extends TestCase
     }
 
     /**
-     * Провайдер данных, предоставляющий тестовые данные, которые утверждение _assertArraysAreSameIgnoringOrder_ должно
-     * отвергать.
+     * Provides test data that assertion _assertArraysAreSameIgnoringOrder_ should decline.
      *
-     * @return array    массив тестовых данных в формате [ [ expected, actual ], ... ].
+     * @return array [ [ expected, actual ], ... ]
      */
     public function rejectableArraysAreSameIgnoringOrderDataProvider(): array
     {
@@ -220,10 +213,10 @@ class ExtraAssertionsTests extends TestCase
         );
     }
     /**
-     * Проверяет, что утверждение _assertArraysAreSameIgnoringOrderRecursively_ принимает заданные массивы.
+     * Checks that assertion _assertArraysAreSameIgnoringOrderRecursively_ accepts the given arrays.
      *
-     * @param array    $expected    ожидаемый массив
-     * @param array    $actual      полученный массив
+     * @param array $expected
+     * @param array $actual
      *
      * @dataProvider acceptableArraysAreSameIgnoringOrderRecursivelyDataProvider
      */
@@ -235,10 +228,9 @@ class ExtraAssertionsTests extends TestCase
     }
 
     /**
-     * Провайдер данных, предоставляющий тестовые данные, которые утверждение
-     * _assertArraysAreSameIgnoringOrderRecursively_ должно принимать.
+     * Provides test data that assertion _assertArraysAreSameIgnoringOrderRecursively_ should accept.
      *
-     * @return array    массив тестовых данных в формате [ [ expected, actual ], ... ].
+     * @return array [ [ expected, actual ], ... ].
      */
     public function acceptableArraysAreSameIgnoringOrderRecursivelyDataProvider(): array
     {
@@ -250,11 +242,11 @@ class ExtraAssertionsTests extends TestCase
     }
 
     /**
-     * Проверяет, что утверждение _assertArraysAreSameIgnoringOrderRecursively_ отвергает заданные массивы.
+     * Checks that assertion _assertArraysAreSameIgnoringOrderRecursively_ declines the given arrays.
      *
-     * @param array     $expected    ожидаемый массив
-     * @param array     $actual      полученный массив
-     * @param string    $message     сообщение об ошибке
+     * @param array $expected
+     * @param array $actual
+     * @param string $message expected error message
      *
      * @dataProvider rejectableArraysAreSameIgnoringOrderRecursivelyDataProvider
      */
@@ -271,10 +263,9 @@ class ExtraAssertionsTests extends TestCase
     }
 
     /**
-     * Провайдер данных, предоставляющий тестовые данные, которые утверждение
-     * _assertArraysAreSameIgnoringOrderRecursively_ должно отвергать.
+     * Provides test data that assertion _assertArraysAreSameIgnoringOrderRecursively_ should decline.
      *
-     * @return array    массив тестовых данных в формате [ [ expected, actual ], ... ].
+     * @return array [ [ expected, actual ], ... ]
      */
     public function rejectableArraysAreSameIgnoringOrderRecursivelyDataProvider(): array
     {
@@ -282,7 +273,7 @@ class ExtraAssertionsTests extends TestCase
     }
 
     /**
-     * Проверяет, что утверждение _assertStringIsSameAsFile_ принимает строку, совпадающую с содержимым файла.
+     * Checks that assertion _assertStringIsSameAsFile_ accepts string that coincides with file contents.
      */
     public function testAssertStringIsSameAsFileAcceptsCorrectString(): void
     {
@@ -295,7 +286,7 @@ class ExtraAssertionsTests extends TestCase
     }
 
     /**
-     * Проверяет, что утверждение _assertStringIsSameAsFile_ отвергает строку, не совпадающую с содержимым файла.
+     * Checks that assertion _assertStringIsSameAsFile_ declines string that does not coincide with file contents.
      */
     public function testAssertStringIsSameAsFileRejectsIncorrectString(): void
     {

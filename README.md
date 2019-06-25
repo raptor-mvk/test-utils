@@ -1,47 +1,30 @@
-# Raptor Test Utils v0.1.0
+# Raptor Test Utils v1.0.0
 
-(c) Михаил Каморин aka raptor_MVK
+(c) Mikhail Kamorin aka raptor_MVK
 
-## Описание
+## Overview
 
-Состоит из следующих компонентов:
- - трейт `ExtraUtils`, содержащий набор вспомогательных методов для тестирования;
- - трейт `ExtraAssertions`, содержащий набор дополнительных утверждений для упрощения и улучшения визуализации
-   тестирования (также подключает трейт `ExtraUtils`);
- - трейт `WithVFS`, представляющий собой адаптер для работы с `mikey179/vfsstream` (виртуальная файловая система)
- - загрузчик данных для тестов, оборачивающий каждый тестовый набор в объект-контейнер
- - генератор вспомогательного файла для IDE для автодополнения при использовании объектов-контейнеров
+Package contains following components:
+- trait `ExtraUtils` that contains set of service methods used to make testing easier
+- trait `ExtraAssertions` that contains set of additional assertions
+- trait `WithVFS` that provides adapted interface for `mikey179/vfsstream` (virtual file system)
+- test data loader from JSON files that wraps each test case into test data container
+- command `generate-ide-test-containers` that generate service file for IDE used to autocomplete
 
-## Установка
+## Installation
 
-Для установки необходимо:
+The suggested installation method is via [composer](https://getcomposer.org/):
 
-- Открыть `composer.json`, добавить название пакета в блок `require` и ссылку на данный репозиторий в блок
-`repositories`:
-
-```
-    "require": {
-+        "raptor/test-utils": "0.1.*"
-    },
-    ...
-    "repositories": [
-+        {
-+          "type": "git",
-+          "url": "git@github.com:raptor-mvk/test-utils.git"
-+        },
-        ...
-    ],
+```sh
+php composer.phar require "raptor/test-utils:1.0.*"
 ```
 
-- Выполнить команду `composer update`
+## Usage
 
+### Additional service methods
 
-## Использование
-
-### Вспомогательные методы
-
-В класс, содержащий тесты, или в базовый для всех тестов класс необходимо подключить трейт `ExtraUtils` или
-`ExtraAssertions`. После этого становятся доступны следующие статические методы:
+Add trait `ExtraUtils` or `ExtraAssertions` to the class with tests or common base test class. After that the following
+static methods will be available:
 
  - `invokeMethod(object $object, string $methodName, ?array $parameters = null)` вызывает защищённый или приватный метод
     объекта с указанными параметрами
@@ -183,13 +166,6 @@
         ...
     }
 ```
-
-## История версий
-
-v0.1.0
-
-- реализованы дополнительные утверждения `assertArraysAraSame` и `assertArraysAreSameIgnoringOrder`
-- реализована иерархия классов для загрузки тестовых данных в формате JSON (`DataLoader` и `DataProcessor`)
 
 ## Авторы
 

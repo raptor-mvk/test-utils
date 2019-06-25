@@ -8,7 +8,7 @@ use org\bovigo\vfs\vfsStreamDirectory;
 use Raptor\TestUtils\Exceptions\VFSNotInitializedException;
 
 /**
- * Trait that provides adapted interface to _mikey179/vfsstream_.
+ * Trait that provides adapted interface for _mikey179/vfsstream_.
  *
  * @author Mikhail Kamorin aka raptor_MVK
  *
@@ -77,6 +77,9 @@ trait WithVFS
      */
     protected function addStructureToVFS(array $structure): void
     {
+        if ($this->root === null) {
+            throw new VFSNotInitializedException('Method setupVFS should be used.');
+        }
         vfsStream::create($structure);
     }
 
