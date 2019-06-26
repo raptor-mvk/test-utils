@@ -23,108 +23,104 @@ php composer.phar require "raptor/test-utils:1.0.*"
 
 ### Additional service methods
 
-Add trait `ExtraUtils` or `ExtraAssertions` to the class with tests or common base test class. After that the following
-static methods will be available:
+Add trait `ExtraUtils` or `ExtraAssertions` to the class that contains tests or to the common base test class. After
+that the following static methods will be available:
 
- - `invokeMethod(object $object, string $methodName, ?array $parameters = null)` вызывает защищённый или приватный метод
-    объекта с указанными параметрами
+ - `invokeMethod(object $object, string $methodName, ?array $parameters = null)` invokes protected or private method
+   with the given parameters
 
-### Дополнительные утверждения
+### Additional assertions
 
-В класс, содержащий тесты, или в базовый для всех тестов класс необходимо подключить трейт `ExtraAssertions`. После
-этого становятся доступны следующие дополнительные утверждения:
+Add trait `ExtraAssertions` to the class that contains tests or to the common base test class. After that the following
+additional assertions will be available:
 
- - `assertArraysAreSame(array $expected, array $actual, ?string $message = null)` проверяет утверждение, что массивы
-    полностью идентичны (совпадают порядок элементов, их типы, включая все вложенные массивы), при проверке происходит
-    преобразование в JSON-строку, соответственно, не поддерживаются объекты и функции как элементы массива
- - `assertArraysAreSameIgnoringOrder(array $expected, array $actual, ?string $message = null)` проверяет утверждение,
-    что массивы содержат одинаковые элементы, для ассоциативных массивов при этом порядок элементов не важен (на верхнем
-    уровне, для всех вложенных ассоциативных массивов порядок важен), при проверке происходит преобразование в
-    JSON-строку, соответственно, не поддерживаются объекты и функции как элементы массива
- - `assertArraysAreSameIgnoringOrderRecursive(array $expected, array $actual, ?string $message = null)` проверяет
-    утверждение, что массивы содержат одинаковые элементы, для ассоциативных массивов при этом порядок элементов не
-    важен, в том числе для всех вложенных ассоциативных массивов, при проверке происходит преобразование в JSON-строку,
-    соответственно, не поддерживаются объекты и функции как элементы массива
- - `assertStringIsSameAsFile(string $expected, string $actual, ?string $message = null)` проверяет утверждение, что
-    строка совпадает с содержимым файла
+ - `assertArraysAreSame(array $expected, array $actual, ?string $message = null)` checks the assertion that two arrays
+   are same (order of elements, their types coincides at every level). Before checking, arrays are encoded as JSON
+   strings, therefore you cannot use objects or functions as elements of an array.
+ - `assertArraysAreSameIgnoringOrder(array $expected, array $actual, ?string $message = null)` checks the assertion that
+   two associative arrays contains same elements (at every level) ignoring their order at the top level. Before
+   checking, arrays are encoded as JSON strings, therefore you cannot use objects or functions as elements of an array.
+ - `assertArraysAreSameIgnoringOrderRecursive(array $expected, array $actual, ?string $message = null)` checks the
+   assertion that two associative arrays contains same elements ignoring their order at every level. Before checking,
+   arrays are encoded as JSON strings, therefore you cannot use objects or functions as elements of an array.
+ - `assertStringIsSameAsFile(string $expected, string $actual, ?string $message = null)` checks the assertion that the
+   given string coincides with the content of the given file, path to which is passed as `$expected` parameter
 
-### Виртуальная файловая система
+### Virtual file system
 
-В класс, содержащий тесты или в базовый для всех тестов класс необходимо подключить трейт `WithVFS`. В методе `setUp`
-или в тестирующих методах перед вызовом методов трейта обязательно необходимо вызывать метод `setupVFS`. После этого
-становятся доступны новые методы:
+Add trait `ExtraUtils` or `ExtraAssertions` to the class that contains tests or to the common base test class. Method
+`setupVFS` should be used in `setUp` method or in the test method just before using other methods of the trait.
+After that the following additional methods will be available:
 
- - `addFileToVFS(string $filename, ?int $permissions = null, ?string $content = null)` добавляет файл с указанными
-   правами (целое число, соответствующее unix-правам) и содержимым, путь указывается внутри виртуальной файловой системы
- - `addDirectoryToVFS(string $dirname, ?int $permissions = null)` добавляет директорию с указанными правами (целое
-   число, соответствующее unix-правам), путь указывается внутри виртуальной файловой системы
- - `addStructure(array $structure)` добавляет структуру директорий в виртуальную файловую систему, структура директорий
-   задаётся в формате дерева, листьями являются файлы, где ключ элемента массива - имя файла, а значение - его
-   содержимое
- - `getFullPath(string $path)` возвращает полный путь к файлу по его пути внутри виртуальной файловой системы,
-   предназначен для передачи в функции для непосредственной работы с файлами
- - `getEscapedFullPath(string $path)` возвращает полный путь к файлу по его пути внутри виртуальной файловой системы с
-   экранированием для использования в регулярных выражениях
+ - `addFileToVFS(string $filename, ?int $permissions = null, ?string $content = null)` adds file with given permissions
+   and content to virtual file system.
+ - `addDirectoryToVFS(string $dirname, ?int $permissions = null)` adds directory with given permissions to virtual file
+   system
+ - `addStructure(array $structure)` adds directory structure to virtual file system. Structure is represented as a tree,
+   where leaves are files with key as the file name and value as the file content
+ - `getFullPath(string $path)` returns full path to the file that is used outside virtual file system
+ - `getEscapedFullPath(string $path)` returns full path to the file with escaped slashes that is used in regular
+   expressions
 
-### Загрузчик тестовых данных
+### Test data loader
 
-Загрузчик позволяет выделить тестовые данные из провайдера в коде в отдельный JSON-файл. В результате загрузки из файла
-формируется набор именованных тестовых данных, где данные для каждого теста обёрнуты в объект-контейнер. Значения
-конкретных полей из файла возвращаются геттерами. Данный механизм позволяет решить следующие задачи:
- - выделение тестовых данных из кода
- - возможность передачи в тестирующий метод большого количества параметров без раздувания сигнатуры метода
- - возможность иерархической организации тестовых данных, когда различия данных между тестами незначительны
+Data loader allows you to extract test data from data provider into separate JSON file. As a result of data loading a
+set of test cases is formed, where data for each test case is wrapped into container object. Values of specific fields
+from file are returned by getters. Such an approach allows you to solve the following tasks:
 
-Требования к JSON-файлу:
- - файл должен содержать **массив** JSON-объектов, массив может содержать единственный объект
- - имена всех полей объектов не должны начинаться с символа подчёркивания, кроме специально оговоренных ниже случаев
- - имена всех полей могут содержать только строчные буквы, цифры и символ подчёркивания
- - каждый объект в массиве должен быть одного из двух типов:
-     1. объект 1-го типа содержит набор тестовых данных. В этом случае в объекте **не должно быть** служебного поля
-        `_children` и **должно быть** служебное поле `_name`
-     2. объект 2-го типа содержит массив наборов тестовых данных с заданными значениями по умолчанию для некоторых
-        полей. В этом случае в объекте **должно быть** служебное поле `_children` и **не должно быть** служебного поля
-        `_name`
- - служебное поле `_name` должно быть строковым, оно содержит название тестового набора данных
- - значения служебного поля `_name` должны быть уникальны и непусты
- - служебное поле `_children` должно содержать массив, к которому предъявляются те же требования, что и к корневому
-   массиву файла
+ - extract test data from code to separate JSON files
+ - pass into testing method many parameters without inflating method signature
+ - organize test data into hierarchical structure, when there is common data in several test cases
 
-При обработке файла для объектов 1-го типа выполняется следующий алгоритм:
- - если данный объект имеет объект-родителя 2-го типа, то перебираются все неслужебные поля объекта-родителя
- - для каждого поля проверяется, задано ли значение этого поля для рассматриваемого объекта 1-го типа; если это не так,
-   то для этого поля задаётся значение из объекта-родителя
- - если объект-родитель также имеет объект-родителя 2-го типа, то процедура повторяется для него
+Requirements to JSON file:
+ - file should contain **array** of JSON objects, array may contain single object
+ - field names should not start with underscore except cases specifically noted below
+ - field names should contain only lowercase letters, digits and underscore
+ - each object of the array should belong to one of two types:
+     1. Test case. Such objects **should not** contain service field `_children` and **should** contain
+        service field `_name`
+     2. Array of test cases with default values for some fields. Such objects **should** contain service field
+        `_children` and **should not** contain service field `_name`
+ - service field `_name` should contain string, it is name of the test case
+ - values of service field `_name` should be unique and non-empty
+ - service field `_children` should contain array, that meets the same requirements as the root array of the file
+
+Objects of first type are processed by following algorithm:
+ - if object being processed has parent object of second type, then:
+     - if parent object contains fields, that does not belong to the object being processed, then they are added t
+      the object being processed with appropriate values
+ - if parent object has parent object of second type too, then procedure is repeated for its parent and so on     
  
-Промежуточным результатом работы загрузчика является массив, содержащий все полученные объекты 1-го типа с ключами,
-являющимися значениями служеного поля `_name` в этих объектах. Само поле `_name` из объектов исключается.
+Intermediate result of data loader is an array of all objects of first type with values of service field `_name` as
+keys. Service field `_name` itself is excluded from the objects.
 
-Затем для каждого элемента массива значение оборачивается в объект-контейнер `TestDataContainer`. Данные
-достаются из контейнера с помощью геттеров. Наименования геттеров следуют стандартным соглашениям:
- - если имя поля начинается с is, то наименование геттера получается преобразованием в CamelCase имени поля;
- - иначе наименование геттера получается преобразованием в CamelCase имени поля с добавлением префикса `get`.
+Then each array value is wrapped into TestDataContainer object. Values are retrieved from containers using getters. 
+Name of getters follow standard agreements:
+ - if the name of field starts with 'is', then the getter name is field name converted to camel case
+ - otherwise, if the field is of bool type, then the getter name is field name converted to studly case and prefixed with
+   'is'
+ - otherwise, the getter name is field name converted to studly case and prefixed with 'get'
 
-### Генератор вспомогательного файла для IDE
+### Generator of service file for IDE
 
-Вспомогательного файла для IDE нужен для автодополнения при использовании объектов-контейнеров. Генератор запускается
-командой
+Service file for IDE is used for auto-completion when using container objects. Generator is called by following command:
 
 ```bash
     php vendor/raptor/test-utils/generate-ide-test-containers path
 ```
 
-где `path` - путь к директории, в которой расположены JSON-файлы с тестовыми данными. Директория разбирается рекурсивно.
-Требования к JSON-файлам:
- - имя каждого JSON-файла преобразуется в StudlyCase (для префикса имени класса) с отбрасыванием расширения, после этого
-   преобразования все JSON-файлы должны иметь разные имена. Повторяющиеся имена не будут обработаны
- - каждый JSON-файл должен удовлетворять условиям из раздела **Загрузчик тестовых данных**
+where `path` - path to directory with JSON files that contain test data. Directory is processed recursively.
+Requirements to JSON files:
+ - the name of each JSON file without an extension is converted to studly case, after that conversion all strings must
+   be different. Duplicate names will not be processed
+ - each JSON file should meet the requirements from the section **[Test data loader](#test-data-loader)**
 
-В результате выполнения команды в корне проекта генерируется файл _ide_test_containers.php, который содержит
-класс-контейнер для каждого JSON-файла в указанной директории. Класс-контейнер расположен в корневом пространстве имён
-и имеет название, получаемое преобразованием имени JSON-файла в StudlyCase и добавлением суффикса `DataContainer`. Для
-того, чтобы работало автодополнение, необходимо использовать PHPDoc-комментарий `@var` с нужным классом.
+As a result of the command execution, the _ide_test_containers.php file is generated in the project root. This file
+contains container class for each JSON file in the specified directory. Each container class is located in the root
+namespace and has the name obtained by converting the name of the JSON file to studly case and adding the suffix
+`DataContainer`. You can use auto-completion after adding a PHPDoc comment `@var` with appropriate class and variable.
 
-### Пример кода для загрузки данных с использованием вспомогательного файла
+### Data loader usage example
 
 ```php
     use Raptor\Test\DataLoader\DataLoaderFactory;
@@ -167,6 +163,6 @@ static methods will be available:
     }
 ```
 
-## Авторы
+## Authors
 
-- Михаил Каморин aka raptor_MVK
+- Mikhail Kamorin aka raptor_MVK
