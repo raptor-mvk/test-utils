@@ -1,0 +1,12 @@
+[
+  {
+    "_name": "AAA",
+    "int": 3,
+    "float": 3.5,
+    "bool": true,
+    "string": "bbb",
+    "array": [1, 2, 3],
+    "array_two": {"abc": 123},
+    "mixed": null
+  }
+]

@@ -120,28 +120,15 @@ contains container class for each JSON file in the specified directory. Each con
 namespace and has the name obtained by converting the name of the JSON file to studly case and adding the suffix
 `DataContainer`. You can use auto-completion after adding a PHPDoc comment `@var` with appropriate class and variable.
 
-### Data loader usage example
+### Data loader usage example with trait WithDataLoader
 
 ```php
-    use Raptor\Test\DataLoader\DataLoaderFactory;
     use Raptor\Test\TestDataContainer\TestDataContainer;
 
     class someTests extends TestCase
     {
-        ...
-        
-        private $dataLoader;
-        
-        ...
-        
-        protected function setUp(): void
-        {
-            parent::setUp();
-            $this->dataLoader = DataLoaderFactory::createTestContainerWrapperDataLoader();
-            
-            ...
-        }
-        
+        use WithDataLoader;
+             
         ...
         
         /**
@@ -156,7 +143,7 @@ namespace and has the name obtained by converting the name of the JSON file to s
         
         public function someDataProvider(): array
         {
-            return $this->dataLoader->load('some_tests.json'); 
+            return $this->loadFromFile('some_tests.json'); 
         }
         
         ...

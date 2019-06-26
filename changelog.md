@@ -16,7 +16,8 @@ All notable changes to this project will be documented in this file.
   - `addStructure(array $structure)`
   - `getFullPath(string $path)`
   - `getEscapedFullPath(string $path)`
-- test data loader from JSON files that wraps each test case into test data container
+- trait `WithDataLoader` that provides method `loadDataFromFile(string $filename)` for easy use `DataLoader` in data
+  providers
 - command `generate-ide-test-containers` that generate service file for IDE used to autocomplete
 
 
