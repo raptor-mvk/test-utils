@@ -1,7 +1,8 @@
-Changelog
+#Changelog
+
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [1.0.0] - 2019-06-27
 ### Added
 - trait `ExtraUtils` that contains following service methods:
   - `invokeMethod(object $object, string $methodName, ?array $parameters = null)`
@@ -19,4 +20,4 @@ All notable changes to this project will be documented in this file.
   providers
 - command `generate-ide-test-containers` that generate service file for IDE used to autocomplete
 
-
+[1.0.0]: https://github.com/raptor-mvk/test-utils/releases/tag/v1.0.0
