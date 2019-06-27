@@ -9,7 +9,6 @@ All notable changes to this project will be documented in this file.
   - `assertArraysAreSame(array $expected, array $actual, ?string $message = null)`
   - `assertArraysAreSameIgnoringOrder(array $expected, array $actual, ?string $message = null)`
   - `assertArraysAreSameIgnoringOrderRecursive(array $expected, array $actual, ?string $message = null)`
-  - `assertStringIsSameAsFile(string $expected, string $actual, ?string $message = null)`
 - trait `WithVFS` that provides adapted interface for `mikey179/vfsstream` with following methods:
   - `addFileToVFS(string $filename, ?int $permissions = null, ?string $content = null)`
   - `addDirectoryToVFS(string $dirname, ?int $permissions = null)`

@@ -82,17 +82,4 @@ trait ExtraAssertions
         $actualString = json_encode($actual, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         static::assertSame($expectedString, $actualString, $message ?? '');
     }
-
-    /**
-     * Asserts that the given string and file contents are same.
-     *
-     * @param string $filename path to the file with expected contents
-     * @param string $actual actual string
-     * @param string|null $message
-     */
-    public static function assertStringIsSameAsFile(string $filename, string $actual, ?string $message = null): void
-    {
-        $expectedString = file_get_contents($filename);
-        static::assertSame($expectedString, $actual, $message ?? '');
-    }
 }

@@ -15,13 +15,7 @@ use Raptor\TestUtils\WithVFS;
  */
 class ExtraAssertionsTests extends TestCase
 {
-    use ExtraAssertions, WithVFS;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->setupVFS();
-    }
+    use ExtraAssertions;
 
     /**
      * Checks that assertion _assertArraysAreSame_ accepts given arrays.
@@ -270,35 +264,5 @@ class ExtraAssertionsTests extends TestCase
     public function rejectableArraysAreSameIgnoringOrderRecursivelyDataProvider(): array
     {
         return $this->prepareDifferentArraysTestData();
-    }
-
-    /**
-     * Checks that assertion _assertStringIsSameAsFile_ accepts string that coincides with file contents.
-     */
-    public function testAssertStringIsSameAsFileAcceptsCorrectString(): void
-    {
-        $content = 'some_string';
-        $filename = 'correct.txt';
-        $this->addFileToVFS($filename, null, $content);
-        $path = $this->getFullPath($filename);
-
-        static::assertStringIsSameAsFile($path, $content);
-    }
-
-    /**
-     * Checks that assertion _assertStringIsSameAsFile_ declines string that does not coincide with file contents.
-     */
-    public function testAssertStringIsSameAsFileRejectsIncorrectString(): void
-    {
-        $message = 'String is wrong';
-        $messageRegExp = "/^$message\n.*$/";
-        $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessageRegExp($messageRegExp);
-
-        $filename = 'incorrect.txt';
-        $this->addFileToVFS($filename, null, 'some_string');
-        $path = $this->getFullPath($filename);
-
-        static::assertStringIsSameAsFile($path, 'other_string', $message);
     }
 }

@@ -28,7 +28,7 @@ trait WithDataLoader
      *
      * @throws DataFileNotFoundException
      */
-    public function loadDataFromFile(string $filename): array
+    protected function loadDataFromFile(string $filename): array
     {
         if ($this->dataLoader === null) {
             $dataLoaderFactory = new DataLoaderFactory();

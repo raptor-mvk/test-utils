@@ -39,7 +39,7 @@ class TestDataContainerGeneratorTests extends TestCase
 
         $actualResult = $testDataContainerGenerator->generate($path);
 
-        static::assertStringIsSameAsFile($referencePath, $actualResult);
+        static::assertStringEqualsFile($referencePath, $actualResult);
     }
 
     /**
