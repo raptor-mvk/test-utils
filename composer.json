@@ -1,6 +1,7 @@
 {
   "name": "raptor/test-utils",
   "description": "Testing utils for PHP",
+  "license": "MIT",
   "require": {
     "php": ">=7.3.0",
     "symfony/console": "^4.0",
