@@ -1,0 +1,20 @@
+/**
+ * @method int getInt()
+ * @method float getFloat()
+ * @method bool isBool()
+ * @method string getString()
+ * @method array getArray()
+ */
+class FileOneDataContainer
+{
+}
+
+/**
+ * @method float getIntToFloat()
+ * @method float getFloatToInt()
+ * @method bool isBool()
+ * @method mixed getIntToString()
+ */
+class FileTwoDataContainer
+{
+}

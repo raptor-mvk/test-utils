@@ -253,7 +253,7 @@ class WithVFSTests extends TestCase
 
         $fullFilename = $this->getFullPath($path);
 
-        static::assertStringIsSameAsFile($fullFilename, $content);
+        static::assertStringEqualsFile($fullFilename, $content);
     }
 
     /**
