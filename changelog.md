@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.1] - 2019-06-28
+### Changed
+- `mikey179/vfsstream` is moved from require-dev to require section of composer.json
+
+
 ## [1.0.0] - 2019-06-27
 ### Added
 - trait `ExtraUtils` that contains following service methods:c
@@ -20,4 +25,5 @@ All notable changes to this project will be documented in this file.
   providers
 - command `generate-ide-test-containers` that generate service file for IDE used to autocomplete
 
+[1.0.1]: https://github.com/raptor-mvk/test-utils/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/raptor-mvk/test-utils/releases/tag/v1.0.0
