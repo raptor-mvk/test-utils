@@ -9,7 +9,7 @@ All notable changes to this project will be documented in this file.
 
 ## [1.0.0] - 2019-06-27
 ### Added
-- trait `ExtraUtils` that contains following service methods:c
+- trait `ExtraUtils` that contains following service methods:
   - `invokeMethod(object $object, string $methodName, ?array $parameters = null)`
 - trait `ExtraAssertions` that contains following assertions:
   - `assertArraysAreSame(array $expected, array $actual, ?string $message = null)`
