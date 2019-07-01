@@ -59,11 +59,10 @@ class DirectoryDataLoaderTests extends TestCase
      */
     public function dataProcessorClassDataProvider(): array
     {
-        $result = [
+        return [
             'wrapper' => [new TestContainerWrapperDataProcessor(), TestContainerWrapperDataProcessor::class],
             'generator' => [new TestContainerGeneratorDataProcessor(), TestContainerGeneratorDataProcessor::class]
         ];
-        return $result;
     }
 
     /**

@@ -31,13 +31,9 @@ class TestDataContainer
      */
     public function __call(string $method, ?array $parameters = null)
     {
-        $result = null;
         $fieldCamelCase = (strncmp($method, 'get', 3) === 0) ? substr($method, 3) : $method;
         $field = strtolower(preg_replace('/(?!^)([A-Z])/', '_$1', $fieldCamelCase));
-        if (isset($this->data[$field])) {
-            $result = $this->data[$field];
-        }
-        return $result;
+        return $this->data[$field] ?? null;
     }
 
     /**
