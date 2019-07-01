@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace RaptorTests\TestUtils;
 
-use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 use Raptor\TestUtils\ExtraAssertions;
 use Raptor\TestUtils\TestDataContainer\TestDataContainer;
@@ -34,7 +33,7 @@ class WithDataLoaderTests extends TestCase
         $content = $this->prepareFileContent();
         $this->addFileToVFS($filename, null, $content);
         $fullFilename = $this->getFullPath($filename);
-        $extractData = function (TestDataContainer $container) {
+        $extractData = static function (TestDataContainer $container) {
             return $container->allData();
         };
         $expectedData = $this->prepareExpectedResult();

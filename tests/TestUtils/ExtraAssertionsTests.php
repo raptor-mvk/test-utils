@@ -6,7 +6,6 @@ namespace RaptorTests\TestUtils;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use Raptor\TestUtils\ExtraAssertions;
-use Raptor\TestUtils\WithVFS;
 
 /**
  * @author Mikhail Kamorin aka raptor_MVK

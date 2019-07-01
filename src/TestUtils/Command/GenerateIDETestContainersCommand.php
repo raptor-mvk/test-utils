@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Raptor\TestUtils\Command;
 
-use Raptor\TestUtils\DataLoader\DataLoaderFactory;
 use Raptor\TestUtils\DataLoader\DirectoryDataLoaderFactory;
 use Raptor\TestUtils\TestDataContainerGenerator\TestDataContainerGenerator;
 use Symfony\Component\Console\Command\Command;
