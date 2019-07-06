@@ -32,6 +32,6 @@ final class DirectoryDataLoaderFactory
     public function createTestContainerGeneratorDataLoader(): DirectoryDataLoader
     {
         $dataLoader = $this->dataLoaderFactory->createTestContainerGeneratorDataLoader();
-        return new DirectoryDataLoader($dataLoader);
+        return new DirectoryProcessedDataLoader($dataLoader);
     }
 }

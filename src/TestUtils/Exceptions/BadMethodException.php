@@ -12,6 +12,6 @@ use RuntimeException;
  *
  * @copyright 2019, raptor_MVK
  */
-class BadMethodException extends RuntimeException
+final class BadMethodException extends RuntimeException
 {
 }

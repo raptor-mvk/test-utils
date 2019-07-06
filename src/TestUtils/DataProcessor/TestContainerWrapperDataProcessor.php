@@ -13,7 +13,7 @@ use Raptor\TestUtils\TestDataContainer\TestDataContainer;
  *
  * @copyright 2019, raptor_MVK
  */
-class TestContainerWrapperDataProcessor extends AbstractJSONTestDataProcessor
+final class TestContainerWrapperDataProcessor extends AbstractJSONTestDataProcessor
 {
     /**
      * Processes test case (element with service field _name), considering it to be correct (without error handling).

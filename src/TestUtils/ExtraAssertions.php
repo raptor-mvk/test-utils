@@ -14,8 +14,6 @@ use function is_array;
  */
 trait ExtraAssertions
 {
-    use ExtraUtils;
-
     /**
      * Asserts that two arrays are same.
      *

@@ -12,6 +12,6 @@ use RuntimeException;
  *
  * @copyright 2019, raptor_MVK
  */
-class DataDirectoryNotFoundException extends RuntimeException
+final class DataDirectoryNotFoundException extends RuntimeException
 {
 }

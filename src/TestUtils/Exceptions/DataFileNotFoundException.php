@@ -12,6 +12,6 @@ use RuntimeException;
  *
  * @copyright 2019, raptor_MVK
  */
-class DataFileNotFoundException extends RuntimeException
+final class DataFileNotFoundException extends RuntimeException
 {
 }

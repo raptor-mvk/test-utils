@@ -1,4 +1,4 @@
-# Raptor Test Utils v1.0.1
+# Raptor Test Utils v1.1.0
 
 (c) Mikhail Kamorin aka raptor_MVK
 
@@ -23,7 +23,7 @@ php composer.phar require "raptor/test-utils:1.0.*"
 
 ### Additional service methods
 
-Add trait `ExtraUtils` or `ExtraAssertions` to the class that contains tests or to the common base test class. After
+Add trait `ExtraUtils` to the class that contains tests or to the common base test class. After
 that the following static methods will be available:
 
  - `invokeMethod(object $object, string $methodName, ?array $parameters = null)` invokes protected or private method
