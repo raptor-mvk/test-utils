@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 use Raptor\TestUtils\Command\GenerateIDETestContainersCommand;
 use Raptor\TestUtils\DataLoader\DataLoaderFactory;
 use Raptor\TestUtils\DataLoader\DirectoryDataLoaderFactory;
+use Raptor\TestUtils\Generator\TestDataContainerGenerator;
 use Raptor\TestUtils\WithVFS;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -15,7 +16,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  *
  * @copyright 2019, raptor_MVK
  */
-class GenerateIDETestContainerCommandTests extends TestCase
+final class GenerateIDETestContainerCommandTests extends TestCase
 {
     use WithVFS;
 
@@ -26,9 +27,11 @@ class GenerateIDETestContainerCommandTests extends TestCase
         $this->prepareVFSDirectoryStructure($dirname);
         $dataLoaderFactory = new DataLoaderFactory();
         $directoryDataLoaderFactory = new DirectoryDataLoaderFactory($dataLoaderFactory);
+        $directoryDataLoader = $directoryDataLoaderFactory->createTestContainerGeneratorDataLoader();
+        $generator = new TestDataContainerGenerator($directoryDataLoader);
         $fullPath = $this->getFullPath($dirname);
         $expectedPath = $this->getFullPath('');
-        $command = new GenerateIDETestContainersCommand($directoryDataLoaderFactory, $expectedPath);
+        $command = new GenerateIDETestContainersCommand($generator, $expectedPath);
         $commandTester = new CommandTester($command);
 
         $commandTester->execute(['path' => $fullPath]);

@@ -8,15 +8,16 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use Raptor\TestUtils\DataProcessor\AbstractJSONTestDataProcessor;
 use Raptor\TestUtils\ExtraAssertions;
+use Raptor\TestUtils\ExtraUtils;
 
 /**
  * @author Mikhail Kamorin aka raptor_MVK
  *
  * @copyright 2019, raptor_MVK
  */
-class AbstractJSONTestDataProcessorTests extends TestCase
+final class AbstractJSONTestDataProcessorTests extends TestCase
 {
-    use ExtraAssertions;
+    use ExtraAssertions, ExtraUtils;
 
     /**
      * Checks that method _getProcessed_ returns _null_, if key has not been added previously.

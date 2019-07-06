@@ -10,9 +10,7 @@ use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 use Raptor\TestUtils\DataLoader\DataLoader;
 use Raptor\TestUtils\DataLoader\DirectoryDataLoader;
-use Raptor\TestUtils\DataProcessor\DataProcessor;
-use Raptor\TestUtils\DataProcessor\TestContainerGeneratorDataProcessor;
-use Raptor\TestUtils\DataProcessor\TestContainerWrapperDataProcessor;
+use Raptor\TestUtils\DataLoader\DirectoryProcessedDataLoader;
 use Raptor\TestUtils\Exceptions\DataDirectoryNotFoundException;
 use Raptor\TestUtils\ExtraAssertions;
 use Raptor\TestUtils\WithVFS;
@@ -22,7 +20,7 @@ use Raptor\TestUtils\WithVFS;
  *
  * @copyright 2019, raptor_MVK
  */
-class DirectoryDataLoaderTests extends TestCase
+final class DirectoryProcessedDataLoaderTests extends TestCase
 {
     use MockeryPHPUnitIntegration, ExtraAssertions, WithVFS;
 
@@ -34,35 +32,17 @@ class DirectoryDataLoaderTests extends TestCase
 
     /**
      * Checks that method _getDataProcessorClass_ returns correct class.
-     *
-     * @param DataProcessor $dataProcessor
-     * @param string $expectedClass
-     *
-     * @dataProvider dataProcessorClassDataProvider
      */
-    public function testGetDataProcessorClassReturnsCorrectClass(
-        DataProcessor $dataProcessor,
-        string $expectedClass
-    ): void {
-        $dataLoader = new DataLoader($dataProcessor);
-        $directoryDataLoader = new DirectoryDataLoader($dataLoader);
+    public function testGetDataProcessorClassReturnsCorrectClass(): void {
+        $expectedClass = DataLoader::class;
+        /** @var DataLoader|MockInterface $dataLoader */
+        $dataLoader = Mockery::mock(DataLoader::class);
+        $dataLoader->shouldReceive('getDataProcessorClass')->withNoArgs()->andReturn($expectedClass);
+        $directoryDataLoader = new DirectoryProcessedDataLoader($dataLoader);
 
         $actualClass = $directoryDataLoader->getDataProcessorClass();
 
         static::assertSame($expectedClass, $actualClass);
-    }
-
-    /**
-     * Provides test data for testing method _getDataProcessorClass_.
-     *
-     * @return array [ [ dataProcessor, expectedClass ], ... ]
-     */
-    public function dataProcessorClassDataProvider(): array
-    {
-        return [
-            'wrapper' => [new TestContainerWrapperDataProcessor(), TestContainerWrapperDataProcessor::class],
-            'generator' => [new TestContainerGeneratorDataProcessor(), TestContainerGeneratorDataProcessor::class]
-        ];
     }
 
     /**
@@ -92,7 +72,7 @@ class DirectoryDataLoaderTests extends TestCase
         if ($dataLoaderMockCallback !== null) {
             $dataLoaderMockCallback($dataLoaderMock);
         }
-        return new DirectoryDataLoader($dataLoaderMock);
+        return new DirectoryProcessedDataLoader($dataLoaderMock);
     }
 
     /**

@@ -13,7 +13,7 @@ use Raptor\TestUtils\DataProcessor\TestContainerWrapperDataProcessor;
  *
  * @copyright 2019, raptor_MVK
  */
-class DataLoaderFactoryTests extends TestCase
+final class DataLoaderFactoryTests extends TestCase
 {
     /**
      * Checks that factory method _createTestContainerWrapperDataLoader_ returns DataLoader with

@@ -8,6 +8,7 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 use Raptor\TestUtils\DataLoader\DataLoader;
+use Raptor\TestUtils\DataLoader\ProcessedDataLoader;
 use Raptor\TestUtils\DataProcessor\DataProcessor;
 use Raptor\TestUtils\DataProcessor\TestContainerGeneratorDataProcessor;
 use Raptor\TestUtils\DataProcessor\TestContainerWrapperDataProcessor;
@@ -20,7 +21,7 @@ use Raptor\TestUtils\WithVFS;
  *
  * @copyright 2019, raptor_MVK
  */
-class DataLoaderTests extends TestCase
+final class ProcessedDataLoaderTests extends TestCase
 {
     use MockeryPHPUnitIntegration, ExtraAssertions, WithVFS;
 
@@ -34,19 +35,15 @@ class DataLoaderTests extends TestCase
      * Checks that method _getDataProcessorClass_ returns correct class.
      *
      * @param DataProcessor $dataProcessor
-     * @param string $expectedClass
      *
      * @dataProvider dataProcessorClassDataProvider
      */
-    public function testGetDataProcessorClassReturnsCorrectClass(
-        DataProcessor $dataProcessor,
-        string $expectedClass
-    ): void {
-        $dataLoader = new DataLoader($dataProcessor);
+    public function testGetDataProcessorClassReturnsCorrectClass(DataProcessor $dataProcessor): void {
+        $dataLoader = new ProcessedDataLoader($dataProcessor);
 
         $actualClass = $dataLoader->getDataProcessorClass();
 
-        static::assertSame($expectedClass, $actualClass);
+        static::assertSame(\get_class($dataProcessor), $actualClass);
     }
 
     /**
@@ -57,8 +54,8 @@ class DataLoaderTests extends TestCase
     public function dataProcessorClassDataProvider(): array
     {
         return [
-            'wrapper' => [new TestContainerWrapperDataProcessor(), TestContainerWrapperDataProcessor::class],
-            'generator' => [new TestContainerGeneratorDataProcessor(), TestContainerGeneratorDataProcessor::class]
+            'wrapper' => [new TestContainerWrapperDataProcessor()],
+            'generator' => [new TestContainerGeneratorDataProcessor()]
         ];
     }
 
@@ -89,7 +86,7 @@ class DataLoaderTests extends TestCase
         if ($dataProcessorMockCallback !== null) {
             $dataProcessorMockCallback($dataProcessorMock);
         }
-        return new DataLoader($dataProcessorMock);
+        return new ProcessedDataLoader($dataProcessorMock);
     }
 
     /**

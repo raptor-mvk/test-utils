@@ -13,7 +13,7 @@ use RaptorTests\TestUtils\Utils\InvokeMethodTestObject;
  *
  * @copyright 2019, raptor_MVK
  */
-class ExtraUtilsTests extends TestCase
+final class ExtraUtilsTests extends TestCase
 {
     use ExtraUtils;
 

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Raptor\TestUtils\TestDataContainerGenerator;
+namespace Raptor\TestUtils\Generator;
 
 use Raptor\TestUtils\DataLoader\DirectoryDataLoader;
 use Raptor\TestUtils\DataProcessor\TestContainerGeneratorDataProcessor;
@@ -14,7 +14,7 @@ use Raptor\TestUtils\Exceptions\DataDirectoryNotFoundException;
  *
  * @copyright 2019, raptor_MVK
  */
-class TestDataContainerGenerator
+final class TestDataContainerGenerator implements Generator
 {
     /** @var DirectoryDataLoader $directoryDataLoader */
     private $directoryDataLoader;

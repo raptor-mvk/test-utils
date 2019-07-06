@@ -10,7 +10,7 @@ namespace Raptor\TestUtils\DataLoader;
  *
  * @copyright 2019, raptor_MVK
  */
-class DirectoryDataLoaderFactory
+final class DirectoryDataLoaderFactory
 {
     /** @var DataLoaderFactory $dataLoaderFactory */
     private $dataLoaderFactory;
@@ -32,6 +32,6 @@ class DirectoryDataLoaderFactory
     public function createTestContainerGeneratorDataLoader(): DirectoryDataLoader
     {
         $dataLoader = $this->dataLoaderFactory->createTestContainerGeneratorDataLoader();
-        return new DirectoryDataLoader($dataLoader);
+        return new DirectoryProcessedDataLoader($dataLoader);
     }
 }

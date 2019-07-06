@@ -3,8 +3,7 @@ declare(strict_types=1);
 
 namespace Raptor\TestUtils\Command;
 
-use Raptor\TestUtils\DataLoader\DirectoryDataLoaderFactory;
-use Raptor\TestUtils\TestDataContainerGenerator\TestDataContainerGenerator;
+use Raptor\TestUtils\Generator\Generator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,22 +17,22 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @copyright 2019, raptor_MVK
  */
-class GenerateIDETestContainersCommand extends Command
+final class GenerateIDETestContainersCommand extends Command
 {
-    /** @var DirectoryDataLoaderFactory $directoryDataLoaderFactory */
-    private $directoryDataLoaderFactory;
+    /** @var Generator $generator */
+    private $generator;
 
     /** @var string $filePath */
     private $filePath;
 
     /**
-     * @param DirectoryDataLoaderFactory $directoryDataLoaderFactory
+     * @param Generator $generator
      * @param string $filePath path to file that should be generated
      */
-    public function __construct(DirectoryDataLoaderFactory $directoryDataLoaderFactory, string $filePath)
+    public function __construct(Generator $generator, string $filePath)
     {
         parent::__construct();
-        $this->directoryDataLoaderFactory = $directoryDataLoaderFactory;
+        $this->generator = $generator;
         $this->filePath = $filePath;
     }
 
@@ -52,10 +51,8 @@ class GenerateIDETestContainersCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        $directoryDataLoader = $this->directoryDataLoaderFactory->createTestContainerGeneratorDataLoader();
         $path = $input->getArgument('path');
-        $testDataContainerGenerator = new TestDataContainerGenerator($directoryDataLoader);
-        $content = $testDataContainerGenerator->generate($path);
+        $content = $this->generator->generate($path);
         file_put_contents("{$this->filePath}/_ide_test_container.php", $content);
     }
 }

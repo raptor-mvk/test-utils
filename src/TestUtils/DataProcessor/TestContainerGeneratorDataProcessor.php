@@ -10,7 +10,7 @@ namespace Raptor\TestUtils\DataProcessor;
  *
  * @copyright 2019, raptor_MVK
  */
-class TestContainerGeneratorDataProcessor extends AbstractJSONTestDataProcessor
+final class TestContainerGeneratorDataProcessor extends AbstractJSONTestDataProcessor
 {
     // constant values are used as return type hint in service file
 

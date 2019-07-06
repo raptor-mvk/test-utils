@@ -8,14 +8,14 @@ use PHPUnit\Framework\TestCase;
 use Raptor\TestUtils\DataLoader\DirectoryDataLoader;
 use Raptor\TestUtils\DataProcessor\TestContainerGeneratorDataProcessor;
 use Raptor\TestUtils\ExtraAssertions;
-use Raptor\TestUtils\TestDataContainerGenerator\TestDataContainerGenerator;
+use Raptor\TestUtils\Generator\TestDataContainerGenerator;
 
 /**
  * @author Mikhail Kamorin aka raptor_MVK
  *
  * @copyright 2019, raptor_MVK
  */
-class TestDataContainerGeneratorTests extends TestCase
+final class TestDataContainerGeneratorTests extends TestCase
 {
     use ExtraAssertions;
 

@@ -13,7 +13,7 @@ use Raptor\TestUtils\WithVFS;
  *
  * @copyright 2019, raptor_MVK
  */
-class WithVFSTests extends TestCase
+final class WithVFSTests extends TestCase
 {
     use WithVFS, ExtraAssertions;
 
