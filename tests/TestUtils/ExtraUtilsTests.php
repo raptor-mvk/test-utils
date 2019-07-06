@@ -24,7 +24,7 @@ class ExtraUtilsTests extends TestCase
     {
         $method = 'replace';
         $this->expectException(BadMethodException::class);
-        $this->expectExceptionMessageRegExp("/^Method $method was not found\.$/");
+        $this->expectExceptionMessage("Method $method was not found.");
 
         $object = new InvokeMethodTestObject();
 

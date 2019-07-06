@@ -68,13 +68,11 @@ class DataLoaderTests extends TestCase
     public function testLoadThrowsDataFileNotFoundForNonExistingFile(): void
     {
         $filename = 'nonexistent.json';
-        $escapedFilename = $this->getEscapedFullPath($filename);
-        $this->expectException(DataFileNotFoundException::class);
-        $this->expectExceptionMessageRegExp("/^Data file $escapedFilename was not found\.$/");
-
         $fullFilename = $this->getFullPath($filename);
-        $dataLoader = $this->prepareDataLoader();
+        $this->expectException(DataFileNotFoundException::class);
+        $this->expectExceptionMessage("Data file $fullFilename was not found.");
 
+        $dataLoader = $this->prepareDataLoader();
         $dataLoader->load($fullFilename);
     }
 
@@ -101,13 +99,11 @@ class DataLoaderTests extends TestCase
     {
         $filename = 'forbidden.json';
         $this->addFileToVFS($filename, 0);
-        $escapedFilename = $this->getEscapedFullPath($filename);
-        $this->expectException(DataFileNotFoundException::class);
-        $this->expectExceptionMessageRegExp("/^Data file $escapedFilename was not found.$/");
-
         $fullFilename = $this->getFullPath($filename);
-        $dataLoader = $this->prepareDataLoader();
+        $this->expectException(DataFileNotFoundException::class);
+        $this->expectExceptionMessage("Data file $fullFilename was not found.");
 
+        $dataLoader = $this->prepareDataLoader();
         $dataLoader->load($fullFilename);
     }
 
@@ -118,13 +114,11 @@ class DataLoaderTests extends TestCase
     {
         $dirname = 'accessible_dir';
         $this->addDirectoryToVFS($dirname);
-        $escapedFilename = $this->getEscapedFullPath($dirname);
-        $this->expectException(DataFileNotFoundException::class);
-        $this->expectExceptionMessageRegExp("/^Data file $escapedFilename was not found.$/");
-
         $fullFilename = $this->getFullPath($dirname);
-        $dataLoader = $this->prepareDataLoader();
+        $this->expectException(DataFileNotFoundException::class);
+        $this->expectExceptionMessage("Data file $fullFilename was not found.");
 
+        $dataLoader = $this->prepareDataLoader();
         $dataLoader->load($fullFilename);
     }
 

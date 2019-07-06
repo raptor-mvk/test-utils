@@ -24,7 +24,7 @@ class WithVFSTests extends TestCase
     public function testGetFullPathThrowsVFSNotInitializedWithoutSetupVFS(): void
     {
         $this->expectException(VFSNotInitializedException::class);
-        $this->expectExceptionMessageRegExp('/^Method setupVFS should be used\.$/');
+        $this->expectExceptionMessage('Method setupVFS should be used.');
 
         $this->getFullPath('some_file.json');
     }
@@ -36,7 +36,7 @@ class WithVFSTests extends TestCase
     public function testGetEscapedFullPathThrowsVFSNotInitializedWithoutSetupVFS(): void
     {
         $this->expectException(VFSNotInitializedException::class);
-        $this->expectExceptionMessageRegExp('/^Method setupVFS should be used\.$/');
+        $this->expectExceptionMessage('Method setupVFS should be used.');
 
         $this->getEscapedFullPath('other_file.json');
     }
@@ -122,7 +122,7 @@ class WithVFSTests extends TestCase
     public function testAddDirectoryToVFSThrowsVFSNotInitializedWithoutSetupVFS(): void
     {
         $this->expectException(VFSNotInitializedException::class);
-        $this->expectExceptionMessageRegExp('/^Method setupVFS should be used\.$/');
+        $this->expectExceptionMessage('Method setupVFS should be used.');
 
         $this->addDirectoryToVFS('any_directory');
     }
@@ -167,7 +167,7 @@ class WithVFSTests extends TestCase
     public function testAddStructureToVFSThrowsVFSNotInitializedWithoutSetupVFS(): void
     {
         $this->expectException(VFSNotInitializedException::class);
-        $this->expectExceptionMessageRegExp('/^Method setupVFS should be used\.$/');
+        $this->expectExceptionMessage('Method setupVFS should be used.');
         $structure = ['any_folder' => []];
 
         $this->addStructureToVFS($structure);

@@ -89,6 +89,6 @@ class AbstractJSONTestDataProcessorTests extends TestCase
 
         $actual = static::invokeMethod($dataProcessor, 'hasProcessed', [$key]);
 
-        static::assertTrue($actual, 'Method hasProcessed should return true for existent key');
+        static::assertTrue($actual, 'Method hasProcessed should return true for existing key');
     }
 }

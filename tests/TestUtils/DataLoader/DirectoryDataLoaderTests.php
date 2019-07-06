@@ -71,14 +71,12 @@ class DirectoryDataLoaderTests extends TestCase
     public function testLoadThrowsDataDirectoryNotFoundForNonExistingDir(): void
     {
         $dirname = 'nonexistent';
-        $escapedPath = $this->getEscapedFullPath($dirname);
+        $fullPath = $this->getFullPath($dirname);
         $this->expectException(DataDirectoryNotFoundException::class);
-        $this->expectExceptionMessageRegExp("/^Root folder $escapedPath was not found\.$/");
+        $this->expectExceptionMessage("Root folder $fullPath was not found.");
 
-        $path = $this->getFullPath($dirname);
         $directoryDataLoader = $this->prepareDirectoryDataLoader();
-
-        $directoryDataLoader->load($path, '/^.*\..*$/');
+        $directoryDataLoader->load($fullPath, '/^.*\..*$/');
     }
 
     /**
@@ -104,14 +102,12 @@ class DirectoryDataLoaderTests extends TestCase
     {
         $dirname = 'forbidden';
         $this->addDirectoryToVFS($dirname, 0);
-        $escapedPath = $this->getEscapedFullPath($dirname);
+        $fullPath = $this->getFullPath($dirname);
         $this->expectException(DataDirectoryNotFoundException::class);
-        $this->expectExceptionMessageRegExp("/^Root folder $escapedPath was not found\.$/");
+        $this->expectExceptionMessage("Root folder $fullPath was not found.");
 
-        $path = $this->getFullPath($dirname);
         $directoryDataLoader = $this->prepareDirectoryDataLoader();
-
-        $directoryDataLoader->load($path, '/^.*\..*$/');
+        $directoryDataLoader->load($fullPath, '/^.*\..*$/');
     }
 
     /**
@@ -121,14 +117,12 @@ class DirectoryDataLoaderTests extends TestCase
     {
         $filename = 'accessible.json';
         $this->addFileToVFS($filename);
-        $escapedPath = $this->getEscapedFullPath($filename);
+        $fullPath = $this->getFullPath($filename);
         $this->expectException(DataDirectoryNotFoundException::class);
-        $this->expectExceptionMessageRegExp("/^Root folder $escapedPath was not found\.$/");
+        $this->expectExceptionMessage("Root folder $fullPath was not found.");
 
-        $path = $this->getFullPath($filename);
         $directoryDataLoader = $this->prepareDirectoryDataLoader();
-
-        $directoryDataLoader->load($path, '/^.*\..*$/');
+        $directoryDataLoader->load($fullPath, '/^.*\..*$/');
     }
 
     /**
