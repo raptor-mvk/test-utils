@@ -75,8 +75,11 @@ class TestContainerGeneratorDataProcessor extends AbstractJSONTestDataProcessor
      */
     private function getNewType(string $checkedType, string $currentType): string
     {
-        return ((($currentType === self::INT_TYPE) && ($checkedType === self::FLOAT_TYPE)) ||
-            (($currentType === self::FLOAT_TYPE) && ($checkedType === self::INT_TYPE))) ? static::FLOAT_TYPE :
-            static::MIXED_TYPE;
+        $actualTypes = [$currentType, $checkedType];
+        $intAndFloat = [self::INT_TYPE, self::FLOAT_TYPE];
+
+        return array_diff($actualTypes, $intAndFloat) === []
+            ? static::FLOAT_TYPE
+            : static::MIXED_TYPE;
     }
 }
