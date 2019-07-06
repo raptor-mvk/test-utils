@@ -13,7 +13,7 @@ use Raptor\TestUtils\DataProcessor\TestContainerGeneratorDataProcessor;
  *
  * @copyright 2019, raptor_MVK
  */
-class DirectoryDataLoaderFactoryTests extends TestCase
+final class DirectoryDataLoaderFactoryTests extends TestCase
 {
     /**
      * Checks that factory method _createTestContainerGeneratorDataLoader_ returns DirectoryDataLoader with

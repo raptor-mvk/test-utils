@@ -14,7 +14,7 @@ use Raptor\TestUtils\WithVFS;
  *
  * @copyright 2019, raptor_MVK
  */
-class WithDataLoaderTests extends TestCase
+final class WithDataLoaderTests extends TestCase
 {
     use ExtraAssertions, WithVFS, WithDataLoader;
 

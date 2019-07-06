@@ -14,7 +14,7 @@ use Raptor\TestUtils\ExtraAssertions;
  *
  * @copyright 2019, raptor_MVK
  */
-class AbstractJSONTestDataProcessorTests extends TestCase
+final class AbstractJSONTestDataProcessorTests extends TestCase
 {
     use ExtraAssertions;
 

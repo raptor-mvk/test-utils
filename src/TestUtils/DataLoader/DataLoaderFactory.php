@@ -13,7 +13,7 @@ use Raptor\TestUtils\DataProcessor\TestContainerWrapperDataProcessor;
  *
  * @copyright 2019, raptor_MVK
  */
-class DataLoaderFactory
+final class DataLoaderFactory
 {
     /**
      * Creates data loader for test data wrapped into test data containers.

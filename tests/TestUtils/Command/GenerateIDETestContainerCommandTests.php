@@ -15,7 +15,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  *
  * @copyright 2019, raptor_MVK
  */
-class GenerateIDETestContainerCommandTests extends TestCase
+final class GenerateIDETestContainerCommandTests extends TestCase
 {
     use WithVFS;
 

@@ -17,7 +17,7 @@ use Raptor\TestUtils\ExtraAssertions;
  *
  * @copyright 2019, raptor_MVK
  */
-class CommonTestContainerDataProcessorTests extends TestCase
+final class CommonTestContainerDataProcessorTests extends TestCase
 {
     use ExtraAssertions;
 

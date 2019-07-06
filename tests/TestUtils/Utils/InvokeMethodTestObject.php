@@ -10,7 +10,7 @@ namespace RaptorTests\TestUtils\Utils;
  *
  * @copyright 2019, raptor_MVK
  */
-class InvokeMethodTestObject
+final class InvokeMethodTestObject
 {
     /**
      * Reverses input string.

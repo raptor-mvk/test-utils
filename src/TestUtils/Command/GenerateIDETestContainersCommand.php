@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Raptor\TestUtils\Command;
 
 use Raptor\TestUtils\DataLoader\DirectoryDataLoaderFactory;
-use Raptor\TestUtils\TestDataContainerGenerator\TestDataContainerGenerator;
+use Raptor\TestUtils\Generator\TestDataContainerGenerator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,7 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @copyright 2019, raptor_MVK
  */
-class GenerateIDETestContainersCommand extends Command
+final class GenerateIDETestContainersCommand extends Command
 {
     /** @var DirectoryDataLoaderFactory $directoryDataLoaderFactory */
     private $directoryDataLoaderFactory;
