@@ -51,12 +51,14 @@ final class DirectoryProcessedDataLoaderTests extends TestCase
     public function testLoadThrowsDataDirectoryNotFoundForNonExistingDir(): void
     {
         $dirname = 'nonexistent';
-        $fullPath = $this->getFullPath($dirname);
+        $escapedPath = $this->getEscapedFullPath($dirname);
         $this->expectException(DataDirectoryNotFoundException::class);
-        $this->expectExceptionMessage("Root folder $fullPath was not found.");
+        $this->expectExceptionMessageRegExp("/^Root folder $escapedPath was not found\.$/");
 
+        $path = $this->getFullPath($dirname);
         $directoryDataLoader = $this->prepareDirectoryDataLoader();
-        $directoryDataLoader->load($fullPath, '/^.*\..*$/');
+
+        $directoryDataLoader->load($path, '/^.*\..*$/');
     }
 
     /**
@@ -82,12 +84,14 @@ final class DirectoryProcessedDataLoaderTests extends TestCase
     {
         $dirname = 'forbidden';
         $this->addDirectoryToVFS($dirname, 0);
-        $fullPath = $this->getFullPath($dirname);
+        $escapedPath = $this->getEscapedFullPath($dirname);
         $this->expectException(DataDirectoryNotFoundException::class);
-        $this->expectExceptionMessage("Root folder $fullPath was not found.");
+        $this->expectExceptionMessageRegExp("/^Root folder $escapedPath was not found\.$/");
 
+        $path = $this->getFullPath($dirname);
         $directoryDataLoader = $this->prepareDirectoryDataLoader();
-        $directoryDataLoader->load($fullPath, '/^.*\..*$/');
+
+        $directoryDataLoader->load($path, '/^.*\..*$/');
     }
 
     /**
@@ -97,12 +101,14 @@ final class DirectoryProcessedDataLoaderTests extends TestCase
     {
         $filename = 'accessible.json';
         $this->addFileToVFS($filename);
-        $fullPath = $this->getFullPath($filename);
+        $escapedPath = $this->getEscapedFullPath($filename);
         $this->expectException(DataDirectoryNotFoundException::class);
-        $this->expectExceptionMessage("Root folder $fullPath was not found.");
+        $this->expectExceptionMessageRegExp("/^Root folder $escapedPath was not found\.$/");
 
+        $path = $this->getFullPath($filename);
         $directoryDataLoader = $this->prepareDirectoryDataLoader();
-        $directoryDataLoader->load($fullPath, '/^.*\..*$/');
+
+        $directoryDataLoader->load($path, '/^.*\..*$/');
     }
 
     /**

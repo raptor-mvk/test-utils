@@ -65,11 +65,13 @@ final class ProcessedDataLoaderTests extends TestCase
     public function testLoadThrowsDataFileNotFoundForNonExistingFile(): void
     {
         $filename = 'nonexistent.json';
-        $fullFilename = $this->getFullPath($filename);
+        $escapedFilename = $this->getEscapedFullPath($filename);
         $this->expectException(DataFileNotFoundException::class);
-        $this->expectExceptionMessage("Data file $fullFilename was not found.");
+        $this->expectExceptionMessageRegExp("/^Data file $escapedFilename was not found\.$/");
 
+        $fullFilename = $this->getFullPath($filename);
         $dataLoader = $this->prepareDataLoader();
+
         $dataLoader->load($fullFilename);
     }
 
@@ -96,11 +98,13 @@ final class ProcessedDataLoaderTests extends TestCase
     {
         $filename = 'forbidden.json';
         $this->addFileToVFS($filename, 0);
-        $fullFilename = $this->getFullPath($filename);
+        $escapedFilename = $this->getEscapedFullPath($filename);
         $this->expectException(DataFileNotFoundException::class);
-        $this->expectExceptionMessage("Data file $fullFilename was not found.");
+        $this->expectExceptionMessageRegExp("/^Data file $escapedFilename was not found.$/");
 
+        $fullFilename = $this->getFullPath($filename);
         $dataLoader = $this->prepareDataLoader();
+
         $dataLoader->load($fullFilename);
     }
 
@@ -111,11 +115,13 @@ final class ProcessedDataLoaderTests extends TestCase
     {
         $dirname = 'accessible_dir';
         $this->addDirectoryToVFS($dirname);
-        $fullFilename = $this->getFullPath($dirname);
+        $escapedFilename = $this->getEscapedFullPath($dirname);
         $this->expectException(DataFileNotFoundException::class);
-        $this->expectExceptionMessage("Data file $fullFilename was not found.");
+        $this->expectExceptionMessageRegExp("/^Data file $escapedFilename was not found.$/");
 
+        $fullFilename = $this->getFullPath($dirname);
         $dataLoader = $this->prepareDataLoader();
+
         $dataLoader->load($fullFilename);
     }
 

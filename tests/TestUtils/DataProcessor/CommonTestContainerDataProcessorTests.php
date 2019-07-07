@@ -33,10 +33,10 @@ final class CommonTestContainerDataProcessorTests extends TestCase
     public function testProcessThrowDataParseExceptionWithCorrectMessage(
         string $dataProcessorClass,
         string $json,
-        string $expectedMessage
+        string $messageRegExp
     ): void {
         $this->expectException(DataParseException::class);
-        $this->expectExceptionMessage($expectedMessage);
+        $this->expectExceptionMessageRegExp($messageRegExp);
 
         /** @var DataProcessor $dataProcessor */
         $dataProcessor = new $dataProcessorClass();
@@ -91,7 +91,7 @@ final class CommonTestContainerDataProcessorTests extends TestCase
      */
     private function prepareJsonSyntaxErrorTestData(): array
     {
-        return ['json syntax error' => ['{"some_field":"some_value}', 'JSON parse error.']];
+        return ['json syntax error' => ['{"some_field":"some_value}', '/^JSON parse error\.$/']];
     }
 
     /**
@@ -109,9 +109,9 @@ final class CommonTestContainerDataProcessorTests extends TestCase
         $thirdLevelJson =
             json_encode([['_name' => 'test2'], ['_name' => 'test3'], ['_children' => $thirdLevelChildren]]);
         return [
-            'not array, top level' => [$topLevelJson, 'Expected array, object found at level root.'],
-            'not array, second level' => [$secondLevelJson, 'Expected array, object found at level root.1.'],
-            'not array, third level' => [$thirdLevelJson, 'Expected array, object found at level root.2.2.']
+            'not array, top level' => [$topLevelJson, '/^Expected array, object found at level root\.$/'],
+            'not array, second level' => [$secondLevelJson, '/^Expected array, object found at level root.1\.$/'],
+            'not array, third level' => [$thirdLevelJson, '/^Expected array, object found at level root.2.2\.$/']
         ];
     }
 
@@ -128,9 +128,9 @@ final class CommonTestContainerDataProcessorTests extends TestCase
         $thirdLevelChildren = [['_name' => 'test2'], ['_name' => 'test3'], ['string' => 'text', 'float' => 3.6]];
         $thirdLevelJson = json_encode([['_children' => [['_name' => 'name'], ['_children' => $thirdLevelChildren]]]]);
         return [
-            'no name, top level' => [$topLevelJson, 'Test name not found at level root.0.'],
-            'no name, second level' => [$secondLevelJson, 'Test name not found at level root.0.1.'],
-            'no name, third level' => [$thirdLevelJson, 'Test name not found at level root.0.1.2.']
+            'no name, top level' => [$topLevelJson, '/^Test name not found at level root.0\.$/'],
+            'no name, second level' => [$secondLevelJson, '/^Test name not found at level root.0.1\.$/'],
+            'no name, third level' => [$thirdLevelJson, '/^Test name not found at level root.0.1.2\.$/']
         ];
     }
 
@@ -147,10 +147,10 @@ final class CommonTestContainerDataProcessorTests extends TestCase
         $floatJson = json_encode([['_name' => 'test2'], ['_name' => 'test3'], ['_children' => $floatChildren]]);
         $arrayJson = json_encode([['_name' => ['some', 'name']]]);
         return [
-            'int name on top level' => [$intJson, 'Test name is not string at level root.0.'],
-            'bool name on second level' => [$boolJson, 'Test name is not string at level root.1.0.'],
-            'float name on third level' => [$floatJson, 'Test name is not string at level root.2.2.0.'],
-            'array name on top level' => [$arrayJson, 'Test name is not string at level root.0.']
+            'int name on top level' => [$intJson, '/^Test name is not string at level root.0\.$/'],
+            'bool name on second level' => [$boolJson, '/^Test name is not string at level root.1.0\.$/'],
+            'float name on third level' => [$floatJson, '/^Test name is not string at level root.2.2.0\.$/'],
+            'array name on top level' => [$arrayJson, '/^Test name is not string at level root.0\.$/']
         ];
     }
 
@@ -167,9 +167,9 @@ final class CommonTestContainerDataProcessorTests extends TestCase
         $thirdLevelJson =
             json_encode([['_name' => 'test2'], ['_name' => 'test3'], ['_children' => $thirdLevelChildren]]);
         return [
-            'empty name, top level' => [$topLevelJson, 'Empty test name at level root.0.'],
-            'empty name, second level' => [$secondLevelJson, 'Empty test name at level root.1.0.'],
-            'empty name, third level' => [$thirdLevelJson, 'Empty test name at level root.2.2.0.']
+            'empty name, top level' => [$topLevelJson, '/^Empty test name at level root.0\.$/'],
+            'empty name, second level' => [$secondLevelJson, '/^Empty test name at level root.1.0\.$/'],
+            'empty name, third level' => [$thirdLevelJson, '/^Empty test name at level root.2.2.0\.$/']
         ];
     }
 
@@ -189,11 +189,11 @@ final class CommonTestContainerDataProcessorTests extends TestCase
             json_encode([['_name' => 'test2'], ['_name' => 'test3'], ['_children' => $thirdLevelChildren]]);
         return [
             'unknown special field, top level' =>
-                [$topLevelJson, 'Unknown service field _field at level root.0.'],
+                [$topLevelJson, '/^Unknown service field _field at level root.0\.$/'],
             'unknown special field, second level' =>
-                [$secondLevelJson, 'Unknown service field _other at level root.1.0.'],
+                [$secondLevelJson, '/^Unknown service field _other at level root.1.0\.$/'],
             'unknown special field, third level' =>
-                [$thirdLevelJson, 'Unknown service field _unknown at level root.2.2.0.']
+                [$thirdLevelJson, '/^Unknown service field _unknown at level root.2.2.0\.$/']
         ];
     }
 
@@ -212,13 +212,13 @@ final class CommonTestContainerDataProcessorTests extends TestCase
         $digitJson = json_encode([['_name' => 'name', 'field163' => 3]]);
         return [
             'uppercase letters in field name' =>
-                [$uppercaseJson, 'Field name FIELD at level root.0 contains forbidden characters.'],
+                [$uppercaseJson, '/^Field name FIELD at level root.0 contains forbidden characters\.$/'],
             'special characters in field name' =>
-                [$specialJson, 'Field name !@#$%^&*() at level root.1.0 contains forbidden characters.'],
+                [$specialJson, '/^Field name !@#\$%\^&\*\(\) at level root.1.0 contains forbidden characters\.$/'],
             'spaces in field name' =>
-                [$spacesJson, 'Field name some field at level root.2.2.0 contains forbidden characters.'],
+                [$spacesJson, '/^Field name some field at level root.2.2.0 contains forbidden characters\.$/'],
             'digits in field name' =>
-                [$digitJson, 'Field name field163 at level root.0 contains forbidden characters.']
+                [$digitJson, '/^Field name field163 at level root.0 contains forbidden characters\.$/']
         ];
     }
 
@@ -239,11 +239,11 @@ final class CommonTestContainerDataProcessorTests extends TestCase
             json_encode([['_name' => 'test2'], ['_name' => 'test3'], ['_children' => $thirdLevelChildren]]);
         return [
             'name and children, top level' =>
-                [$topLevelJson, 'Element at level root.0 contains both name and child elements.'],
+                [$topLevelJson, '/^Element at level root.0 contains both name and child elements\.$/'],
             'name and children, second level' =>
-                [$secondLevelJson, 'Element at level root.1.0 contains both name and child elements.'],
+                [$secondLevelJson, '/^Element at level root.1.0 contains both name and child elements\.$/'],
             'name and children, third level' =>
-                [$thirdLevelJson, 'Element at level root.2.2.0 contains both name and child elements.']
+                [$thirdLevelJson, '/^Element at level root.2.2.0 contains both name and child elements\.$/']
         ];
     }
 }

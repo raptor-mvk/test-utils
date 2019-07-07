@@ -79,12 +79,11 @@ final class TestContainerWrapperDataProcessorTests extends TestCase
 
         $actual = $dataProcessor->process($testData);
 
-        static::assertContainsOnly(
-            TestDataContainer::class,
-            $actual,
-            false,
-            'All elements of resulting array should be instances of TestContainer'
-        );
+        $result = true;
+        foreach ($actual as $value) {
+            $result = $result && ($value instanceof TestDataContainer);
+        }
+        static::assertTrue($result, 'All elements of resulting array should be instances of TestContainer');
     }
 
     /**
