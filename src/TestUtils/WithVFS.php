@@ -11,6 +11,7 @@ use Raptor\TestUtils\Exceptions\VFSNotInitializedException;
  * Trait that provides adapted interface for _mikey179/vfsstream_.
  *
  * @author Mikhail Kamorin aka raptor_MVK
+ * @author Igor Vodka
  *
  * @copyright 2019, raptor_MVK
  */
@@ -40,9 +41,7 @@ trait WithVFS
      */
     protected function addFileToVFS(string $filename, ?int $permissions = null, ?string $content = null): void
     {
-        if ($this->root === null) {
-            throw new VFSNotInitializedException('Method setupVFS should be used.');
-        }
+        $this->assertVfsHasBeenSetUp();
         $file = vfsStream::newFile($filename, $permissions);
         if ($content !== null) {
             $file->withContent($content);
@@ -60,9 +59,7 @@ trait WithVFS
      */
     protected function addDirectoryToVFS(string $dirname, ?int $permissions = null): void
     {
-        if ($this->root === null) {
-            throw new VFSNotInitializedException('Method setupVFS should be used.');
-        }
+        $this->assertVfsHasBeenSetUp();
         $directory = vfsStream::newDirectory($dirname, $permissions);
         $this->root->addChild($directory);
     }
@@ -77,9 +74,7 @@ trait WithVFS
      */
     protected function addStructureToVFS(array $structure): void
     {
-        if ($this->root === null) {
-            throw new VFSNotInitializedException('Method setupVFS should be used.');
-        }
+        $this->assertVfsHasBeenSetUp();
         vfsStream::create($structure);
     }
 
@@ -92,9 +87,7 @@ trait WithVFS
      */
     protected function getFullPath(string $path): string
     {
-        if ($this->root === null) {
-            throw new VFSNotInitializedException('Method setupVFS should be used.');
-        }
+        $this->assertVfsHasBeenSetUp();
         return "{$this->root->url()}/$path";
     }
 
@@ -108,5 +101,15 @@ trait WithVFS
     protected function getEscapedFullPath(string $path): string
     {
         return str_replace('/', '\/', $this->getFullPath($path));
+    }
+
+    /**
+     * Asserts that setupVFS has been called, and throws exception otherwise.
+     */
+    private function assertVfsHasBeenSetUp(): void
+    {
+        if ($this->root === null) {
+            throw new VFSNotInitializedException('Method setupVFS should be used.');
+        }
     }
 }

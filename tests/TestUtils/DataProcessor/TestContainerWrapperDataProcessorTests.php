@@ -11,6 +11,7 @@ use Raptor\TestUtils\TestDataContainer\TestDataContainer;
 
 /**
  * @author Mikhail Kamorin aka raptor_MVK
+ * @author Igor Vodka
  *
  * @copyright 2019, raptor_MVK
  */
@@ -79,11 +80,8 @@ final class TestContainerWrapperDataProcessorTests extends TestCase
 
         $actual = $dataProcessor->process($testData);
 
-        $result = true;
-        foreach ($actual as $value) {
-            $result = $result && ($value instanceof TestDataContainer);
-        }
-        static::assertTrue($result, 'All elements of resulting array should be instances of TestContainer');
+        $message = 'All elements of resulting array should be instances of TestContainer';
+        static::assertContainsOnly(TestDataContainer::class, $actual, false, $message);
     }
 
     /**

@@ -8,7 +8,7 @@ use Raptor\TestUtils\DataLoader\DataLoaderFactory;
 use Raptor\TestUtils\Exceptions\DataFileNotFoundException;
 
 /**
- * Trait that provides method for easy use DataLoader in data providers.
+ * Trait that provides method for easy usage of DataLoader in data providers.
  *
  * @author Mikhail Kamorin aka raptor_MVK
  *
