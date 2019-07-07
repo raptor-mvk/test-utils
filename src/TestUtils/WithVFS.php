@@ -11,6 +11,7 @@ use Raptor\TestUtils\Exceptions\VFSNotInitializedException;
  * Trait that provides adapted interface for _mikey179/vfsstream_.
  *
  * @author Mikhail Kamorin aka raptor_MVK
+ * @author Igor Vodka
  *
  * @copyright 2019, raptor_MVK
  */

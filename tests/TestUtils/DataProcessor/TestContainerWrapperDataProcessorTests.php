@@ -11,6 +11,7 @@ use Raptor\TestUtils\TestDataContainer\TestDataContainer;
 
 /**
  * @author Mikhail Kamorin aka raptor_MVK
+ * @author Igor Vodka
  *
  * @copyright 2019, raptor_MVK
  */

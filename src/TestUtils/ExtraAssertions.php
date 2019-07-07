@@ -9,6 +9,7 @@ use function is_array;
  * Trait with additional assertions.
  *
  * @author Mikhail Kamorin aka raptor_MVK
+ * @author Igor Vodka
  *
  * @copyright 2019, raptor_MVK
  */
