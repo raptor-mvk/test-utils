@@ -1,4 +1,4 @@
-# Raptor Test Utils v1.1.0
+# Raptor Test Utils v1.2.0
 
 (c) Mikhail Kamorin aka raptor_MVK
 
