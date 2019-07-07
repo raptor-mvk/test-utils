@@ -33,7 +33,8 @@ final class GeneratorDataProcessorTests extends TestCase
      */
     public function testProcessReturnsCorrectResult(string $json, array $expected): void
     {
-        $dataProcessor = new GeneratorDataProcessor(new GetTypeTypeFactory());
+        $typeFactory = new GetTypeTypeFactory();
+        $dataProcessor = new GeneratorDataProcessor($typeFactory);
 
         $actual = $dataProcessor->process($json);
 

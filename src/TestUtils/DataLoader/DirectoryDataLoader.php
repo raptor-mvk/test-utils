@@ -29,13 +29,6 @@ interface DirectoryDataLoader
     public function load(string $path, string $filenameRegExp): array;
 
     /**
-     * Returns classname of data processor. Used for testing purposes.
-     *
-     * @return string
-     */
-    public function getDataProcessorClass(): string;
-
-    /**
      * Returns array of errors that occurred during the last data load. Filenames are array keys.
      *
      * @return array

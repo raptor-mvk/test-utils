@@ -11,13 +11,13 @@ use SplFileInfo;
 use Throwable;
 
 /**
- * Data loader for all files by regexp in the provided folder.
+ * Loads data from all files by regexp in the provided folder recursively.
  *
  * @author Mikhail Kamorin aka raptor_MVK
  *
  * @copyright 2019, raptor_MVK
  */
-final class DirectoryProcessedDataLoader implements DirectoryDataLoader
+final class RecursiveDirectoryDataLoader implements DirectoryDataLoader
 {
     /** @var DataLoader $dataLoader */
     private $dataLoader;
@@ -89,16 +89,6 @@ final class DirectoryProcessedDataLoader implements DirectoryDataLoader
         } catch (Throwable $exception) {
             $this->lastErrors[$filePath] = $exception->getMessage();
         }
-    }
-
-    /**
-     * Returns classname of data processor. Used for testing purposes.
-     *
-     * @return string
-     */
-    public function getDataProcessorClass(): string
-    {
-        return $this->dataLoader->getDataProcessorClass();
     }
 
     /**

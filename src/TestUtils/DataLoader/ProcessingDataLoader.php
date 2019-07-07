@@ -3,18 +3,17 @@ declare(strict_types=1);
 
 namespace Raptor\TestUtils\DataLoader;
 
-use function get_class;
 use Raptor\TestUtils\DataProcessor\DataProcessor;
 use Raptor\TestUtils\Exceptions\DataFileNotFoundException;
 
 /**
- * Loads data and processes it with injected DataProcessor.
+ * Data loader with injected DataProcessor.
  *
  * @author Mikhail Kamorin aka raptor_MVK
  *
  * @copyright 2019, raptor_MVK
  */
-final class ProcessedDataLoader implements DataLoader
+class ProcessingDataLoader implements DataLoader
 {
     /** @var DataProcessor $dataProcessor */
     private $dataProcessor;
@@ -43,15 +42,5 @@ final class ProcessedDataLoader implements DataLoader
         }
         $data = file_get_contents($filename);
         return $this->dataProcessor->process($data);
-    }
-
-    /**
-     * Returns classname of data processor. Used for testing purposes.
-     *
-     * @return string
-     */
-    public function getDataProcessorClass(): string
-    {
-        return get_class($this->dataProcessor);
     }
 }

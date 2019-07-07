@@ -8,22 +8,18 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 use Raptor\TestUtils\DataLoader\DataLoader;
-use Raptor\TestUtils\DataLoader\ProcessedDataLoader;
+use Raptor\TestUtils\DataLoader\ProcessingDataLoader;
 use Raptor\TestUtils\DataProcessor\DataProcessor;
-use Raptor\TestUtils\DataProcessor\GeneratorDataProcessor;
-use Raptor\TestUtils\DataProcessor\TypeFactory\GetTypeTypeFactory;
-use Raptor\TestUtils\DataProcessor\WrapperDataProcessor;
 use Raptor\TestUtils\Exceptions\DataFileNotFoundException;
 use Raptor\TestUtils\ExtraAssertions;
 use Raptor\TestUtils\WithVFS;
-use function get_class;
 
 /**
  * @author Mikhail Kamorin aka raptor_MVK
  *
  * @copyright 2019, raptor_MVK
  */
-final class ProcessedDataLoaderTests extends TestCase
+final class ProcessingDataLoaderTests extends TestCase
 {
     use MockeryPHPUnitIntegration, ExtraAssertions, WithVFS;
 
@@ -31,35 +27,6 @@ final class ProcessedDataLoaderTests extends TestCase
     {
         parent::setUp();
         $this->setupVFS();
-    }
-
-    /**
-     * Checks that method _getDataProcessorClass_ returns correct class.
-     *
-     * @param DataProcessor $dataProcessor
-     *
-     * @dataProvider dataProcessorClassDataProvider
-     */
-    public function testGetDataProcessorClassReturnsCorrectClass(DataProcessor $dataProcessor): void
-    {
-        $dataLoader = new ProcessedDataLoader($dataProcessor);
-
-        $actualClass = $dataLoader->getDataProcessorClass();
-
-        static::assertSame(get_class($dataProcessor), $actualClass);
-    }
-
-    /**
-     * Provides test data for testing method _getDataProcessorClass_.
-     *
-     * @return array [ [ dataProcessor, expectedClass ], ... ]
-     */
-    public function dataProcessorClassDataProvider(): array
-    {
-        return [
-            'wrapper' => [new WrapperDataProcessor()],
-            'generator' => [new GeneratorDataProcessor(new GetTypeTypeFactory())]
-        ];
     }
 
     /**
@@ -91,7 +58,7 @@ final class ProcessedDataLoaderTests extends TestCase
         if ($dataProcessorMockCallback !== null) {
             $dataProcessorMockCallback($dataProcessorMock);
         }
-        return new ProcessedDataLoader($dataProcessorMock);
+        return new ProcessingDataLoader($dataProcessorMock);
     }
 
     /**

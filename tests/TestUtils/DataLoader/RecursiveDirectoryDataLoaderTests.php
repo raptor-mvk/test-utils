@@ -10,7 +10,7 @@ use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 use Raptor\TestUtils\DataLoader\DataLoader;
 use Raptor\TestUtils\DataLoader\DirectoryDataLoader;
-use Raptor\TestUtils\DataLoader\DirectoryProcessedDataLoader;
+use Raptor\TestUtils\DataLoader\RecursiveDirectoryDataLoader;
 use Raptor\TestUtils\Exceptions\DataDirectoryNotFoundException;
 use Raptor\TestUtils\ExtraAssertions;
 use Raptor\TestUtils\WithVFS;
@@ -20,7 +20,7 @@ use Raptor\TestUtils\WithVFS;
  *
  * @copyright 2019, raptor_MVK
  */
-final class DirectoryProcessedDataLoaderTests extends TestCase
+final class RecursiveDirectoryDataLoaderTests extends TestCase
 {
     use MockeryPHPUnitIntegration, ExtraAssertions, WithVFS;
 
@@ -28,22 +28,6 @@ final class DirectoryProcessedDataLoaderTests extends TestCase
     {
         parent::setUp();
         $this->setupVFS();
-    }
-
-    /**
-     * Checks that method _getDataProcessorClass_ returns correct class.
-     */
-    public function testGetDataProcessorClassReturnsCorrectClass(): void
-    {
-        $expectedClass = DataLoader::class;
-        /** @var DataLoader|MockInterface $dataLoader */
-        $dataLoader = Mockery::mock(DataLoader::class);
-        $dataLoader->shouldReceive('getDataProcessorClass')->withNoArgs()->andReturn($expectedClass);
-        $directoryDataLoader = new DirectoryProcessedDataLoader($dataLoader);
-
-        $actualClass = $directoryDataLoader->getDataProcessorClass();
-
-        static::assertSame($expectedClass, $actualClass);
     }
 
     /**
@@ -75,7 +59,7 @@ final class DirectoryProcessedDataLoaderTests extends TestCase
         if ($dataLoaderMockCallback !== null) {
             $dataLoaderMockCallback($dataLoaderMock);
         }
-        return new DirectoryProcessedDataLoader($dataLoaderMock);
+        return new RecursiveDirectoryDataLoader($dataLoaderMock);
     }
 
     /**
