@@ -6,7 +6,7 @@ namespace Raptor\TestUtils\Exceptions;
 use RuntimeException;
 
 /**
- * Exception that is thrown, when directory with data files was not found.
+ * Exception that is thrown when directory with data files was not found.
  *
  * @author Mikhail Kamorin aka raptor_MVK
  *
