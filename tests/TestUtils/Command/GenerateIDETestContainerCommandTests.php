@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace RaptorTests\TestUtils\Command;
 
 use PHPUnit\Framework\TestCase;
-use Raptor\TestUtils\Command\GenerateIDETestContainersCommand;
+use Raptor\TestUtils\Command\GenerateIDETestContainerCommand;
 use Raptor\TestUtils\DataLoader\DataLoaderFactory;
 use Raptor\TestUtils\DataLoader\DirectoryDataLoaderFactory;
 use Raptor\TestUtils\Generator\TestDataContainerGenerator;
@@ -31,7 +31,7 @@ final class GenerateIDETestContainerCommandTests extends TestCase
         $generator = new TestDataContainerGenerator($directoryDataLoader);
         $fullPath = $this->getFullPath($dirname);
         $expectedPath = $this->getFullPath('');
-        $command = new GenerateIDETestContainersCommand($generator, $expectedPath);
+        $command = new GenerateIDETestContainerCommand($generator, $expectedPath);
         $commandTester = new CommandTester($command);
 
         $commandTester->execute(['path' => $fullPath]);

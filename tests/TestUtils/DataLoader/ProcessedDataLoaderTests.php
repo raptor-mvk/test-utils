@@ -10,11 +10,13 @@ use PHPUnit\Framework\TestCase;
 use Raptor\TestUtils\DataLoader\DataLoader;
 use Raptor\TestUtils\DataLoader\ProcessedDataLoader;
 use Raptor\TestUtils\DataProcessor\DataProcessor;
-use Raptor\TestUtils\DataProcessor\TestContainerGeneratorDataProcessor;
-use Raptor\TestUtils\DataProcessor\TestContainerWrapperDataProcessor;
+use Raptor\TestUtils\DataProcessor\GeneratorDataProcessor;
+use Raptor\TestUtils\DataProcessor\TypeFactory\GetTypeTypeFactory;
+use Raptor\TestUtils\DataProcessor\WrapperDataProcessor;
 use Raptor\TestUtils\Exceptions\DataFileNotFoundException;
 use Raptor\TestUtils\ExtraAssertions;
 use Raptor\TestUtils\WithVFS;
+use function get_class;
 
 /**
  * @author Mikhail Kamorin aka raptor_MVK
@@ -43,7 +45,7 @@ final class ProcessedDataLoaderTests extends TestCase
 
         $actualClass = $dataLoader->getDataProcessorClass();
 
-        static::assertSame(\get_class($dataProcessor), $actualClass);
+        static::assertSame(get_class($dataProcessor), $actualClass);
     }
 
     /**
@@ -54,8 +56,8 @@ final class ProcessedDataLoaderTests extends TestCase
     public function dataProcessorClassDataProvider(): array
     {
         return [
-            'wrapper' => [new TestContainerWrapperDataProcessor()],
-            'generator' => [new TestContainerGeneratorDataProcessor()]
+            'wrapper' => [new WrapperDataProcessor()],
+            'generator' => [new GeneratorDataProcessor(new GetTypeTypeFactory())]
         ];
     }
 

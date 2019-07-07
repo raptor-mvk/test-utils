@@ -3,8 +3,9 @@ declare(strict_types=1);
 
 namespace Raptor\TestUtils\DataLoader;
 
-use Raptor\TestUtils\DataProcessor\TestContainerGeneratorDataProcessor;
-use Raptor\TestUtils\DataProcessor\TestContainerWrapperDataProcessor;
+use Raptor\TestUtils\DataProcessor\GeneratorDataProcessor;
+use Raptor\TestUtils\DataProcessor\TypeFactory\GetTypeTypeFactory;
+use Raptor\TestUtils\DataProcessor\WrapperDataProcessor;
 
 /**
  * Factory for data loaders.
@@ -22,7 +23,7 @@ final class DataLoaderFactory
      */
     public function createTestContainerWrapperDataLoader(): DataLoader
     {
-        $dataProcessor = new TestContainerWrapperDataProcessor();
+        $dataProcessor = new WrapperDataProcessor();
         return new ProcessedDataLoader($dataProcessor);
     }
 
@@ -33,7 +34,7 @@ final class DataLoaderFactory
      */
     public function createTestContainerGeneratorDataLoader(): DataLoader
     {
-        $dataProcessor = new TestContainerGeneratorDataProcessor();
+        $dataProcessor = new GeneratorDataProcessor(new GetTypeTypeFactory());
         return new ProcessedDataLoader($dataProcessor);
     }
 }

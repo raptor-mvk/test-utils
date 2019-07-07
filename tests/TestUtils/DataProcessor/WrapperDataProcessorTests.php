@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace RaptorTests\TestUtils\DataProcessor;
 
 use PHPUnit\Framework\TestCase;
-use Raptor\TestUtils\DataProcessor\TestContainerWrapperDataProcessor;
+use Raptor\TestUtils\DataProcessor\WrapperDataProcessor;
 use Raptor\TestUtils\Exceptions\DataParseException;
 use Raptor\TestUtils\ExtraAssertions;
 use Raptor\TestUtils\TestDataContainer\TestDataContainer;
@@ -14,7 +14,7 @@ use Raptor\TestUtils\TestDataContainer\TestDataContainer;
  *
  * @copyright 2019, raptor_MVK
  */
-final class TestContainerWrapperDataProcessorTests extends TestCase
+final class WrapperDataProcessorTests extends TestCase
 {
     use ExtraAssertions;
 
@@ -31,7 +31,7 @@ final class TestContainerWrapperDataProcessorTests extends TestCase
         $this->expectException(DataParseException::class);
         $this->expectExceptionMessageRegExp($messageRegExp);
 
-        $dataProcessor = new TestContainerWrapperDataProcessor();
+        $dataProcessor = new WrapperDataProcessor();
 
         $dataProcessor->process($json);
     }
@@ -75,7 +75,7 @@ final class TestContainerWrapperDataProcessorTests extends TestCase
     public function testProcessReturnsResultWithTestContainersAsElements(): void
     {
         $testData = $this->prepareMultiResultTestJson();
-        $dataProcessor = new TestContainerWrapperDataProcessor();
+        $dataProcessor = new WrapperDataProcessor();
 
         $actual = $dataProcessor->process($testData);
 
@@ -173,7 +173,7 @@ final class TestContainerWrapperDataProcessorTests extends TestCase
      */
     public function testProcessReturnsCorrectResult(string $json, array $expected): void
     {
-        $dataProcessor = new TestContainerWrapperDataProcessor();
+        $dataProcessor = new WrapperDataProcessor();
 
         $processed = $dataProcessor->process($json);
 

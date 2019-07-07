@@ -6,7 +6,7 @@ namespace RaptorTests\TestUtils\DataLoader;
 use PHPUnit\Framework\TestCase;
 use Raptor\TestUtils\DataLoader\DataLoaderFactory;
 use Raptor\TestUtils\DataLoader\DirectoryDataLoaderFactory;
-use Raptor\TestUtils\DataProcessor\TestContainerGeneratorDataProcessor;
+use Raptor\TestUtils\DataProcessor\GeneratorDataProcessor;
 
 /**
  * @author Mikhail Kamorin aka raptor_MVK
@@ -27,6 +27,6 @@ final class DirectoryDataLoaderFactoryTests extends TestCase
 
         $actualDataProcessorClass = $directoryDataLoader->getDataProcessorClass();
 
-        static::assertSame(TestContainerGeneratorDataProcessor::class, $actualDataProcessorClass);
+        static::assertSame(GeneratorDataProcessor::class, $actualDataProcessorClass);
     }
 }

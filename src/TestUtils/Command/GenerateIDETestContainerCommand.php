@@ -17,7 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @copyright 2019, raptor_MVK
  */
-final class GenerateIDETestContainersCommand extends Command
+final class GenerateIDETestContainerCommand extends Command
 {
     /** @var Generator $generator */
     private $generator;
