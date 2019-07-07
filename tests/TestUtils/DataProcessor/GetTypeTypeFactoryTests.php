@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 namespace RaptorTests\TestUtils\DataProcessor;
 
-use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 use Raptor\TestUtils\DataProcessor\Type\ArrayType;
 use Raptor\TestUtils\DataProcessor\Type\BoolType;
@@ -15,7 +13,6 @@ use Raptor\TestUtils\DataProcessor\Type\MixedType;
 use Raptor\TestUtils\DataProcessor\Type\StringType;
 use Raptor\TestUtils\DataProcessor\Type\Type;
 use Raptor\TestUtils\DataProcessor\TypeFactory\GetTypeTypeFactory;
-use Raptor\TestUtils\DataProcessor\TypeFactory\TypeFactory;
 
 /**
  * @author Mikhail Kamorin aka raptor_MVK
@@ -36,9 +33,9 @@ class GetTypeTypeFactoryTests extends TestCase
      */
     public function testCreateTypeReturnsCorrectResult(string $expectedTypeClass, ?string $typeValue = null): void
     {
-       $typeFactory = new GetTypeTypeFactory();
+        $typeFactory = new GetTypeTypeFactory();
 
-       $actual = $typeFactory->createType($typeValue);
+        $actual = $typeFactory->createType($typeValue);
 
         /** @noinspection UnnecessaryAssertionInspection __approved__ checks actual type not interface */
         static::assertInstanceOf($expectedTypeClass, $actual);
@@ -67,19 +64,19 @@ class GetTypeTypeFactoryTests extends TestCase
      * Checks that method _changeType_ returns correct Type instance when oldType is null.
      *
      * @param string $expectedTypeClass
-     * @param string|null $typeValue
      * @param Type|null $oldType
+     * @param string|null $typeValue
      *
      * @dataProvider changeTypeDataProvider
      */
     public function testChangeTypeReturnsCorrectResult(
         string $expectedTypeClass,
-        ?string $typeValue = null,
-        ?Type $oldType = null
+        Type $oldType,
+        ?string $typeValue = null
     ): void {
         $typeFactory = new GetTypeTypeFactory();
 
-        $actual = $typeFactory->changeType($typeValue, $oldType);
+        $actual = $typeFactory->changeType($oldType, $typeValue);
 
         /** @noinspection UnnecessaryAssertionInspection __approved__ checks actual type not interface */
         static::assertInstanceOf($expectedTypeClass, $actual);
@@ -88,7 +85,7 @@ class GetTypeTypeFactoryTests extends TestCase
     /**
      * Provides test data to verify _changeType_ method.
      *
-     * @return array [ [ expectedTypeClass, typeValue, oldType ], ... ]
+     * @return array [ [ expectedTypeClass, oldType, typeValue ], ... ]
      */
     public function changeTypeDataProvider(): array
     {
@@ -105,19 +102,19 @@ class GetTypeTypeFactoryTests extends TestCase
     /**
      * Prepares test data that has IntType as oldType.
      *
-     * @return array [ [ expectedTypeClass, typeValue, oldType ], ... ]
+     * @return array [ [ expectedTypeClass, oldType, typeValue ], ... ]
      */
     private function prepareFromIntTypeTestData(): array
     {
         return [
-            'IntType -> boolean' => [MixedType::class, 'boolean', new IntType()],
-            'IntType -> integer' => [IntType::class, 'integer', new IntType()],
-            'IntType -> double' => [FloatType::class, 'double', new IntType()],
-            'IntType -> string' => [MixedType::class, 'string', new IntType()],
-            'IntType -> array' => [MixedType::class, 'array', new IntType()],
-            'IntType -> null' => [MixedType::class, null, new IntType()],
-            'IntType -> NULL' => [MixedType::class, 'NULL', new IntType()],
-            'IntType -> random' => [MixedType::class, 'random', new IntType()]
+            'IntType -> boolean' => [MixedType::class, new IntType(), 'boolean'],
+            'IntType -> integer' => [IntType::class, new IntType(), 'integer'],
+            'IntType -> double' => [FloatType::class, new IntType(), 'double'],
+            'IntType -> string' => [MixedType::class, new IntType(), 'string'],
+            'IntType -> array' => [MixedType::class, new IntType(), 'array'],
+            'IntType -> null' => [MixedType::class, new IntType(), null],
+            'IntType -> NULL' => [MixedType::class, new IntType(), 'NULL'],
+            'IntType -> random' => [MixedType::class, new IntType(), 'random']
         ];
     }
 
@@ -129,14 +126,14 @@ class GetTypeTypeFactoryTests extends TestCase
     private function prepareFromFloatTypeTestData(): array
     {
         return [
-            'FloatType -> boolean' => [MixedType::class, 'boolean', new FloatType()],
-            'FloatType -> integer' => [FloatType::class, 'integer', new FloatType()],
-            'FloatType -> double' => [FloatType::class, 'double', new FloatType()],
-            'FloatType -> string' => [MixedType::class, 'string', new FloatType()],
-            'FloatType -> array' => [MixedType::class, 'array', new FloatType()],
-            'FloatType -> null' => [MixedType::class, null, new FloatType()],
-            'FloatType -> NULL' => [MixedType::class, 'NULL', new FloatType()],
-            'FloatType -> random' => [MixedType::class, 'random', new FloatType()]
+            'FloatType -> boolean' => [MixedType::class, new FloatType(), 'boolean'],
+            'FloatType -> integer' => [FloatType::class, new FloatType(), 'integer'],
+            'FloatType -> double' => [FloatType::class, new FloatType(), 'double'],
+            'FloatType -> string' => [MixedType::class, new FloatType(), 'string'],
+            'FloatType -> array' => [MixedType::class, new FloatType(), 'array'],
+            'FloatType -> null' => [MixedType::class, new FloatType(), null],
+            'FloatType -> NULL' => [MixedType::class, new FloatType(), 'NULL'],
+            'FloatType -> random' => [MixedType::class, new FloatType(), 'random']
         ];
     }
 
@@ -148,14 +145,14 @@ class GetTypeTypeFactoryTests extends TestCase
     private function prepareFromBoolTypeTestData(): array
     {
         return [
-            'BoolType -> boolean' => [BoolType::class, 'boolean', new BoolType()],
-            'BoolType -> integer' => [MixedType::class, 'integer', new BoolType()],
-            'BoolType -> double' => [MixedType::class, 'double', new BoolType()],
-            'BoolType -> string' => [MixedType::class, 'string', new BoolType()],
-            'BoolType -> array' => [MixedType::class, 'array', new BoolType()],
-            'BoolType -> null' => [MixedType::class, null, new BoolType()],
-            'BoolType -> NULL' => [MixedType::class, 'NULL', new BoolType()],
-            'BoolType -> random' => [MixedType::class, 'random', new BoolType()]
+            'BoolType -> boolean' => [BoolType::class, new BoolType(), 'boolean'],
+            'BoolType -> integer' => [MixedType::class, new BoolType(), 'integer'],
+            'BoolType -> double' => [MixedType::class, new BoolType(), 'double'],
+            'BoolType -> string' => [MixedType::class, new BoolType(), 'string'],
+            'BoolType -> array' => [MixedType::class, new BoolType(), 'array'],
+            'BoolType -> null' => [MixedType::class, new BoolType(), null],
+            'BoolType -> NULL' => [MixedType::class, new BoolType(), 'NULL'],
+            'BoolType -> random' => [MixedType::class, new BoolType(), 'random']
         ];
     }
 
@@ -167,14 +164,14 @@ class GetTypeTypeFactoryTests extends TestCase
     private function prepareFromStringTypeTestData(): array
     {
         return [
-            'StringType -> boolean' => [MixedType::class, 'boolean', new StringType()],
-            'StringType -> integer' => [MixedType::class, 'integer', new StringType()],
-            'StringType -> double' => [MixedType::class, 'double', new StringType()],
-            'StringType -> string' => [StringType::class, 'string', new StringType()],
-            'StringType -> array' => [MixedType::class, 'array', new StringType()],
-            'StringType -> null' => [MixedType::class, null, new StringType()],
-            'StringType -> NULL' => [MixedType::class, 'NULL', new StringType()],
-            'StringType -> random' => [MixedType::class, 'random', new StringType()]
+            'StringType -> boolean' => [MixedType::class, new StringType(), 'boolean'],
+            'StringType -> integer' => [MixedType::class, new StringType(), 'integer'],
+            'StringType -> double' => [MixedType::class, new StringType(), 'double'],
+            'StringType -> string' => [StringType::class, new StringType(), 'string'],
+            'StringType -> array' => [MixedType::class, new StringType(), 'array'],
+            'StringType -> null' => [MixedType::class, new StringType(), null],
+            'StringType -> NULL' => [MixedType::class, new StringType(), 'NULL'],
+            'StringType -> random' => [MixedType::class, new StringType(), 'random']
         ];
     }
 
@@ -186,14 +183,14 @@ class GetTypeTypeFactoryTests extends TestCase
     private function prepareFromArrayTypeTestData(): array
     {
         return [
-            'ArrayType -> boolean' => [MixedType::class, 'boolean', new ArrayType()],
-            'ArrayType -> integer' => [MixedType::class, 'integer', new ArrayType()],
-            'ArrayType -> double' => [MixedType::class, 'double', new ArrayType()],
-            'ArrayType -> string' => [MixedType::class, 'string', new ArrayType()],
-            'ArrayType -> array' => [ArrayType::class, 'array', new ArrayType()],
-            'ArrayType -> null' => [MixedType::class, null, new ArrayType()],
-            'ArrayType -> NULL' => [MixedType::class, 'NULL', new ArrayType()],
-            'ArrayType -> random' => [MixedType::class, 'random', new ArrayType()]
+            'ArrayType -> boolean' => [MixedType::class, new ArrayType(), 'boolean'],
+            'ArrayType -> integer' => [MixedType::class, new ArrayType(), 'integer'],
+            'ArrayType -> double' => [MixedType::class, new ArrayType(), 'double'],
+            'ArrayType -> string' => [MixedType::class, new ArrayType(), 'string'],
+            'ArrayType -> array' => [ArrayType::class, new ArrayType(), 'array'],
+            'ArrayType -> null' => [MixedType::class, new ArrayType(), null],
+            'ArrayType -> NULL' => [MixedType::class, new ArrayType(), 'NULL'],
+            'ArrayType -> random' => [MixedType::class, new ArrayType(), 'random']
         ];
     }
 
@@ -205,14 +202,14 @@ class GetTypeTypeFactoryTests extends TestCase
     private function prepareFromMixedTypeTestData(): array
     {
         return [
-            'MixedType -> boolean' => [MixedType::class, 'boolean', new MixedType()],
-            'MixedType -> integer' => [MixedType::class, 'integer', new MixedType()],
-            'MixedType -> double' => [MixedType::class, 'double', new MixedType()],
-            'MixedType -> string' => [MixedType::class, 'string', new MixedType()],
-            'MixedType -> array' => [MixedType::class, 'array', new MixedType()],
-            'MixedType -> null' => [MixedType::class, null, new MixedType()],
-            'MixedType -> NULL' => [MixedType::class, 'NULL', new MixedType()],
-            'MixedType -> random' => [MixedType::class, 'random', new MixedType()]
+            'MixedType -> boolean' => [MixedType::class, new MixedType(), 'boolean'],
+            'MixedType -> integer' => [MixedType::class, new MixedType(), 'integer'],
+            'MixedType -> double' => [MixedType::class, new MixedType(), 'double'],
+            'MixedType -> string' => [MixedType::class, new MixedType(), 'string'],
+            'MixedType -> array' => [MixedType::class, new MixedType(), 'array'],
+            'MixedType -> null' => [MixedType::class, new MixedType(), null],
+            'MixedType -> NULL' => [MixedType::class, new MixedType(), 'NULL'],
+            'MixedType -> random' => [MixedType::class, new MixedType(), 'random']
         ];
     }
 }

@@ -19,5 +19,4 @@ final class ArrayType extends AbstractType
     {
         return 'array';
     }
-
 }

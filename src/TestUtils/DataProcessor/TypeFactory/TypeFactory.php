@@ -24,10 +24,10 @@ interface TypeFactory
     /**
      * Changes Type (if necessary) according to the result of _gettype_ and the old Type.
      *
+     * @param Type $oldType
      * @param string|null $typeValue result of _gettype_ called on variable
-     * @param Type|null $oldType
      *
      * @return Type
      */
-    public function changeType(?string $typeValue = null, ?Type $oldType = null): Type;
+    public function changeType(Type $oldType, ?string $typeValue = null): Type;
 }
