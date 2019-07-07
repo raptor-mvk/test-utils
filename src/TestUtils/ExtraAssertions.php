@@ -30,6 +30,18 @@ trait ExtraAssertions
     }
 
     /**
+     * Encodes JSON: unescapes Unicode, prettifies output and throws exceptions on errors.
+     *
+     * @param mixed $input input
+     *
+     * @return string encoded JSON string
+     */
+    private static function jsonEncodePrettily($input): string
+    {
+        return json_encode($input, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR);
+    }
+
+    /**
      * Asserts that two associative arrays contain same elements ignoring their order at the top level.
      *
      * @param array $expected
@@ -80,18 +92,5 @@ trait ExtraAssertions
         $expectedString = static::jsonEncodePrettily($expected);
         $actualString = static::jsonEncodePrettily($actual);
         static::assertSame($expectedString, $actualString, $message ?? '');
-    }
-
-
-    /**
-     * Encodes JSON: unescapes Unicode, prettifies output and throws exceptions on errors.
-     *
-     * @param mixed $input input
-     *
-     * @return string encoded JSON string
-     */
-    private static function jsonEncodePrettily($input): string
-    {
-        return json_encode($input, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR);
     }
 }

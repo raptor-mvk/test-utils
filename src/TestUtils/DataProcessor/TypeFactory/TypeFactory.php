@@ -13,15 +13,6 @@ use Raptor\TestUtils\DataProcessor\Type\Type;
 interface TypeFactory
 {
     /**
-     * Creates Type corresponding to _gettype_ result.
-     *
-     * @param string|null $typeValue result of _gettype_ called on variable
-     *
-     * @return Type
-     */
-    public function createType(?string $typeValue = null): Type;
-
-    /**
      * Changes Type (if necessary) according to the result of _gettype_ and the old Type.
      *
      * @param string|null $typeValue result of _gettype_ called on variable

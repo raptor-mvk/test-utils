@@ -16,7 +16,7 @@ Package contains following components:
 The suggested installation method is via [composer](https://getcomposer.org/):
 
 ```sh
-php composer.phar require "raptor/test-utils:1.0.*"
+php composer.phar require "raptor/test-utils:1.1.*"
 ```
 
 ## Usage
@@ -151,3 +151,4 @@ namespace and has the name obtained by converting the name of the JSON file to s
 ## Authors
 
 - Mikhail Kamorin aka raptor_MVK
+- Igor Vodka

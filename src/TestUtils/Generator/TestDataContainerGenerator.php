@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Raptor\TestUtils\Generator;
 
 use Raptor\TestUtils\DataLoader\DirectoryDataLoader;
-use Raptor\TestUtils\DataProcessor\GeneratorDataProcessor;
 use Raptor\TestUtils\DataProcessor\Type\Type;
 use Raptor\TestUtils\Exceptions\DataDirectoryNotFoundException;
 

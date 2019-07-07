@@ -39,7 +39,7 @@ final class GetTypeTypeFactory implements TypeFactory
      *
      * @return Type
      */
-    public function createType(?string $typeValue = null): Type
+    private function createType(?string $typeValue = null): Type
     {
         $type = self::TYPE_MAPPING[$typeValue ?? ''] ?? self::COMMON_TYPE;
         return new $type();
