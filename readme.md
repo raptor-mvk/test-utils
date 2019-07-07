@@ -16,7 +16,7 @@ Package contains following components:
 The suggested installation method is via [composer](https://getcomposer.org/):
 
 ```sh
-php composer.phar require "raptor/test-utils:1.1.*"
+php composer.phar require "raptor/test-utils:1.2.*"
 ```
 
 ## Usage
