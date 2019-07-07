@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Raptor\TestUtils;
 
+use function get_class;
 use Raptor\TestUtils\Exceptions\BadMethodException;
 use ReflectionException;
 use ReflectionMethod;
