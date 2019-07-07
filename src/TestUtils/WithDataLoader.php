@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Raptor\TestUtils;
 
 use Raptor\TestUtils\DataLoader\DataLoader;
-use Raptor\TestUtils\DataLoader\DataLoaderFactory;
+use Raptor\TestUtils\DataLoader\WrapperDataLoader;
 use Raptor\TestUtils\Exceptions\DataFileNotFoundException;
 
 /**
@@ -31,8 +31,7 @@ trait WithDataLoader
     protected function loadDataFromFile(string $filename): array
     {
         if ($this->dataLoader === null) {
-            $dataLoaderFactory = new DataLoaderFactory();
-            $this->dataLoader = $dataLoaderFactory->createTestContainerWrapperDataLoader();
+            $this->dataLoader = new WrapperDataLoader();
         }
         return $this->dataLoader->load($filename);
     }

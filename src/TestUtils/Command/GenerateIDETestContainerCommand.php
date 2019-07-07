@@ -3,7 +3,12 @@ declare(strict_types=1);
 
 namespace Raptor\TestUtils\Command;
 
+use Raptor\TestUtils\DataLoader\ProcessingDataLoader;
+use Raptor\TestUtils\DataLoader\RecursiveDirectoryDataLoader;
+use Raptor\TestUtils\DataProcessor\GeneratorDataProcessor;
+use Raptor\TestUtils\DataProcessor\TypeFactory\GetTypeTypeFactory;
 use Raptor\TestUtils\Generator\Generator;
+use Raptor\TestUtils\Generator\TestDataContainerGenerator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,17 +31,21 @@ final class GenerateIDETestContainerCommand extends Command
     private $filePath;
 
     /**
-     * @param Generator $generator
      * @param string $filePath path to file that should be generated
      */
-    public function __construct(Generator $generator, string $filePath)
+    public function __construct(string $filePath)
     {
         parent::__construct();
-        $this->generator = $generator;
+        $typeFactory = new GetTypeTypeFactory();
+        $dataProcessor = new GeneratorDataProcessor($typeFactory);
+        $dataLoader = new ProcessingDataLoader($dataProcessor);
+        $directoryDataLoader = new RecursiveDirectoryDataLoader($dataLoader);
+        $this->generator = new TestDataContainerGenerator($directoryDataLoader);
         $this->filePath = $filePath;
     }
 
     /** @noinspection PhpMissingParentCallCommonInspection __approved__ parent method is overridden */
+    /** @noinspection PhpUnused __approved__ used in generate-ide-test-containers */
     protected function configure(): void
     {
         $this->setName('generate:ide_test_container')
@@ -49,6 +58,7 @@ final class GenerateIDETestContainerCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      */
+    /** @noinspection PhpUnused __approved__ used in generate-ide-test-containers */
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $path = $input->getArgument('path');

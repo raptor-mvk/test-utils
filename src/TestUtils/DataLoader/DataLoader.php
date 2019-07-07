@@ -24,11 +24,4 @@ interface DataLoader
      * @throws DataFileNotFoundException
      */
     public function load(string $filename): array;
-
-    /**
-     * Returns classname of data processor. Used for testing purposes.
-     *
-     * @return string
-     */
-    public function getDataProcessorClass(): string;
 }

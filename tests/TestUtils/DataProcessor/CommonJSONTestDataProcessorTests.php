@@ -12,35 +12,32 @@ use Raptor\TestUtils\Exceptions\DataParseException;
 use Raptor\TestUtils\ExtraAssertions;
 
 /**
- * Common tests for all JSON string data processors.
+ * Common tests for all data processors for JSON test data.
  *
  * @author Mikhail Kamorin aka raptor_MVK
  *
  * @copyright 2019, raptor_MVK
  */
-final class CommonTestContainerDataProcessorTests extends TestCase
+final class CommonJSONTestDataProcessorTests extends TestCase
 {
     use ExtraAssertions;
 
     /**
      * Checks that method _process_ throws _DataParseException_ with corresponding message.
      *
-     * @param string $dataProcessorClass
+     * @param DataProcessor $dataProcessor
      * @param string $json
      * @param string $messageRegExp regular expression used to validate exception's message
      *
      * @dataProvider dataParseExceptionDataProvider
      */
     public function testProcessThrowDataParseExceptionWithCorrectMessage(
-        string $dataProcessorClass,
+        DataProcessor $dataProcessor,
         string $json,
         string $messageRegExp
     ): void {
         $this->expectException(DataParseException::class);
         $this->expectExceptionMessageRegExp($messageRegExp);
-
-        /** @var DataProcessor $dataProcessor */
-        $dataProcessor = new $dataProcessorClass(new GetTypeTypeFactory());
 
         $dataProcessor->process($json);
     }
@@ -48,14 +45,15 @@ final class CommonTestContainerDataProcessorTests extends TestCase
     /**
      * Provides test data to verify that _DataParseException_ is thrown.
      *
-     * @return array [ [ dataProcessorClass, json, messageRegExp ], ... ]
+     * @return array [ [ dataProcessor, json, messageRegExp ], ... ]
      */
     public function dataParseExceptionDataProvider(): array
     {
         $testCases = $this->prepareDataParseExceptionTestData();
+        $typeFactory = new GetTypeTypeFactory();
         $dataProcessors = [
-            'wrapper' => WrapperDataProcessor::class,
-            'generator' => GeneratorDataProcessor::class
+            'wrapper' => new WrapperDataProcessor(),
+            'generator' => new GeneratorDataProcessor($typeFactory)
         ];
         $result = [];
         foreach ($testCases as $testName => $testData) {
