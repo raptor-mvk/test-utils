@@ -12,6 +12,6 @@ use RuntimeException;
  *
  * @copyright 2019, raptor_MVK
  */
-class DataParseException extends RuntimeException
+final class DataParseException extends RuntimeException
 {
 }

@@ -5,15 +5,15 @@ namespace RaptorTests\TestUtils\DataLoader;
 
 use PHPUnit\Framework\TestCase;
 use Raptor\TestUtils\DataLoader\DataLoaderFactory;
-use Raptor\TestUtils\DataProcessor\TestContainerGeneratorDataProcessor;
-use Raptor\TestUtils\DataProcessor\TestContainerWrapperDataProcessor;
+use Raptor\TestUtils\DataProcessor\GeneratorDataProcessor;
+use Raptor\TestUtils\DataProcessor\WrapperDataProcessor;
 
 /**
  * @author Mikhail Kamorin aka raptor_MVK
  *
  * @copyright 2019, raptor_MVK
  */
-class DataLoaderFactoryTests extends TestCase
+final class DataLoaderFactoryTests extends TestCase
 {
     /**
      * Checks that factory method _createTestContainerWrapperDataLoader_ returns DataLoader with
@@ -26,7 +26,7 @@ class DataLoaderFactoryTests extends TestCase
 
         $actualDataProcessorClass = $dataLoader->getDataProcessorClass();
 
-        static::assertSame(TestContainerWrapperDataProcessor::class, $actualDataProcessorClass);
+        static::assertSame(WrapperDataProcessor::class, $actualDataProcessorClass);
     }
 
     /**
@@ -40,6 +40,6 @@ class DataLoaderFactoryTests extends TestCase
 
         $actualDataProcessorClass = $dataLoader->getDataProcessorClass();
 
-        static::assertSame(TestContainerGeneratorDataProcessor::class, $actualDataProcessorClass);
+        static::assertSame(GeneratorDataProcessor::class, $actualDataProcessorClass);
     }
 }

@@ -2,9 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.0.1] - 2019-06-28
+## [1.1.0] - 2019-07-07
 ### Changed
 - `mikey179/vfsstream` is moved from require-dev to require section of composer.json
+- trait `ExtraAssertions` does not include `ExtraUtils` anymore
+- `DataLoader` and `DirectoryDataLoader` are now interfaces
+- all classes are made final, for which this was possible
 
 
 ## [1.0.0] - 2019-06-27
@@ -25,5 +28,6 @@ All notable changes to this project will be documented in this file.
   providers
 - command `generate-ide-test-containers` that generate service file for IDE used to autocomplete
 
-[1.0.1]: https://github.com/raptor-mvk/test-utils/compare/v1.0.0...v1.0.1
+
+[1.1.0]: https://github.com/raptor-mvk/test-utils/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/raptor-mvk/test-utils/releases/tag/v1.0.0

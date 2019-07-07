@@ -1,4 +1,4 @@
-# Raptor Test Utils v1.0.1
+# Raptor Test Utils v1.1.0
 
 (c) Mikhail Kamorin aka raptor_MVK
 
@@ -16,14 +16,14 @@ Package contains following components:
 The suggested installation method is via [composer](https://getcomposer.org/):
 
 ```sh
-php composer.phar require "raptor/test-utils:1.0.*"
+php composer.phar require "raptor/test-utils:1.1.*"
 ```
 
 ## Usage
 
 ### Additional service methods
 
-Add trait `ExtraUtils` or `ExtraAssertions` to the class that contains tests or to the common base test class. After
+Add trait `ExtraUtils` to the class that contains tests or to the common base test class. After
 that the following static methods will be available:
 
  - `invokeMethod(object $object, string $methodName, ?array $parameters = null)` invokes protected or private method
@@ -151,3 +151,4 @@ namespace and has the name obtained by converting the name of the JSON file to s
 ## Authors
 
 - Mikhail Kamorin aka raptor_MVK
+- Igor Vodka

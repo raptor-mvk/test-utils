@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Raptor\TestUtils\TestDataContainerGenerator;
+namespace Raptor\TestUtils\Generator;
 
 use Raptor\TestUtils\DataLoader\DirectoryDataLoader;
-use Raptor\TestUtils\DataProcessor\TestContainerGeneratorDataProcessor;
+use Raptor\TestUtils\DataProcessor\Type\Type;
 use Raptor\TestUtils\Exceptions\DataDirectoryNotFoundException;
 
 /**
@@ -14,7 +14,7 @@ use Raptor\TestUtils\Exceptions\DataDirectoryNotFoundException;
  *
  * @copyright 2019, raptor_MVK
  */
-class TestDataContainerGenerator
+final class TestDataContainerGenerator implements Generator
 {
     /** @var DirectoryDataLoader $directoryDataLoader */
     private $directoryDataLoader;
@@ -31,13 +31,13 @@ class TestDataContainerGenerator
      * Returns name of getter method. Type is necessary for bool getters names.
      *
      * @param string $field field name
-     * @param string $type field type
+     * @param Type $type field type
      *
      * @return string
      */
-    private function getMethodName(string $field, string $type): string
+    private function getMethodName(string $field, Type $type): string
     {
-        $isBool = $type === TestContainerGeneratorDataProcessor::BOOL_TYPE;
+        $isBool = $type->isBool();
         if ($isBool && (strncmp($field, 'is_', 3) === 0)) {
             $field = substr($field, 3);
         }

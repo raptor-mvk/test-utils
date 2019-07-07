@@ -4,17 +4,18 @@ declare(strict_types=1);
 namespace RaptorTests\TestUtils\DataProcessor;
 
 use PHPUnit\Framework\TestCase;
-use Raptor\TestUtils\DataProcessor\TestContainerWrapperDataProcessor;
+use Raptor\TestUtils\DataProcessor\WrapperDataProcessor;
 use Raptor\TestUtils\Exceptions\DataParseException;
 use Raptor\TestUtils\ExtraAssertions;
 use Raptor\TestUtils\TestDataContainer\TestDataContainer;
 
 /**
  * @author Mikhail Kamorin aka raptor_MVK
+ * @author Igor Vodka
  *
  * @copyright 2019, raptor_MVK
  */
-class TestContainerWrapperDataProcessorTests extends TestCase
+final class WrapperDataProcessorTests extends TestCase
 {
     use ExtraAssertions;
 
@@ -31,7 +32,7 @@ class TestContainerWrapperDataProcessorTests extends TestCase
         $this->expectException(DataParseException::class);
         $this->expectExceptionMessageRegExp($messageRegExp);
 
-        $dataProcessor = new TestContainerWrapperDataProcessor();
+        $dataProcessor = new WrapperDataProcessor();
 
         $dataProcessor->process($json);
     }
@@ -75,15 +76,12 @@ class TestContainerWrapperDataProcessorTests extends TestCase
     public function testProcessReturnsResultWithTestContainersAsElements(): void
     {
         $testData = $this->prepareMultiResultTestJson();
-        $dataProcessor = new TestContainerWrapperDataProcessor();
+        $dataProcessor = new WrapperDataProcessor();
 
         $actual = $dataProcessor->process($testData);
 
-        $result = true;
-        foreach ($actual as $value) {
-            $result = $result && ($value instanceof TestDataContainer);
-        }
-        static::assertTrue($result, 'All elements of resulting array should be instances of TestContainer');
+        $message = 'All elements of resulting array should be instances of TestContainer';
+        static::assertContainsOnly(TestDataContainer::class, $actual, false, $message);
     }
 
     /**
@@ -173,7 +171,7 @@ class TestContainerWrapperDataProcessorTests extends TestCase
      */
     public function testProcessReturnsCorrectResult(string $json, array $expected): void
     {
-        $dataProcessor = new TestContainerWrapperDataProcessor();
+        $dataProcessor = new WrapperDataProcessor();
 
         $processed = $dataProcessor->process($json);
 

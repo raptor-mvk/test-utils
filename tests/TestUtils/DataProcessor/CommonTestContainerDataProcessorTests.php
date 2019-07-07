@@ -5,8 +5,9 @@ namespace RaptorTests\TestUtils\DataProcessor;
 
 use PHPUnit\Framework\TestCase;
 use Raptor\TestUtils\DataProcessor\DataProcessor;
-use Raptor\TestUtils\DataProcessor\TestContainerGeneratorDataProcessor;
-use Raptor\TestUtils\DataProcessor\TestContainerWrapperDataProcessor;
+use Raptor\TestUtils\DataProcessor\GeneratorDataProcessor;
+use Raptor\TestUtils\DataProcessor\TypeFactory\GetTypeTypeFactory;
+use Raptor\TestUtils\DataProcessor\WrapperDataProcessor;
 use Raptor\TestUtils\Exceptions\DataParseException;
 use Raptor\TestUtils\ExtraAssertions;
 
@@ -17,7 +18,7 @@ use Raptor\TestUtils\ExtraAssertions;
  *
  * @copyright 2019, raptor_MVK
  */
-class CommonTestContainerDataProcessorTests extends TestCase
+final class CommonTestContainerDataProcessorTests extends TestCase
 {
     use ExtraAssertions;
 
@@ -39,7 +40,7 @@ class CommonTestContainerDataProcessorTests extends TestCase
         $this->expectExceptionMessageRegExp($messageRegExp);
 
         /** @var DataProcessor $dataProcessor */
-        $dataProcessor = new $dataProcessorClass();
+        $dataProcessor = new $dataProcessorClass(new GetTypeTypeFactory());
 
         $dataProcessor->process($json);
     }
@@ -53,8 +54,8 @@ class CommonTestContainerDataProcessorTests extends TestCase
     {
         $testCases = $this->prepareDataParseExceptionTestData();
         $dataProcessors = [
-            'wrapper' => TestContainerWrapperDataProcessor::class,
-            'generator' => TestContainerGeneratorDataProcessor::class
+            'wrapper' => WrapperDataProcessor::class,
+            'generator' => GeneratorDataProcessor::class
         ];
         $result = [];
         foreach ($testCases as $testName => $testData) {

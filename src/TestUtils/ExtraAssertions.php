@@ -9,13 +9,12 @@ use function is_array;
  * Trait with additional assertions.
  *
  * @author Mikhail Kamorin aka raptor_MVK
+ * @author Igor Vodka
  *
  * @copyright 2019, raptor_MVK
  */
 trait ExtraAssertions
 {
-    use ExtraUtils;
-
     /**
      * Asserts that two arrays are same.
      *
@@ -25,9 +24,21 @@ trait ExtraAssertions
      */
     public static function assertArraysAreSame(array $expected, array $actual, ?string $message = null): void
     {
-        $expectedString = json_encode($expected, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-        $actualString = json_encode($actual, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        $expectedString = static::jsonEncodePrettily($expected);
+        $actualString = static::jsonEncodePrettily($actual);
         static::assertSame($expectedString, $actualString, $message ?? '');
+    }
+
+    /**
+     * Encodes JSON: unescapes Unicode, prettifies output and throws exceptions on errors.
+     *
+     * @param mixed $input input
+     *
+     * @return string encoded JSON string
+     */
+    private static function jsonEncodePrettily($input): string
+    {
+        return json_encode($input, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -44,8 +55,8 @@ trait ExtraAssertions
     ): void {
         ksort($expected);
         ksort($actual);
-        $expectedString = json_encode($expected, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-        $actualString = json_encode($actual, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        $expectedString = static::jsonEncodePrettily($expected);
+        $actualString = static::jsonEncodePrettily($actual);
         static::assertSame($expectedString, $actualString, $message ?? '');
     }
 
@@ -78,8 +89,8 @@ trait ExtraAssertions
     ): void {
         static::ksortRecursive($expected);
         static::ksortRecursive($actual);
-        $expectedString = json_encode($expected, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-        $actualString = json_encode($actual, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        $expectedString = static::jsonEncodePrettily($expected);
+        $actualString = static::jsonEncodePrettily($actual);
         static::assertSame($expectedString, $actualString, $message ?? '');
     }
 }
