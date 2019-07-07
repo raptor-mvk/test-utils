@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 
+### Changed
+- fix errors in `_ide_test_container.php`
+
+
 ## [1.1.0] - 2019-07-07
 ### Changed
 - `mikey179/vfsstream` is moved from require-dev to require section of composer.json

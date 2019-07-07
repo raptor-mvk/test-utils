@@ -58,7 +58,7 @@ final class TestDataContainerGenerator implements Generator
     public function generate(string $path): string
     {
         $loadedData = $this->directoryDataLoader->load($path, '/^.*\.json$/');
-        $result = '';
+        $result = "<?php\n\nuse Raptor\TestUtils\TestDataContainer\TestDataContainer;\n";
         foreach ($loadedData as $className => $fields) {
             $result .= (($result !== '') ? "\n" : '') . "/**\n";
             /** @var array $fields */
@@ -66,7 +66,7 @@ final class TestDataContainerGenerator implements Generator
                 $methodName = $this->getMethodName($field, $type);
                 $result .= " * @method $type $methodName()\n";
             }
-            $result .= " */\nclass {$className}DataContainer\n{\n}\n";
+            $result .= " */\nclass {$className}DataContainer extends TestDataContainer\n{\n}\n";
         }
         return $result;
     }
