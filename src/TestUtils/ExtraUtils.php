@@ -38,16 +38,4 @@ trait ExtraUtils
             throw new BadMethodException("Method $methodName was not found.", 0, $e);
         }
     }
-
-    /**
-     * Encodes JSON: unescapes Unicode, prettifies output and throws exceptions on errors.
-     *
-     * @param mixed $input input
-     *
-     * @return string encoded JSON string
-     */
-    public static function jsonEncodePrettily($input): string
-    {
-        return json_encode($input, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR);
-    }
 }
