@@ -33,7 +33,8 @@ final class DirectoryProcessedDataLoaderTests extends TestCase
     /**
      * Checks that method _getDataProcessorClass_ returns correct class.
      */
-    public function testGetDataProcessorClassReturnsCorrectClass(): void {
+    public function testGetDataProcessorClassReturnsCorrectClass(): void
+    {
         $expectedClass = DataLoader::class;
         /** @var DataLoader|MockInterface $dataLoader */
         $dataLoader = Mockery::mock(DataLoader::class);

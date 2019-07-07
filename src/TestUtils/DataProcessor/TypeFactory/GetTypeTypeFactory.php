@@ -39,7 +39,7 @@ final class GetTypeTypeFactory implements TypeFactory
      *
      * @return Type
      */
-    private function createType(?string $typeValue = null): Type
+    public function createType(?string $typeValue = null): Type
     {
         $type = self::TYPE_MAPPING[$typeValue ?? ''] ?? self::COMMON_TYPE;
         return new $type();
@@ -48,14 +48,14 @@ final class GetTypeTypeFactory implements TypeFactory
     /**
      * Changes Type (if necessary) according to the result of _gettype_ and the old Type.
      *
+     * @param Type $oldType
      * @param string|null $typeValue result of _gettype_ called on variable
-     * @param Type|null $oldType
      *
      * @return Type
      */
-    public function changeType(?string $typeValue = null, ?Type $oldType = null): Type
+    public function changeType(Type $oldType, ?string $typeValue = null): Type
     {
         $newType = $this->createType($typeValue);
-        return ($oldType === null) ? $newType : $oldType->getCommonType($newType);
+        return $oldType->getCommonType($newType);
     }
 }

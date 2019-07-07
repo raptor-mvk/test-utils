@@ -40,7 +40,8 @@ final class GeneratorDataProcessor extends AbstractJSONTestDataProcessor
             /** @var string $valueType */
             $valueType = gettype($value);
             $currentType = $this->getProcessed($field);
-            $newType = $this->typeFactory->changeType($valueType, $currentType);
+            $newType = ($currentType === null) ? $this->typeFactory->createType($valueType) :
+                $this->typeFactory->changeType($currentType, $valueType);
             $this->addProcessed($field, $newType);
         }
     }

@@ -40,7 +40,8 @@ final class ProcessedDataLoaderTests extends TestCase
      *
      * @dataProvider dataProcessorClassDataProvider
      */
-    public function testGetDataProcessorClassReturnsCorrectClass(DataProcessor $dataProcessor): void {
+    public function testGetDataProcessorClassReturnsCorrectClass(DataProcessor $dataProcessor): void
+    {
         $dataLoader = new ProcessedDataLoader($dataProcessor);
 
         $actualClass = $dataLoader->getDataProcessorClass();
