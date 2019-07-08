@@ -33,8 +33,9 @@ final class WithDataLoaderTests extends TestCase
         $content = $this->prepareFileContent();
         $this->addFileToVFS($filename, null, $content);
         $fullFilename = $this->getFullPath($filename);
-        $extractData = static function (TestDataContainer $container) {
-            return $container->allData();
+        $extractData = static function (array $container) {
+            /** @var TestDataContainer[] $container */
+            return $container[0]->allData();
         };
         $expectedData = $this->prepareExpectedResult();
 

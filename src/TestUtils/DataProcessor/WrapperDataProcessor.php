@@ -27,6 +27,6 @@ final class WrapperDataProcessor extends AbstractJSONTestDataProcessor
         if ($this->hasProcessed($name)) {
             throw new DataParseException("Non-unique test name $name was found.");
         }
-        $this->addProcessed($name, new TestDataContainer(array_merge($default ?? [], $element)));
+        $this->addProcessed($name, [new TestDataContainer(array_merge($default ?? [], $element))]);
     }
 }

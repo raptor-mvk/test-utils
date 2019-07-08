@@ -8,6 +8,7 @@ use Raptor\TestUtils\DataProcessor\WrapperDataProcessor;
 use Raptor\TestUtils\Exceptions\DataParseException;
 use Raptor\TestUtils\ExtraAssertions;
 use Raptor\TestUtils\TestDataContainer\TestDataContainer;
+use function is_array;
 
 /**
  * @author Mikhail Kamorin aka raptor_MVK
@@ -69,19 +70,24 @@ final class WrapperDataProcessorTests extends TestCase
     }
 
     /**
-     * Checks that method _process_ returns array consists of instances of _TestContainer_.
+     * Checks that method _process_ returns array of arrays, each of which contains single TestDataContainer instance.
+     *
+     * @param string $json
      *
      * @dataProvider correctDataProvider
      */
-    public function testProcessReturnsResultWithTestContainersAsElements(): void
+    public function testProcessReturnsArrayOfArraysContainingSingleTestDataContainerInstance(string $json): void
     {
-        $testData = $this->prepareMultiResultTestJson();
         $dataProcessor = new WrapperDataProcessor();
 
-        $actual = $dataProcessor->process($testData);
+        $processed = $dataProcessor->process($json);
 
-        $message = 'All elements of resulting array should be instances of TestContainer';
-        static::assertContainsOnly(TestDataContainer::class, $actual, false, $message);
+        $result = true;
+        foreach ($processed as $value) {
+            $result = $result && is_array($value) && (count($value) === 1) &&
+                ($value[0] instanceof TestDataContainer);
+        }
+        static::assertTrue($result, 'Process should return array of arrays with single element');
     }
 
     /**
@@ -177,8 +183,8 @@ final class WrapperDataProcessorTests extends TestCase
 
         $actual = [];
         foreach ($processed as $key => $value) {
-            /** @var TestDataContainer $value */
-            $actual[$key] = $value->allData();
+            /** @var array $value */
+            $actual[$key] = $value[0]->allData();
         }
         static::assertArraysAreSame($expected, $actual);
     }
