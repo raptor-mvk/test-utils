@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.1] - 2019-07-08
+### Changed
+- fix errors in `generate-ide-test-containers`
+
+
 ## [1.2.0] - 2019-07-07
 ### Changed
 - fix errors in `_ide_test_container.php`
