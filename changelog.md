@@ -40,6 +40,7 @@ All notable changes to this project will be documented in this file.
 - command `generate-ide-test-containers` that generate service file for IDE used to autocomplete
 
 
+[1.2.1]: https://github.com/raptor-mvk/test-utils/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/raptor-mvk/test-utils/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/raptor-mvk/test-utils/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/raptor-mvk/test-utils/releases/tag/v1.0.0
