@@ -3,7 +3,12 @@ declare(strict_types=1);
 
 namespace Raptor\TestUtils;
 
+use Carbon\Carbon;
 use function is_array;
+use PHPUnit\Framework\Constraint\GreaterThan;
+use PHPUnit\Framework\Constraint\LessThan;
+use PHPUnit\Framework\Constraint\LogicalAnd;
+use PHPUnit\Framework\Constraint\LogicalNot;
 
 /**
  * Trait with additional assertions.
@@ -92,5 +97,23 @@ trait ExtraAssertions
         $expectedString = static::jsonEncodePrettily($expected);
         $actualString = static::jsonEncodePrettily($actual);
         static::assertSame($expectedString, $actualString, $message ?? '');
+    }
+
+    /**
+     * Asserts that the given function returns result of _Carbon::now()_, invoked while running.
+     *
+     * @param callable $func
+     * @param string|null $message
+     */
+    public static function assertReturnsCarbonNow(callable $func, ?string $message = null): void
+    {
+        $timeBefore = Carbon::now()->valueOf();
+        $result = $func();
+        $actualTime = ($result instanceof Carbon) ? $result->valueOf() : 0;
+        $timeAfter = Carbon::now()->valueOf();
+        $notBeforeConstraint = new LogicalNot(new LessThan($timeBefore));
+        $notAfterConstraint = new LogicalNot(new GreaterThan($timeAfter));
+        $constraint = LogicalAnd::fromConstraints($notBeforeConstraint, $notAfterConstraint);
+        static::assertThat($actualTime, $constraint, $message ?? '');
     }
 }

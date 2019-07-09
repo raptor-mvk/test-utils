@@ -1,4 +1,4 @@
-# Raptor Test Utils v1.2.2
+# Raptor Test Utils v1.2.3
 
 (c) Mikhail Kamorin aka raptor_MVK
 
@@ -43,6 +43,8 @@ additional assertions will be available:
  - `assertArraysAreSameIgnoringOrderRecursive(array $expected, array $actual, ?string $message = null)` checks the
    assertion that two associative arrays contains same elements ignoring their order at every level. Before checking,
    arrays are encoded as JSON strings, therefore you cannot use objects or functions as elements of an array.
+ - `assertReturnsCarbonNow(callable $func, ?string $message = null)` checks the assertion that the given function
+   returns result of `Carbon::now()`, invoked while running 
 
 ### Virtual file system
 

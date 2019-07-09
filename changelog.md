@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 ## [1.2.3] - 2019-07-09
 ### Added
 - Following methods are added to trait `ExtraAssertions`: 
-  - `assertActionDateTimeInterval(callable $func, ?string $message = null)`
+  - `assertReturnsCarbonNow(callable $func, ?string $message = null)`
 
 ### Changed
 - method `getLastErrors` is added to `Generator` interface
