@@ -53,6 +53,21 @@ final class GenerateIDETestContainerCommand extends Command
              ->addArgument('path', InputArgument::REQUIRED, 'Enter the root folder for JSON test files:');
     }
 
+    /**
+     * Outputs error messages from generator.
+     *
+     * @param OutputInterface $output
+     */
+    private function outputGeneratorErrors(OutputInterface $output): void
+    {
+        $errors = $this->generator->getLastErrors();
+        if (!empty($errors)) {
+            foreach ($errors as $filename => $error) {
+                $output->write("<error>$filename: $error\n");
+            }
+        }
+    }
+
     /** @noinspection PhpMissingParentCallCommonInspection __approved__ parent method is overridden */
     /**
      * @param InputInterface $input
@@ -63,6 +78,13 @@ final class GenerateIDETestContainerCommand extends Command
     {
         $path = $input->getArgument('path');
         $content = $this->generator->generate($path);
-        file_put_contents("{$this->filePath}/_ide_test_container.php", $content);
+        $this->outputGeneratorErrors($output);
+        $filename = "{$this->filePath}/_ide_test_container.php";
+        if (file_exists($filename) && !is_writable($filename)) {
+            $output->write("<error>Could not write to the file _id_test_container.php.</error>\n");
+            return;
+        }
+        file_put_contents($filename, $content);
+        $output->write("<info>File _id_test_container.php was successfully generated.</info>\n");
     }
 }

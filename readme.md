@@ -48,7 +48,8 @@ additional assertions will be available:
 
 Add trait `ExtraUtils` or `ExtraAssertions` to the class that contains tests or to the common base test class. Method
 `setupVFS` should be used in `setUp` method or in the test method just before using other methods of the trait.
-No tearDown actions is needed regarding virtual file system. After that the following additional methods will be available:
+No tearDown actions is needed regarding virtual file system. After that the following additional methods will be
+available:
 
  - `addFileToVFS(string $filename, ?int $permissions = null, ?string $content = null)` adds file with given permissions
    and content to virtual file system.
@@ -95,7 +96,8 @@ keys. Service field `_name` itself is excluded from the objects.
 Then each array value is wrapped into TestDataContainer object. Values are retrieved from containers using getters. 
 Name of getters follow standard agreements:
  - if the name of field starts with 'is', then the getter name is field name converted to camel case
- - otherwise, if the field is of bool type, then the getter name is field name converted to studly case and prefixed with
+ - otherwise, if the field is of bool type, then the getter name is field name converted to studly case and prefixed
+ with
    'is'
  - otherwise, the getter name is field name converted to studly case and prefixed with 'get'
 

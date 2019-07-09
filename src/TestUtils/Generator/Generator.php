@@ -25,4 +25,11 @@ interface Generator
      * @throws DataDirectoryNotFoundException
      */
     public function generate(string $path): string;
+
+    /**
+     * Returns array of errors that occurred during the last generation.
+     *
+     * @return array [ filename => errorMessage, ... ]
+     */
+    public function getLastErrors(): array;
 }
