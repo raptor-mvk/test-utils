@@ -23,9 +23,9 @@ final class ProcessingDataLoaderTests extends TestCase
 {
     use MockeryPHPUnitIntegration, ExtraAssertions, WithVFS;
 
+    /** @noinspection PhpMissingParentCallCommonInspection __approved__ parent method is overridden */
     protected function setUp(): void
     {
-        parent::setUp();
         $this->setupVFS();
     }
 

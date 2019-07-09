@@ -92,9 +92,9 @@ final class RecursiveDirectoryDataLoader implements DirectoryDataLoader
     }
 
     /**
-     * Returns array of errors that occurred during the last data load. Filenames are array keys.
+     * Returns array of errors that occurred during the last data load.
      *
-     * @return array
+     * @return array [ filename => errorMessage, ... ]
      */
     public function getLastErrors(): array
     {

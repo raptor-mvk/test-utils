@@ -97,4 +97,24 @@ final class TestDataContainerGeneratorTests extends TestCase
             'mixed' => new MixedType()
         ];
     }
+
+    /**
+     * Checks that method _getLastErrors_ returns the result of the directory data loader's _getLastErrors_ method.
+     */
+    public function testGetLastErrorsReturnsResultOfDirectoryDataLoaderGetLastErrors(): void
+    {
+        $path = 'some_path';
+        $expectedErrors = ['file_one.json' => 'some_error', 'file_two.json' => 'other_error'];
+        $directoryDataLoader = Mockery::mock(DirectoryDataLoader::class);
+        $directoryDataLoader->shouldReceive('load')
+            ->withArgs([$path, '/^.*\.json$/'])
+            ->andReturn([]);
+        $directoryDataLoader->shouldReceive('getLastErrors')->andReturn($expectedErrors);
+        $testDataContainerGenerator = new TestDataContainerGenerator($directoryDataLoader);
+
+        $testDataContainerGenerator->generate($path);
+        $actualErrors = $testDataContainerGenerator->getLastErrors();
+
+        static::assertSame($expectedErrors, $actualErrors);
+    }
 }

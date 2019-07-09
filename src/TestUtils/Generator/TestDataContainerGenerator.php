@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Raptor\TestUtils\Generator;
 
+use Memcache;
 use Raptor\TestUtils\DataLoader\DirectoryDataLoader;
 use Raptor\TestUtils\DataProcessor\Type\Type;
 use Raptor\TestUtils\Exceptions\DataDirectoryNotFoundException;
@@ -69,5 +70,15 @@ final class TestDataContainerGenerator implements Generator
             $result .= " */\nclass {$className}DataContainer extends TestDataContainer\n{\n}\n";
         }
         return $result;
+    }
+
+    /**
+     * Returns array of errors that occurred during the last generation.
+     *
+     * @return array [ filename => errorMessage, ... ]
+     */
+    public function getLastErrors(): array
+    {
+        return $this->directoryDataLoader->getLastErrors();
     }
 }

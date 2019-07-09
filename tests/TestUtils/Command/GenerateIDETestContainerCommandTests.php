@@ -17,12 +17,18 @@ final class GenerateIDETestContainerCommandTests extends TestCase
 {
     use WithVFS;
 
+    /** @noinspection PhpMissingParentCallCommonInspection __approved__ parent method is overridden */
+    public function setUp(): void
+    {
+        $this->setupVFS();
+    }
+
+    /**
+     * Checks that command generates correct file.
+     */
     public function testCommandGeneratesCorrectFile(): void
     {
-        $dirname = 'json';
-        $this->setupVFS();
-        $this->prepareVFSDirectoryStructure($dirname);
-        $fullPath = $this->getFullPath($dirname);
+        $fullPath = $this->prepareVFSDirectoryStructure('json');
         $expectedPath = $this->getFullPath('');
         $command = new GenerateIDETestContainerCommand($expectedPath);
         $commandTester = new CommandTester($command);
@@ -33,11 +39,13 @@ final class GenerateIDETestContainerCommandTests extends TestCase
     }
 
     /**
-     * Prepares directory structure in virtual file system.
+     * Prepares directory structure in virtual file system and returns path to it outside virtual file system.
      *
      * @param string $rootDir root directory name
+     *
+     * @return string
      */
-    private function prepareVFSDirectoryStructure(string $rootDir): void
+    private function prepareVFSDirectoryStructure(string $rootDir): string
     {
         $fileOneContent = [
             ['_name' => 'AAA', 'int' => 3, 'float' => 3.5, 'bool' => true, 'string' => 'bbb', 'array' => [1, 2, 3]],
@@ -54,5 +62,80 @@ final class GenerateIDETestContainerCommandTests extends TestCase
             ]
         ];
         $this->addStructureToVFS($structure);
+        return $this->getFullPath($rootDir);
+    }
+
+    /**
+     * Checks that command outputs correct message when file is generated without errors.
+     */
+    public function testCommandOutputsCorrectMessageWithoutErrors(): void
+    {
+        $fullPath = $this->prepareVFSDirectoryStructure('other_dir');
+        $expectedPath = $this->getFullPath('');
+        $command = new GenerateIDETestContainerCommand($expectedPath);
+        $commandTester = new CommandTester($command);
+
+        $commandTester->execute(['path' => $fullPath]);
+        $output = $commandTester->getDisplay();
+
+        static::assertSame("File _id_test_container.php was successfully generated.\n", $output);
+    }
+
+    /**
+     * Checks that command outputs correct message when file could not be generated.
+     */
+    public function testCommandOutputsCorrectMessageWhenCouldNotWriteToFile(): void
+    {
+        $fullPath = $this->prepareVFSDirectoryStructure('any_dir');
+        $this->addFileToVFS('_ide_test_container.php', 000);
+        $expectedPath = $this->getFullPath('');
+        $command = new GenerateIDETestContainerCommand($expectedPath);
+        $commandTester = new CommandTester($command);
+
+        $commandTester->execute(['path' => $fullPath]);
+        $output = $commandTester->getDisplay();
+
+        static::assertSame("Could not write to the file _id_test_container.php.\n", $output);
+    }
+
+    /**
+     * Checks that command outputs correct message when file is generated with errors.
+     */
+    public function testCommandOutputsCorrectMessageWithErrors(): void
+    {
+        $dirname = 'dir_with_errors';
+        $fullPath = $this->prepareVFSDirectoryStructureWithErrors($dirname);
+        $expectedPath = $this->getFullPath('');
+        $command = new GenerateIDETestContainerCommand($expectedPath);
+        $commandTester = new CommandTester($command);
+        $fileOne = $this->getFullPath("$dirname/file_one.json");
+        $fileTwo = $this->getFullPath("$dirname/inside/file_two.json");
+        $expectedMessage = "$fileOne: JSON parse error.\n$fileTwo: Expected array, object found at level root.\n" .
+            "File _id_test_container.php was successfully generated.\n";
+
+        $commandTester->execute(['path' => $fullPath]);
+        $output = $commandTester->getDisplay();
+
+        static::assertSame($expectedMessage, $output);
+    }
+
+    /**
+     * Prepares directory structure in virtual file system with errors and returns path to it outside virtual file
+     * system.
+     *
+     * @param string $rootDir root directory name
+     *
+     * @return string
+     */
+    private function prepareVFSDirectoryStructureWithErrors(string $rootDir): string
+    {
+        $structure = [
+            $rootDir => [
+                'file_one.json' => '',
+                'inside' => ['file_two.json' => '{"some_field":"some_value"}']
+            ]
+        ];
+        $this->addStructureToVFS($structure);
+        return $this->getFullPath($rootDir);
     }
 }

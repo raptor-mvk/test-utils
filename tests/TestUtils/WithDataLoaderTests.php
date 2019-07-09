@@ -18,9 +18,9 @@ final class WithDataLoaderTests extends TestCase
 {
     use ExtraAssertions, WithVFS, WithDataLoader;
 
+    /** @noinspection PhpMissingParentCallCommonInspection __approved__ parent method is overridden */
     protected function setUp(): void
     {
-        parent::setUp();
         $this->setupVFS();
     }
 
