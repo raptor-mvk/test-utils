@@ -35,9 +35,11 @@ final class GeneratorDataProcessorTests extends TestCase
     {
         $typeFactory = new GetTypeTypeFactory();
         $dataProcessor = new GeneratorDataProcessor($typeFactory);
+        $expected = $this->convertForAssertion($expected);
 
         $actual = $dataProcessor->process($json);
 
+        $actual = $this->convertForAssertion($actual);
         static::assertArraysAreSame($expected, $actual);
     }
 
@@ -52,7 +54,8 @@ final class GeneratorDataProcessorTests extends TestCase
             'single occurrence' => $this->prepareSingleOccurrenceTestData(),
             'multi occurrence with same type' => $this->prepareMultiOccurrenceWithSameTypeTestData(),
             'multi occurrence with different types' => $this->prepareMultiOccurrenceWithDifferentTypeTestData(),
-            'float => int and int => float' => $this->prepareMultiOccurrenceWithFloatAndIntTestData()
+            'float => int and int => float' => $this->prepareMultiOccurrenceWithFloatAndIntTestData(),
+            'default values' => $this->prepareDefaultValuesTestData()
         ];
     }
 
@@ -144,5 +147,37 @@ final class GeneratorDataProcessorTests extends TestCase
             'float_field' => new FloatType()
         ];
         return [$json, $expected];
+    }
+
+    /**
+     * Prepares test data with default values.
+     *
+     * @return array [ [ json, expected ], ... ]
+     */
+    private function prepareDefaultValuesTestData(): array
+    {
+        $jsonChildren = [['_name' => 'both int', 'second' => 3], ['_name' => 'second string']];
+        $jsonData = [['first' => 135, 'second' => 'string', '_children' => $jsonChildren]];
+        $json = json_encode($jsonData);
+        $expected = [
+            'first' => new IntType(),
+            'second' => new MixedType()
+        ];
+        return [$json, $expected];
+    }
+
+    /**
+     * Converts data for assertion: applies __toString() to each Type object.
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    private function convertForAssertion(array $data): array
+    {
+        $converter = static function ($arg) {
+            return (string)$arg;
+        };
+        return array_map($converter, $data);
     }
 }

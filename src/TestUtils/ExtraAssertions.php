@@ -104,6 +104,8 @@ trait ExtraAssertions
      *
      * @param callable $func
      * @param string|null $message
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess) __approved__ factory method LogicalAnd::fromConstraints
      */
     public static function assertReturnsCarbonNow(callable $func, ?string $message = null): void
     {

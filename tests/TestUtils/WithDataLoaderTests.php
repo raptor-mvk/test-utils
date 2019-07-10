@@ -63,7 +63,7 @@ final class WithDataLoaderTests extends TestCase
                 ]
             ]
         ];
-        return json_encode($data, JSON_UNESCAPED_UNICODE);
+        return json_encode($data);
     }
 
     /**

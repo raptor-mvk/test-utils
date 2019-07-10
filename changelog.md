@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.4] - 2019-07-10
+### Changed
+- fix error in `GeneratorDataProcessor`
+
+
 ## [1.2.3] - 2019-07-09
 ### Added
 - Following methods are added to trait `ExtraAssertions`: 
@@ -55,6 +60,7 @@ All notable changes to this project will be documented in this file.
 - command `generate-ide-test-containers` that generate service file for IDE used to autocomplete
 
 
+[1.2.4]: https://github.com/raptor-mvk/test-utils/compare/v1.2.3...v1.2.4
 [1.2.3]: https://github.com/raptor-mvk/test-utils/compare/v1.2.2...v1.2.3
 [1.2.2]: https://github.com/raptor-mvk/test-utils/compare/v1.2.1-dep...v1.2.2
 [1.2.1-dep]: https://github.com/raptor-mvk/test-utils/compare/v1.2.0-dep...v1.2.1-dep

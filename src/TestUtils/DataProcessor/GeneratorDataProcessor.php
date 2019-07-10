@@ -36,6 +36,7 @@ final class GeneratorDataProcessor extends AbstractJSONTestDataProcessor
      */
     protected function processTestCase(array $element, string $name, ?array $default = null): void
     {
+        $element = array_merge($default ?? [], $element);
         foreach ($element as $field => $value) {
             /** @var string $valueType */
             $valueType = gettype($value);

@@ -57,8 +57,8 @@ final class GenerateIDETestContainerCommandTests extends TestCase
         ];
         $structure = [
             $rootDir => [
-                'file_one.json' => json_encode($fileOneContent, JSON_UNESCAPED_UNICODE),
-                'inside' => ['file_two.json' => json_encode($fileTwoContent, JSON_UNESCAPED_UNICODE)]
+                'file_one.json' => json_encode($fileOneContent),
+                'inside' => ['file_two.json' => json_encode($fileTwoContent)]
             ]
         ];
         $this->addStructureToVFS($structure);

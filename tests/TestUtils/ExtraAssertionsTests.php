@@ -268,10 +268,12 @@ final class ExtraAssertionsTests extends TestCase
 
     /**
      * Checks that assertion _assertReturnsCarbonNow_ accepts correct function.
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess) __approved__ factory method Carbon::now
      */
     public function testAssertReturnsCarbonNowAcceptsCorrectFunction(): void
     {
-        $function = static function() {
+        $function = static function () {
             return Carbon::now();
         };
 
@@ -299,16 +301,18 @@ final class ExtraAssertionsTests extends TestCase
      * Provides test data for _assertReturnsCarbonNow_ to reject.
      *
      * @return array [ [ func ], ... ]
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess) __approved__ factory method Carbon::now
      */
     public function assertReturnsCarbonNowRejectDataProvider(): array
     {
-        $wrongCarbon = static function() {
+        $wrongCarbon = static function () {
             return Carbon::now()->addDay();
         };
-        $notCarbon = static function() {
+        $notCarbon = static function () {
             return 135;
         };
-        $nullCarbon = static function() {
+        $nullCarbon = static function () {
             return null;
         };
         return [
