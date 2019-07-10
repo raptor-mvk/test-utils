@@ -1,3 +1,7 @@
+<?php
+
+use Raptor\TestUtils\TestDataContainer\TestDataContainer;
+
 /**
  * @method int getIntValue()
  * @method float getFloatValue()
@@ -7,6 +11,6 @@
  * @method array getArrayValue()
  * @method mixed getMixedValue()
  */
-class FileOneDataContainer
+class FileOneDataContainer extends TestDataContainer
 {
 }

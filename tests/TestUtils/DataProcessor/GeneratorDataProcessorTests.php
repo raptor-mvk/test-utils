@@ -4,7 +4,14 @@ declare(strict_types=1);
 namespace RaptorTests\TestUtils\DataProcessor;
 
 use PHPUnit\Framework\TestCase;
-use Raptor\TestUtils\DataProcessor\TestContainerGeneratorDataProcessor;
+use Raptor\TestUtils\DataProcessor\GeneratorDataProcessor;
+use Raptor\TestUtils\DataProcessor\Type\ArrayType;
+use Raptor\TestUtils\DataProcessor\Type\BoolType;
+use Raptor\TestUtils\DataProcessor\Type\FloatType;
+use Raptor\TestUtils\DataProcessor\Type\IntType;
+use Raptor\TestUtils\DataProcessor\Type\MixedType;
+use Raptor\TestUtils\DataProcessor\Type\StringType;
+use Raptor\TestUtils\DataProcessor\TypeFactory\GetTypeTypeFactory;
 use Raptor\TestUtils\ExtraAssertions;
 
 /**
@@ -12,7 +19,7 @@ use Raptor\TestUtils\ExtraAssertions;
  *
  * @copyright 2019, raptor_MVK
  */
-class TestContainerGeneratorDataProcessorTests extends TestCase
+final class GeneratorDataProcessorTests extends TestCase
 {
     use ExtraAssertions;
 
@@ -26,10 +33,13 @@ class TestContainerGeneratorDataProcessorTests extends TestCase
      */
     public function testProcessReturnsCorrectResult(string $json, array $expected): void
     {
-        $dataProcessor = new TestContainerGeneratorDataProcessor();
+        $typeFactory = new GetTypeTypeFactory();
+        $dataProcessor = new GeneratorDataProcessor($typeFactory);
+        $expected = $this->convertForAssertion($expected);
 
         $actual = $dataProcessor->process($json);
 
+        $actual = $this->convertForAssertion($actual);
         static::assertArraysAreSame($expected, $actual);
     }
 
@@ -44,7 +54,8 @@ class TestContainerGeneratorDataProcessorTests extends TestCase
             'single occurrence' => $this->prepareSingleOccurrenceTestData(),
             'multi occurrence with same type' => $this->prepareMultiOccurrenceWithSameTypeTestData(),
             'multi occurrence with different types' => $this->prepareMultiOccurrenceWithDifferentTypeTestData(),
-            'float => int and int => float' => $this->prepareMultiOccurrenceWithFloatAndIntTestData()
+            'float => int and int => float' => $this->prepareMultiOccurrenceWithFloatAndIntTestData(),
+            'default values' => $this->prepareDefaultValuesTestData()
         ];
     }
 
@@ -62,13 +73,13 @@ class TestContainerGeneratorDataProcessorTests extends TestCase
         );
         $json = json_encode([array_merge($jsonData, ['_name' => 'some_test'])]);
         $expected = [
-            'int_field' => TestContainerGeneratorDataProcessor::INT_TYPE,
-            'string_field' => TestContainerGeneratorDataProcessor::STRING_TYPE,
-            'float_field' => TestContainerGeneratorDataProcessor::FLOAT_TYPE,
-            'bool_field' => TestContainerGeneratorDataProcessor::BOOL_TYPE,
-            'associative_array_field' => TestContainerGeneratorDataProcessor::ARRAY_TYPE,
-            'simple_array_field' => TestContainerGeneratorDataProcessor::ARRAY_TYPE,
-            'null_field' => TestContainerGeneratorDataProcessor::MIXED_TYPE
+            'int_field' => new IntType(),
+            'string_field' => new StringType(),
+            'float_field' => new FloatType(),
+            'bool_field' => new BoolType(),
+            'associative_array_field' => new ArrayType(),
+            'simple_array_field' => new ArrayType(),
+            'null_field' => new MixedType()
         ];
         return [$json, $expected];
     }
@@ -87,12 +98,12 @@ class TestContainerGeneratorDataProcessorTests extends TestCase
         $jsonData = [array_merge($data, ['_name' => 'some_test']), array_merge($data, ['_name' => 'other_test'])];
         $json = json_encode($jsonData);
         $expected = [
-            'int_field' => TestContainerGeneratorDataProcessor::INT_TYPE,
-            'string_field' => TestContainerGeneratorDataProcessor::STRING_TYPE,
-            'float_field' => TestContainerGeneratorDataProcessor::FLOAT_TYPE,
-            'bool_field' => TestContainerGeneratorDataProcessor::BOOL_TYPE,
-            'associative_array_field' => TestContainerGeneratorDataProcessor::ARRAY_TYPE,
-            'simple_array_field' => TestContainerGeneratorDataProcessor::ARRAY_TYPE
+            'int_field' => new IntType(),
+            'string_field' => new StringType(),
+            'float_field' => new FloatType(),
+            'bool_field' => new BoolType(),
+            'associative_array_field' => new ArrayType(),
+            'simple_array_field' => new ArrayType()
         ];
         return [$json, $expected];
     }
@@ -116,7 +127,7 @@ class TestContainerGeneratorDataProcessorTests extends TestCase
         $json = json_encode($jsonData);
         $fields =
             ['int_field', 'string_field', 'float_field', 'bool_field', 'associative_array_field', 'simple_array_field'];
-        $expected = array_fill_keys($fields, TestContainerGeneratorDataProcessor::MIXED_TYPE);
+        $expected = array_fill_keys($fields, new MixedType());
         return [$json, $expected];
     }
 
@@ -132,9 +143,41 @@ class TestContainerGeneratorDataProcessorTests extends TestCase
         $jsonData = [array_merge($firstData, ['_name' => 'test1']), array_merge($secondData, ['_name' => 'test2'])];
         $json = json_encode($jsonData);
         $expected = [
-            'int_field' => TestContainerGeneratorDataProcessor::FLOAT_TYPE,
-            'float_field' => TestContainerGeneratorDataProcessor::FLOAT_TYPE
+            'int_field' => new FloatType(),
+            'float_field' => new FloatType()
         ];
         return [$json, $expected];
+    }
+
+    /**
+     * Prepares test data with default values.
+     *
+     * @return array [ [ json, expected ], ... ]
+     */
+    private function prepareDefaultValuesTestData(): array
+    {
+        $jsonChildren = [['_name' => 'both int', 'second' => 3], ['_name' => 'second string']];
+        $jsonData = [['first' => 135, 'second' => 'string', '_children' => $jsonChildren]];
+        $json = json_encode($jsonData);
+        $expected = [
+            'first' => new IntType(),
+            'second' => new MixedType()
+        ];
+        return [$json, $expected];
+    }
+
+    /**
+     * Converts data for assertion: applies __toString() to each Type object.
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    private function convertForAssertion(array $data): array
+    {
+        $converter = static function ($arg) {
+            return (string)$arg;
+        };
+        return array_map($converter, $data);
     }
 }

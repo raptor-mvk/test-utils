@@ -10,7 +10,7 @@ namespace RaptorTests\TestUtils\Utils;
  *
  * @copyright 2019, raptor_MVK
  */
-class InvokeMethodTestObject
+final class InvokeMethodTestObject
 {
     /**
      * Reverses input string.
@@ -19,6 +19,7 @@ class InvokeMethodTestObject
      *
      * @return string
      */
+    /** @noinspection PhpUnused __approved__ used via Reflection */
     protected function reverse(string $input): string
     {
         return strrev($input);
@@ -33,6 +34,7 @@ class InvokeMethodTestObject
      *
      * @return string
      */
+    /** @noinspection PhpUnused __approved__ used via Reflection */
     private function repeat(string $input, int $count): string
     {
         return str_repeat($input, $count);

@@ -8,9 +8,8 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 use Raptor\TestUtils\DataLoader\DataLoader;
+use Raptor\TestUtils\DataLoader\ProcessingDataLoader;
 use Raptor\TestUtils\DataProcessor\DataProcessor;
-use Raptor\TestUtils\DataProcessor\TestContainerGeneratorDataProcessor;
-use Raptor\TestUtils\DataProcessor\TestContainerWrapperDataProcessor;
 use Raptor\TestUtils\Exceptions\DataFileNotFoundException;
 use Raptor\TestUtils\ExtraAssertions;
 use Raptor\TestUtils\WithVFS;
@@ -20,46 +19,14 @@ use Raptor\TestUtils\WithVFS;
  *
  * @copyright 2019, raptor_MVK
  */
-class DataLoaderTests extends TestCase
+final class ProcessingDataLoaderTests extends TestCase
 {
     use MockeryPHPUnitIntegration, ExtraAssertions, WithVFS;
 
+    /** @noinspection PhpMissingParentCallCommonInspection __approved__ parent method is overridden */
     protected function setUp(): void
     {
-        parent::setUp();
         $this->setupVFS();
-    }
-
-    /**
-     * Checks that method _getDataProcessorClass_ returns correct class.
-     *
-     * @param DataProcessor $dataProcessor
-     * @param string $expectedClass
-     *
-     * @dataProvider dataProcessorClassDataProvider
-     */
-    public function testGetDataProcessorClassReturnsCorrectClass(
-        DataProcessor $dataProcessor,
-        string $expectedClass
-    ): void {
-        $dataLoader = new DataLoader($dataProcessor);
-
-        $actualClass = $dataLoader->getDataProcessorClass();
-
-        static::assertSame($expectedClass, $actualClass);
-    }
-
-    /**
-     * Provides test data for testing method _getDataProcessorClass_.
-     *
-     * @return array [ [ dataProcessor, expectedClass ], ... ]
-     */
-    public function dataProcessorClassDataProvider(): array
-    {
-        return [
-            'wrapper' => [new TestContainerWrapperDataProcessor(), TestContainerWrapperDataProcessor::class],
-            'generator' => [new TestContainerGeneratorDataProcessor(), TestContainerGeneratorDataProcessor::class]
-        ];
     }
 
     /**
@@ -91,7 +58,7 @@ class DataLoaderTests extends TestCase
         if ($dataProcessorMockCallback !== null) {
             $dataProcessorMockCallback($dataProcessorMock);
         }
-        return new DataLoader($dataProcessorMock);
+        return new ProcessingDataLoader($dataProcessorMock);
     }
 
     /**

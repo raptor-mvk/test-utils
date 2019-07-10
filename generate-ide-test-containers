@@ -2,18 +2,14 @@
 <?php
 declare(strict_types=1);
 
-require __DIR__.'/vendor/autoload.php';
+require dirname(__DIR__, 3). '/vendor/autoload.php';
 
-use Raptor\TestUtils\Command\GenerateIDETestContainersCommand;
-use Raptor\TestUtils\DataLoader\DataLoaderFactory;
-use Raptor\TestUtils\DataLoader\DirectoryDataLoaderFactory;
+use Raptor\TestUtils\Command\GenerateIDETestContainerCommand;
 use Symfony\Component\Console\Application;
 
 $application = new Application();
-$dataLoaderFactory = new DataLoaderFactory();
-$directoryDataLoaderFactory = new DirectoryDataLoaderFactory($dataLoaderFactory);
 $filePath = dirname(__DIR__, 3);
-$command = new GenerateIDETestContainersCommand($directoryDataLoaderFactory, $filePath);
+$command = new GenerateIDETestContainerCommand($filePath);
 $application->add($command);
 $application->setDefaultCommand($command->getName(), true);
 

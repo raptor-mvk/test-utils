@@ -2,12 +2,46 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.0.1] - 2019-06-28
+## [1.2.4] - 2019-07-10
+### Changed
+- fix error in `GeneratorDataProcessor`
+
+
+## [1.2.3] - 2019-07-09
+### Added
+- Following methods are added to trait `ExtraAssertions`: 
+  - `assertReturnsCarbonNow(callable $func, ?string $message = null)`
+
+### Changed
+- method `getLastErrors` is added to `Generator` interface
+- error messages are added to `GenerateIDETestContainerCommand`
+
+
+## [1.2.2] - 2019-07-08
+### Changed
+- fix error in `WrapperDataProcessor`
+
+
+## [1.2.1-dep] - 2019-07-08
+### Changed
+- fix errors in `generate-ide-test-containers`
+
+
+## [1.2.0-dep] - 2019-07-07
+### Changed
+- fix errors in `_ide_test_container.php`
+- `DataLoaderFactory` and `DirectoryDataLoaderFactory` are removed
+
+
+## [1.1.0-dep] - 2019-07-07
 ### Changed
 - `mikey179/vfsstream` is moved from require-dev to require section of composer.json
+- trait `ExtraAssertions` does not include `ExtraUtils` anymore
+- `DataLoader` and `DirectoryDataLoader` are now interfaces
+- all classes are made final, for which this was possible
 
 
-## [1.0.0] - 2019-06-27
+## [1.0.0-dep] - 2019-06-27
 ### Added
 - trait `ExtraUtils` that contains following service methods:
   - `invokeMethod(object $object, string $methodName, ?array $parameters = null)`
@@ -25,5 +59,11 @@ All notable changes to this project will be documented in this file.
   providers
 - command `generate-ide-test-containers` that generate service file for IDE used to autocomplete
 
-[1.0.1]: https://github.com/raptor-mvk/test-utils/compare/v1.0.0...v1.0.1
-[1.0.0]: https://github.com/raptor-mvk/test-utils/releases/tag/v1.0.0
+
+[1.2.4]: https://github.com/raptor-mvk/test-utils/compare/v1.2.3...v1.2.4
+[1.2.3]: https://github.com/raptor-mvk/test-utils/compare/v1.2.2...v1.2.3
+[1.2.2]: https://github.com/raptor-mvk/test-utils/compare/v1.2.1-dep...v1.2.2
+[1.2.1-dep]: https://github.com/raptor-mvk/test-utils/compare/v1.2.0-dep...v1.2.1-dep
+[1.2.0-dep]: https://github.com/raptor-mvk/test-utils/compare/v1.1.0-dep...v1.2.0-dep
+[1.1.0-dep]: https://github.com/raptor-mvk/test-utils/compare/v1.0.0-dep...v1.1.0-dep
+[1.0.0-dep]: https://github.com/raptor-mvk/test-utils/releases/tag/v1.0.0-dep

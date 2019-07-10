@@ -4,17 +4,19 @@ declare(strict_types=1);
 namespace RaptorTests\TestUtils\DataProcessor;
 
 use PHPUnit\Framework\TestCase;
-use Raptor\TestUtils\DataProcessor\TestContainerWrapperDataProcessor;
+use Raptor\TestUtils\DataProcessor\WrapperDataProcessor;
 use Raptor\TestUtils\Exceptions\DataParseException;
 use Raptor\TestUtils\ExtraAssertions;
 use Raptor\TestUtils\TestDataContainer\TestDataContainer;
+use function is_array;
 
 /**
  * @author Mikhail Kamorin aka raptor_MVK
+ * @author Igor Vodka
  *
  * @copyright 2019, raptor_MVK
  */
-class TestContainerWrapperDataProcessorTests extends TestCase
+final class WrapperDataProcessorTests extends TestCase
 {
     use ExtraAssertions;
 
@@ -31,7 +33,7 @@ class TestContainerWrapperDataProcessorTests extends TestCase
         $this->expectException(DataParseException::class);
         $this->expectExceptionMessageRegExp($messageRegExp);
 
-        $dataProcessor = new TestContainerWrapperDataProcessor();
+        $dataProcessor = new WrapperDataProcessor();
 
         $dataProcessor->process($json);
     }
@@ -68,22 +70,24 @@ class TestContainerWrapperDataProcessorTests extends TestCase
     }
 
     /**
-     * Checks that method _process_ returns array consists of instances of _TestContainer_.
+     * Checks that method _process_ returns array of arrays, each of which contains single TestDataContainer instance.
+     *
+     * @param string $json
      *
      * @dataProvider correctDataProvider
      */
-    public function testProcessReturnsResultWithTestContainersAsElements(): void
+    public function testProcessReturnsArrayOfArraysContainingSingleTestDataContainerInstance(string $json): void
     {
-        $testData = $this->prepareMultiResultTestJson();
-        $dataProcessor = new TestContainerWrapperDataProcessor();
+        $dataProcessor = new WrapperDataProcessor();
 
-        $actual = $dataProcessor->process($testData);
+        $processed = $dataProcessor->process($json);
 
         $result = true;
-        foreach ($actual as $value) {
-            $result = $result && ($value instanceof TestDataContainer);
+        foreach ($processed as $value) {
+            $result = $result && is_array($value) && (count($value) === 1) &&
+                ($value[0] instanceof TestDataContainer);
         }
-        static::assertTrue($result, 'All elements of resulting array should be instances of TestContainer');
+        static::assertTrue($result, 'Process should return array of arrays with single element');
     }
 
     /**
@@ -173,14 +177,14 @@ class TestContainerWrapperDataProcessorTests extends TestCase
      */
     public function testProcessReturnsCorrectResult(string $json, array $expected): void
     {
-        $dataProcessor = new TestContainerWrapperDataProcessor();
+        $dataProcessor = new WrapperDataProcessor();
 
         $processed = $dataProcessor->process($json);
 
         $actual = [];
         foreach ($processed as $key => $value) {
-            /** @var TestDataContainer $value */
-            $actual[$key] = $value->allData();
+            /** @var array $value */
+            $actual[$key] = $value[0]->allData();
         }
         static::assertArraysAreSame($expected, $actual);
     }

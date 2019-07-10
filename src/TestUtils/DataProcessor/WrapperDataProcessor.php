@@ -13,21 +13,20 @@ use Raptor\TestUtils\TestDataContainer\TestDataContainer;
  *
  * @copyright 2019, raptor_MVK
  */
-class TestContainerWrapperDataProcessor extends AbstractJSONTestDataProcessor
+final class WrapperDataProcessor extends AbstractJSONTestDataProcessor
 {
     /**
      * Processes test case (element with service field _name), considering it to be correct (without error handling).
      *
-     * @param array $element
+     * @param array $element element without service field _\_name_
+     * @param string $name value of service field _\_name_
      * @param array|null $default array of default values passed from higher levels
      */
-    protected function processTestCase(array $element, ?array $default = null): void
+    protected function processTestCase(array $element, string $name, ?array $default = null): void
     {
-        $name = $element[self::NAME_KEY];
-        unset($element[self::NAME_KEY]);
         if ($this->hasProcessed($name)) {
             throw new DataParseException("Non-unique test name $name was found.");
         }
-        $this->addProcessed($name, new TestDataContainer(array_merge($default ?? [], $element)));
+        $this->addProcessed($name, [new TestDataContainer(array_merge($default ?? [], $element))]);
     }
 }

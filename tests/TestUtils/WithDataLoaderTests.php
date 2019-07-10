@@ -14,13 +14,13 @@ use Raptor\TestUtils\WithVFS;
  *
  * @copyright 2019, raptor_MVK
  */
-class WithDataLoaderTests extends TestCase
+final class WithDataLoaderTests extends TestCase
 {
     use ExtraAssertions, WithVFS, WithDataLoader;
 
+    /** @noinspection PhpMissingParentCallCommonInspection __approved__ parent method is overridden */
     protected function setUp(): void
     {
-        parent::setUp();
         $this->setupVFS();
     }
 
@@ -33,8 +33,9 @@ class WithDataLoaderTests extends TestCase
         $content = $this->prepareFileContent();
         $this->addFileToVFS($filename, null, $content);
         $fullFilename = $this->getFullPath($filename);
-        $extractData = static function (TestDataContainer $container) {
-            return $container->allData();
+        $extractData = static function (array $container) {
+            /** @var TestDataContainer[] $container */
+            return $container[0]->allData();
         };
         $expectedData = $this->prepareExpectedResult();
 
@@ -62,7 +63,7 @@ class WithDataLoaderTests extends TestCase
                 ]
             ]
         ];
-        return json_encode($data, JSON_UNESCAPED_UNICODE);
+        return json_encode($data);
     }
 
     /**

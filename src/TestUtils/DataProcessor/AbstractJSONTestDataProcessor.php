@@ -17,10 +17,10 @@ use Raptor\TestUtils\Exceptions\DataParseException;
 abstract class AbstractJSONTestDataProcessor implements DataProcessor
 {
     /** @var string CHILDREN_KEY key for service field that contains child elements */
-    protected const CHILDREN_KEY = '_children';
+    private const CHILDREN_KEY = '_children';
 
     /** @var string NAME_KEY key for service field that contains test's name */
-    protected const NAME_KEY = '_name';
+    private const NAME_KEY = '_name';
 
     /** @var array $processedData current processed data */
     private $processedData;
@@ -157,7 +157,8 @@ abstract class AbstractJSONTestDataProcessor implements DataProcessor
         if ($name === '') {
             throw new DataParseException("Empty test name at level $level.");
         }
-        $this->processTestCase($element, $default);
+        unset($element[self::NAME_KEY]);
+        $this->processTestCase($element, $name, $default);
     }
 
     /**
@@ -198,8 +199,9 @@ abstract class AbstractJSONTestDataProcessor implements DataProcessor
     /**
      * Processes test case (element with service field _name), considering it to be correct (without error handling).
      *
-     * @param array $element
+     * @param array $element element without service field _\_name_
+     * @param string $name value of service field _\_name_
      * @param array|null $default array of default values passed from higher levels
      */
-    abstract protected function processTestCase(array $element, ?array $default = null): void;
+    abstract protected function processTestCase(array $element, string $name, ?array $default = null): void;
 }

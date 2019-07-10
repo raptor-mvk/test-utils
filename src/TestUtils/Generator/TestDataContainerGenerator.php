@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Raptor\TestUtils\TestDataContainerGenerator;
+namespace Raptor\TestUtils\Generator;
 
 use Raptor\TestUtils\DataLoader\DirectoryDataLoader;
-use Raptor\TestUtils\DataProcessor\TestContainerGeneratorDataProcessor;
+use Raptor\TestUtils\DataProcessor\Type\Type;
 use Raptor\TestUtils\Exceptions\DataDirectoryNotFoundException;
 
 /**
@@ -14,7 +14,7 @@ use Raptor\TestUtils\Exceptions\DataDirectoryNotFoundException;
  *
  * @copyright 2019, raptor_MVK
  */
-class TestDataContainerGenerator
+final class TestDataContainerGenerator implements Generator
 {
     /** @var DirectoryDataLoader $directoryDataLoader */
     private $directoryDataLoader;
@@ -31,13 +31,13 @@ class TestDataContainerGenerator
      * Returns name of getter method. Type is necessary for bool getters names.
      *
      * @param string $field field name
-     * @param string $type field type
+     * @param Type $type field type
      *
      * @return string
      */
-    private function getMethodName(string $field, string $type): string
+    private function getMethodName(string $field, Type $type): string
     {
-        $isBool = $type === TestContainerGeneratorDataProcessor::BOOL_TYPE;
+        $isBool = $type->isBool();
         if ($isBool && (strncmp($field, 'is_', 3) === 0)) {
             $field = substr($field, 3);
         }
@@ -58,7 +58,7 @@ class TestDataContainerGenerator
     public function generate(string $path): string
     {
         $loadedData = $this->directoryDataLoader->load($path, '/^.*\.json$/');
-        $result = '';
+        $result = "<?php\n\nuse Raptor\TestUtils\TestDataContainer\TestDataContainer;\n";
         foreach ($loadedData as $className => $fields) {
             $result .= (($result !== '') ? "\n" : '') . "/**\n";
             /** @var array $fields */
@@ -66,8 +66,18 @@ class TestDataContainerGenerator
                 $methodName = $this->getMethodName($field, $type);
                 $result .= " * @method $type $methodName()\n";
             }
-            $result .= " */\nclass {$className}DataContainer\n{\n}\n";
+            $result .= " */\nclass {$className}DataContainer extends TestDataContainer\n{\n}\n";
         }
         return $result;
+    }
+
+    /**
+     * Returns array of errors that occurred during the last generation.
+     *
+     * @return array [ filename => errorMessage, ... ]
+     */
+    public function getLastErrors(): array
+    {
+        return $this->directoryDataLoader->getLastErrors();
     }
 }

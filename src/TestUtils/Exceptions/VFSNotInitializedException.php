@@ -12,6 +12,6 @@ use RuntimeException;
  *
  * @copyright 2019, raptor_MVK
  */
-class VFSNotInitializedException extends RuntimeException
+final class VFSNotInitializedException extends RuntimeException
 {
 }
