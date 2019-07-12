@@ -1,5 +1,10 @@
 # Raptor Test Utils v1.2.5
 
+<p align="center">
+<a href="https://packagist.org/packages/raptor/test-utils"><img src="https://poser.pugx.org/raptor-test-utils/v/stable.svg" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/raptor/test-utils"><img src="https://poser.pugx.org/raptor-test-utils/license.svg" alt="License"></a>
+</p>
+
 (c) Mikhail Kamorin aka raptor_MVK
 
 ## Overview
