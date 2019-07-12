@@ -1,4 +1,4 @@
-# Raptor Test Utils v1.2.4
+# Raptor Test Utils v1.2.5
 
 (c) Mikhail Kamorin aka raptor_MVK
 
@@ -45,6 +45,9 @@ additional assertions will be available:
    arrays are encoded as JSON strings, therefore you cannot use objects or functions as elements of an array.
  - `assertReturnsCarbonNow(callable $func, ?string $message = null)` checks the assertion that the given function
    returns result of `Carbon::now()`, invoked while running 
+ - `assertStringsAreSameIgnoringEOL(string $expected, string $actual, ?string $message = null)` checks the assertion
+   that two given strings are same ignoring the difference in EOL characters
+
 
 ### Virtual file system
 

@@ -118,4 +118,23 @@ trait ExtraAssertions
         $constraint = LogicalAnd::fromConstraints($notBeforeConstraint, $notAfterConstraint);
         static::assertThat($actualTime, $constraint, $message ?? '');
     }
+
+    /**
+     * Asserts that two given strings are same ignoring the difference in EOL characters.
+     *
+     * @param string $expected
+     * @param string $actual
+     * @param string|null $message
+     */
+    public static function assertStringsAreSameIgnoringEOL(
+        string $expected,
+        string $actual,
+        ?string $message = null
+    ): void {
+        $wrongEOLs = ["\r\n", "\r"];
+        $expected = str_replace($wrongEOLs, "\n", $expected);
+        $actual = str_replace($wrongEOLs, "\n", $actual);
+        static::assertSame($expected, $actual, $message ?? '');
+    }
+
 }
