@@ -72,9 +72,11 @@ final class GenerateIDETestContainerCommand extends Command
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
+     *
+     * @return int 0 if everything went fine, or an error code
      */
     /** @noinspection PhpUnused __approved__ used in generate-ide-test-containers */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $path = $input->getArgument('path');
         $content = $this->generator->generate($path);
@@ -82,9 +84,10 @@ final class GenerateIDETestContainerCommand extends Command
         $filename = "{$this->filePath}/_ide_test_container.php";
         if (file_exists($filename) && !is_writable($filename)) {
             $output->write("<error>Could not write to the file _id_test_container.php.</error>\n");
-            return;
+            return 1;
         }
         file_put_contents($filename, $content);
         $output->write("<info>File _id_test_container.php was successfully generated.</info>\n");
+        return 0;
     }
 }

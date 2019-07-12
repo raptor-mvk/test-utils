@@ -136,5 +136,4 @@ trait ExtraAssertions
         $actual = str_replace($wrongEOLs, "\n", $actual);
         static::assertSame($expected, $actual, $message ?? '');
     }
-
 }

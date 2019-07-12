@@ -82,6 +82,22 @@ final class GenerateIDETestContainerCommandTests extends TestCase
     }
 
     /**
+     * Checks that command returns 0 when file is generated without errors.
+     */
+    public function testCommandReturns0WithoutErrors(): void
+    {
+        $fullPath = $this->prepareVFSDirectoryStructure('other_dir');
+        $expectedPath = $this->getFullPath('');
+        $command = new GenerateIDETestContainerCommand($expectedPath);
+        $commandTester = new CommandTester($command);
+
+        $commandTester->execute(['path' => $fullPath]);
+        $result = $commandTester->getStatusCode();
+
+        static::assertSame(0, $result);
+    }
+
+    /**
      * Checks that command outputs correct message when file could not be generated.
      */
     public function testCommandOutputsCorrectMessageWhenCouldNotWriteToFile(): void
@@ -96,6 +112,23 @@ final class GenerateIDETestContainerCommandTests extends TestCase
         $output = $commandTester->getDisplay();
 
         static::assertSame("Could not write to the file _id_test_container.php.\n", $output);
+    }
+
+    /**
+     * Checks that command returns 1 when file could not be generated.
+     */
+    public function testCommandReturns1WhenCouldNotWriteToFile(): void
+    {
+        $fullPath = $this->prepareVFSDirectoryStructure('any_dir');
+        $this->addFileToVFS('_ide_test_container.php', 000);
+        $expectedPath = $this->getFullPath('');
+        $command = new GenerateIDETestContainerCommand($expectedPath);
+        $commandTester = new CommandTester($command);
+
+        $commandTester->execute(['path' => $fullPath]);
+        $result = $commandTester->getStatusCode();
+
+        static::assertSame(1, $result);
     }
 
     /**

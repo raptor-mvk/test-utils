@@ -1,19 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace RaptorTests\TestUtils;
+namespace RaptorTests\TestUtils\ExtraAssertions;
 
-use Carbon\Carbon;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use Raptor\TestUtils\ExtraAssertions;
 
 /**
+ * Tests for assertions _assertArraysAreSame_, _assertArraysAreSameIgnoringOrder_ and
+ * _assertArraysAreSameIgnoringOrderRecursively_ from trait _ExtraAssertions_.
+ *
  * @author Mikhail Kamorin aka raptor_MVK
  *
  * @copyright 2019, raptor_MVK
  */
-final class ExtraAssertionsTests extends TestCase
+final class AssertArraysAreSameTests extends TestCase
 {
     use ExtraAssertions;
 
@@ -264,131 +266,5 @@ final class ExtraAssertionsTests extends TestCase
     public function rejectableArraysAreSameIgnoringOrderRecursivelyDataProvider(): array
     {
         return $this->prepareDifferentArraysTestData();
-    }
-
-    /**
-     * Checks that assertion _assertReturnsCarbonNow_ accepts correct function.
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess) __approved__ factory method Carbon::now
-     */
-    public function testAssertReturnsCarbonNowAcceptsCorrectFunction(): void
-    {
-        $function = static function () {
-            return Carbon::now();
-        };
-
-        static::assertReturnsCarbonNow($function);
-    }
-
-    /**
-     * Checks that assertion _assertReturnsCarbonNow_ rejects incorrect function.
-     *
-     * @param callable $func
-     * @param string $message
-     *
-     * @dataProvider assertReturnsCarbonNowRejectDataProvider
-     */
-    public function testAssertReturnsCarbonNowRejectsIncorrectFunction(callable $func, string $message): void
-    {
-        $messageRegExp = "/^$message\n.*$/";
-        $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessageRegExp($messageRegExp);
-
-        static::assertReturnsCarbonNow($func, $message);
-    }
-
-    /**
-     * Provides test data for _assertReturnsCarbonNow_ to reject.
-     *
-     * @return array [ [ func ], ... ]
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess) __approved__ factory method Carbon::now
-     */
-    public function assertReturnsCarbonNowRejectDataProvider(): array
-    {
-        $wrongCarbon = static function () {
-            return Carbon::now()->addDay();
-        };
-        $notCarbon = static function () {
-            return 135;
-        };
-        $nullCarbon = static function () {
-            return null;
-        };
-        return [
-            'wrong Carbon' => [$wrongCarbon, 'This is wrong Carbon'],
-            'not Carbon' => [$notCarbon, 'That is not Carbon'],
-            'null Carbon' => [$nullCarbon, 'There is no Carbon']
-        ];
-    }
-
-    /**
-     * Checks that assertion _assertStringAreSameIgnoringEOL_ accepts correct strings
-     *
-     * @param string $expected
-     * @param string $actual
-     *
-     * @dataProvider sameStringsIgnoringEOLDataProvider
-     */
-    public function testAssertStringsAreSameIgnoringEOLAcceptsCorrectStrings(string $expected, string $actual): void
-    {
-        static::assertStringsAreSameIgnoringEOL($expected, $actual);
-    }
-
-    /**
-     * Provides test data with same strings ignoring different EOL characters.
-     *
-     * @return array [ [ expected, actual ], ... ]
-     */
-    public function sameStringsIgnoringEOLDataProvider(): array
-    {
-        return [
-            '\n vs \r' => ["some string\nother string", "some string\rother string"],
-            '\n vs \r\n' => ["some string\nother string", "some string\r\nother string"],
-            '\n vs \n' => ["some string\nother string", "some string\nother string"],
-            '\r vs \r' => ["other string\rdifferent string", "other string\ndifferent string"],
-            '\r vs \r\n' => ["other string\rdifferent string", "other string\r\ndifferent string"],
-            '\r vs \n' => ["other string\rdifferent string", "other string\ndifferent string"],
-            '\r\n vs \r' => ["first string\r\nsecond string", "first string\rsecond string"],
-            '\r\n vs \r\n' => ["first string\r\nsecond string", "first string\r\nsecond string"],
-            '\r\n vs \n' => ["first string\r\nsecond string", "first string\nsecond string"],
-            '\r\r\n vs \n\n' => ["two breaks\r\r\nlast", "two breaks\n\nlast"]
-        ];
-    }
-
-    /**
-     * Checks that assertion _assertStringsAreSameIgnoringEOL_ rejects incorrect strings.
-     *
-     * @param string $expected
-     * @param string $actual
-     * @param string $message
-     *
-     * @dataProvider differentStringsIgnoringEOLDataProvider
-     */
-    public function testAssertStringsAreSameIgnoringEOLRejectsIncorrectFunction(
-        string $expected,
-        string $actual,
-        string $message
-    ): void {
-        $messageRegExp = "/^$message\n.*$/";
-        $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessageRegExp($messageRegExp);
-
-        static::assertStringsAreSameIgnoringEOL($expected, $actual, $message);
-    }
-
-    /**
-     * Provides test data with different strings ignoring different EOL characters.
-     *
-     * @return array [ [ expected, actual, message ], ... ]
-     */
-    public function differentStringsIgnoringEOLDataProvider(): array
-    {
-        return [
-            'different' => ['some string', 'other_string', 'some error'],
-            'starts from \n' => ["\nbreak", 'break', 'warning'],
-            'ends from \r' => ['sentence', "sentence\r", 'error occurred'],
-            '\r\r\n vs \n' => ["double\r\r\nbreak", "double\nbreak", 'strange thing']
-        ];
     }
 }
