@@ -28,6 +28,6 @@
     }
   },
   "scripts": {
-    "test-all": "phpunit --colors=always --configuration=all_tests.xml"
+    "test-all": "phpunit"
   }
 }
