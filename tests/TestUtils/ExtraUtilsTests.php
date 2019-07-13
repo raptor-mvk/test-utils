@@ -60,7 +60,7 @@ final class ExtraUtilsTests extends TestCase
         $extra = 'a';
         $count = 2;
         return [
-            'protected' => ['reverse', [$palindrome.$extra], $extra.$palindrome],
+            'protected' => ['reverse', [$palindrome . $extra], $extra . $palindrome],
             'private' => ['repeat', [$palindrome, $count], str_repeat($palindrome, $count)]
         ];
     }

@@ -2,16 +2,11 @@
 
 <ruleset name="PHP_CodeSniffer">
 
- <description>The coding standard for our project.</description>
- <config name="installed_paths" value="vendor/slevomat/coding-standard"/>
+ <description>The coding standard for raptor/test-utils.</description>
  <file>src</file>
 
  <file>tests</file>
 
- <exclude-pattern>tests/Core/database/*</exclude-pattern>
- <rule ref="PSR2"/>
- <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing"/>
- <rule ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue"/>
- <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHintSpacing"/>
+ <rule ref="PSR12"/>
 
 </ruleset>

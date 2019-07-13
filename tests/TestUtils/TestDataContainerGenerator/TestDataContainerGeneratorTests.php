@@ -34,7 +34,7 @@ final class TestDataContainerGeneratorTests extends TestCase
      */
     public function testGenerateReturnsCorrectResult(array $directoryDataLoaderResult, string $referenceFilename): void
     {
-        $referencePath = __DIR__."/reference/$referenceFilename";
+        $referencePath = __DIR__ . "/reference/$referenceFilename";
         $path = 'some_path';
         $directoryDataLoader = Mockery::mock(DirectoryDataLoader::class);
         $directoryDataLoader->shouldReceive('load')
