@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.6](https://github.com/raptor-mvk/test-utils/compare/v1.2.5...v1.2.6) - 2019-07-15
+### Added
+- Following methods are added to trait `ExtraAssertions`:
+  - `assertReturnsCarbonNowWithoutMicroseconds(callable $func, ?string $message = null)`
+
 ## [1.2.5](https://github.com/raptor-mvk/test-utils/compare/v1.2.4...v1.2.5) - 2019-07-12
 ### Added
 - Following methods are added to trait `ExtraAssertions`:
