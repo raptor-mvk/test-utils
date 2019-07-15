@@ -1,10 +1,10 @@
 # Raptor Test Utils
 
-![Build status](https://img.shields.io/travis/raptor-mvk/test-utils.svg)
-![Code coverage](https://img.shields.io/codecov/c/github/raptor-mvk/test-utils.svg)
-![Codacy Badge](https://api.codacy.com/project/badge/Grade/fad62319b6af492b871f118cddef6401)
-![Latest Stable Version](https://poser.pugx.org/raptor/test-utils/version)
-![License](https://poser.pugx.org/raptor/test-utils/license)
+[![Build Status](https://travis-ci.org/raptor-mvk/test-utils.svg?branch=master)](https://travis-ci.org/raptor-mvk/test-utils)
+[![Code Coverage](https://codecov.io/gh/raptor-mvk/test-utils/branch/master/graph/badge.svg)](https://codecov.io/gh/raptor-mvk/test-utils)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/fad62319b6af492b871f118cddef6401)](https://www.codacy.com/app/raptor-mvk/test-utils)
+[![Latest Stable Version](https://img.shields.io/github/release/raptor-mvk/test-utils.svg)](https://github.com/raptor-mvk/test-utils/releases/latest)
+[![License](https://img.shields.io/github/license/raptor-mvk/test-utils.svg)](https://github.com/raptor-mvk/test-utils)
 
 (c) Mikhail Kamorin aka raptor_MVK
 
