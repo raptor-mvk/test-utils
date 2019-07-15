@@ -1,5 +1,7 @@
 # Raptor Test Utils
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/3a15f61d960a41f4a6892e1cd693454b)](https://app.codacy.com/app/raptor-mvk/test-utils?utm_source=github.com&utm_medium=referral&utm_content=raptor-mvk/test-utils&utm_campaign=Badge_Grade_Dashboard)
+
 ![Build status](https://img.shields.io/travis/raptor-mvk/test-utils.svg)
 ![Code coverage](https://img.shields.io/codecov/c/github/raptor-mvk/test-utils.svg)
 ![Codacy Badge](https://api.codacy.com/project/badge/Grade/fad62319b6af492b871f118cddef6401)
