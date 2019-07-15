@@ -55,6 +55,9 @@ additional assertions will be available:
 - `assertReturnsCarbonNow(callable $func, ?string $message = null)` checks the assertion that the given function
   returns result of `Carbon::now()`, invoked while running 
 
+- `assertReturnsCarbonNowWithoutMicroseconds(callable $func, ?string $message = null)` checks the assertion that the
+  given function returns result of `Carbon::now()`, invoked while running, with zeroed microseconds 
+
 - `assertStringsAreSameIgnoringEOL(string $expected, string $actual, ?string $message = null)` checks the assertion
   that two given strings are same ignoring the difference in EOL characters
 

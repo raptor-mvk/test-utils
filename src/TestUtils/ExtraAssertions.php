@@ -109,14 +109,52 @@ trait ExtraAssertions
      */
     public static function assertReturnsCarbonNow(callable $func, ?string $message = null): void
     {
-        $timeBefore = Carbon::now()->valueOf();
+        $timeGetter = static function () {
+            return Carbon::now()->valueOf();
+        };
+        static::commonAssertReturnsCarbonNow($func, $timeGetter, $message);
+    }
+
+    /**
+     * Asserts that the given function returns result that is between two timestamps got by a given time getter
+     * function.
+     *
+     * @param callable $func function that is tested
+     * @param callable $timeGetter function used to receive current time
+     * @param string|null $message
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess) __approved__ factory method LogicalAnd::fromConstraints
+     */
+    private static function commonAssertReturnsCarbonNow(
+        callable $func,
+        callable $timeGetter,
+        ?string $message = null
+    ): void {
+        $timeBefore = $timeGetter();
         $result = $func();
         $actualTime = ($result instanceof Carbon) ? $result->valueOf() : 0;
-        $timeAfter = Carbon::now()->valueOf();
+        $timeAfter = $timeGetter();
         $notBeforeConstraint = new LogicalNot(new LessThan($timeBefore));
         $notAfterConstraint = new LogicalNot(new GreaterThan($timeAfter));
         $constraint = LogicalAnd::fromConstraints($notBeforeConstraint, $notAfterConstraint);
         static::assertThat($actualTime, $constraint, $message ?? '');
+    }
+
+    /**
+     * Asserts that the given function returns result of _Carbon::now()_, invoked while running, with zeroed
+     * microseconds.
+     *
+     * @param callable $func
+     * @param string|null $message
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess) __approved__ factory method LogicalAnd::fromConstraints
+     */
+    public static function assertReturnsCarbonNowWithoutMicroseconds(callable $func, ?string $message = null): void
+    {
+        $timeGetter = static function () {
+            return Carbon::now()->setMicro(0)->valueOf();
+        };
+        static::commonAssertReturnsCarbonNow($func, $timeGetter, $message);
     }
 
     /**
