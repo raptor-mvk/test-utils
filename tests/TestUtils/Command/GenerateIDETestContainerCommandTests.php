@@ -84,7 +84,7 @@ final class GenerateIDETestContainerCommandTests extends TestCase
     /**
      * Checks that command returns exit code OK when file is generated without errors.
      */
-    public function testCommandReturns0WithoutErrors(): void
+    public function testCommandReturnsOkWithoutErrors(): void
     {
         $fullPath = $this->prepareVFSDirectoryStructure('other_dir');
         $expectedPath = $this->getFullPath('');
@@ -117,7 +117,7 @@ final class GenerateIDETestContainerCommandTests extends TestCase
     /**
      * Checks that command returns exit code ERROR when file could not be generated.
      */
-    public function testCommandReturns1WhenCouldNotWriteToFile(): void
+    public function testCommandReturnsErrorWhenCouldNotWriteToFile(): void
     {
         $fullPath = $this->prepareVFSDirectoryStructure('any_dir');
         $this->addFileToVFS('_ide_test_container.php', 000);
