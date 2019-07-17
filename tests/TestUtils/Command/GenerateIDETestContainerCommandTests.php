@@ -82,7 +82,7 @@ final class GenerateIDETestContainerCommandTests extends TestCase
     }
 
     /**
-     * Checks that command returns 0 when file is generated without errors.
+     * Checks that command returns exit code OK when file is generated without errors.
      */
     public function testCommandReturns0WithoutErrors(): void
     {
@@ -94,7 +94,7 @@ final class GenerateIDETestContainerCommandTests extends TestCase
         $commandTester->execute(['path' => $fullPath]);
         $result = $commandTester->getStatusCode();
 
-        static::assertSame(0, $result);
+        static::assertSame(GenerateIDETestContainerCommand::OK, $result);
     }
 
     /**
@@ -115,7 +115,7 @@ final class GenerateIDETestContainerCommandTests extends TestCase
     }
 
     /**
-     * Checks that command returns 1 when file could not be generated.
+     * Checks that command returns exit code ERROR when file could not be generated.
      */
     public function testCommandReturns1WhenCouldNotWriteToFile(): void
     {
@@ -128,7 +128,7 @@ final class GenerateIDETestContainerCommandTests extends TestCase
         $commandTester->execute(['path' => $fullPath]);
         $result = $commandTester->getStatusCode();
 
-        static::assertSame(1, $result);
+        static::assertSame(GenerateIDETestContainerCommand::ERROR, $result);
     }
 
     /**

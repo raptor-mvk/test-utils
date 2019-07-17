@@ -24,6 +24,12 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class GenerateIDETestContainerCommand extends Command
 {
+    /** @var int OK exit code when everything is OK */
+    public const OK = 0;
+
+    /** @var int ERROR exit code when target file is not writable */
+    public const ERROR = 1;
+
     /** @var Generator $generator */
     private $generator;
 
@@ -35,13 +41,13 @@ final class GenerateIDETestContainerCommand extends Command
      */
     public function __construct(string $filePath)
     {
-        parent::__construct();
         $typeFactory = new GetTypeTypeFactory();
         $dataProcessor = new GeneratorDataProcessor($typeFactory);
         $dataLoader = new ProcessingDataLoader($dataProcessor);
         $directoryDataLoader = new RecursiveDirectoryDataLoader($dataLoader);
         $this->generator = new TestDataContainerGenerator($directoryDataLoader);
         $this->filePath = $filePath;
+        parent::__construct();
     }
 
     /** @noinspection PhpMissingParentCallCommonInspection __approved__ parent method is overridden */
@@ -84,10 +90,10 @@ final class GenerateIDETestContainerCommand extends Command
         $filename = "{$this->filePath}/_ide_test_container.php";
         if (file_exists($filename) && !is_writable($filename)) {
             $output->write("<error>Could not write to the file _id_test_container.php.</error>\n");
-            return 1;
+            return self::ERROR;
         }
         file_put_contents($filename, $content);
         $output->write("<info>File _id_test_container.php was successfully generated.</info>\n");
-        return 0;
+        return self::OK;
     }
 }
