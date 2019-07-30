@@ -92,18 +92,6 @@ trait WithVFS
     }
 
     /**
-     * Returns full path (escaped to use in regexp) in virtual file system by partial path.
-     *
-     * @param string $path
-     *
-     * @return string
-     */
-    protected function getEscapedFullPath(string $path): string
-    {
-        return str_replace('/', '\/', $this->getFullPath($path));
-    }
-
-    /**
      * Asserts that setupVFS has been called, and throws exception otherwise.
      */
     private function assertVfsHasBeenSetUp(): void

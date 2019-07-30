@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 use Raptor\TestUtils\DataProcessor\WrapperDataProcessor;
 use Raptor\TestUtils\Exceptions\DataParseException;
 use Raptor\TestUtils\ExtraAssertions;
+use Raptor\TestUtils\ExtraUtils;
 use Raptor\TestUtils\TestDataContainer\TestDataContainer;
 use function is_array;
 
@@ -18,20 +19,20 @@ use function is_array;
  */
 final class WrapperDataProcessorTests extends TestCase
 {
-    use ExtraAssertions;
+    use ExtraAssertions, ExtraUtils;
 
     /**
      * Checks that method _process_ throws _DataParseException_ with appropriate message.
      *
      * @param string $json
-     * @param string $messageRegExp regular expression used to verify exception's message
+     * @param string $message
      *
      * @dataProvider dataParseExceptionDataProvider
      */
-    public function testProcessThrowDataParseExceptionWithCorrectMessage(string $json, string $messageRegExp): void
+    public function testProcessThrowDataParseExceptionWithCorrectMessage(string $json, string $message): void
     {
         $this->expectException(DataParseException::class);
-        $this->expectExceptionMessageRegExp($messageRegExp);
+        $this->expectExceptionExactMessage($message);
 
         $dataProcessor = new WrapperDataProcessor();
 
@@ -41,7 +42,7 @@ final class WrapperDataProcessorTests extends TestCase
     /**
      * Provides test data to verify that _DataParseException_ is thrown.
      *
-     * @return array [ [ json, messageRegExp ], ... ]
+     * @return array [ [ json, message ], ... ]
      */
     public function dataParseExceptionDataProvider(): array
     {
@@ -53,7 +54,7 @@ final class WrapperDataProcessorTests extends TestCase
     /**
      * Prepares test data with non-unique values of service field _\_name_.
      *
-     * @return array [ [ json, messageRegExp ], ... ]
+     * @return array [ [ json, message ], ... ]
      */
     private function prepareNonUniqueNameTestData(): array
     {
@@ -63,9 +64,9 @@ final class WrapperDataProcessorTests extends TestCase
         $thirdLevelJson =
             json_encode([['_name' => 'test2'], ['_name' => 'test3'], ['_children' => $thirdLevelChildren]]);
         return [
-            'not unique name, top level' => [$topLevelJson, '/^Non-unique test name test1 was found\.$/'],
-            'not unique name, second level' => [$secondLevelJson, '/^Non-unique test name test1 was found\.$/'],
-            'not unique name, third level' => [$thirdLevelJson, '/^Non-unique test name test3 was found\.$/']
+            'not unique name, top level' => [$topLevelJson, 'Non-unique test name test1 was found.'],
+            'not unique name, second level' => [$secondLevelJson, 'Non-unique test name test1 was found.'],
+            'not unique name, third level' => [$thirdLevelJson, 'Non-unique test name test3 was found.']
         ];
     }
 

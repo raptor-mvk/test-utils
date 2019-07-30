@@ -6,6 +6,7 @@ namespace RaptorTests\TestUtils;
 use PHPUnit\Framework\TestCase;
 use Raptor\TestUtils\Exceptions\VFSNotInitializedException;
 use Raptor\TestUtils\ExtraAssertions;
+use Raptor\TestUtils\ExtraUtils;
 use Raptor\TestUtils\WithVFS;
 
 /**
@@ -15,7 +16,7 @@ use Raptor\TestUtils\WithVFS;
  */
 final class WithVFSTests extends TestCase
 {
-    use WithVFS, ExtraAssertions;
+    use WithVFS, ExtraAssertions, ExtraUtils;
 
     /**
      * Checks that method _getFullPath_ throws _VFSNotInitializedException_, if method _setupVFS_ has not been called
@@ -24,33 +25,9 @@ final class WithVFSTests extends TestCase
     public function testGetFullPathThrowsVFSNotInitializedWithoutSetupVFS(): void
     {
         $this->expectException(VFSNotInitializedException::class);
-        $this->expectExceptionMessageRegExp('/^Method setupVFS should be used\.$/');
+        $this->expectExceptionExactMessage('Method setupVFS should be used.');
 
         $this->getFullPath('some_file.json');
-    }
-
-    /**
-     * Checks that method _getEscapedFullPath_ throws _VFSNotInitializedException_, if method _setupVFS_ has not been
-     * called previously.
-     */
-    public function testGetEscapedFullPathThrowsVFSNotInitializedWithoutSetupVFS(): void
-    {
-        $this->expectException(VFSNotInitializedException::class);
-        $this->expectExceptionMessageRegExp('/^Method setupVFS should be used\.$/');
-
-        $this->getEscapedFullPath('other_file.json');
-    }
-
-    /**
-     * Checks that method _getEscapedFullPath_ returns path without non-escaped slashes.
-     */
-    public function testGetEscapedFullPathReturnsPathWithoutNotEscapedSlashes(): void
-    {
-        $this->setupVFS();
-
-        $escapedPath = $this->getEscapedFullPath('some/path/file.txt');
-
-        static::assertNotRegExp('/[^\\\\]\//', $escapedPath);
     }
 
     /**
@@ -60,7 +37,7 @@ final class WithVFSTests extends TestCase
     public function testAddFileToVFSThrowsVFSNotInitializedWithoutSetupVFS(): void
     {
         $this->expectException(VFSNotInitializedException::class);
-        $this->expectExceptionMessageRegExp('/^Method setupVFS should be used\.$/');
+        $this->expectExceptionExactMessage('Method setupVFS should be used.');
 
         $this->addFileToVFS('any_file.txt');
     }
@@ -122,7 +99,7 @@ final class WithVFSTests extends TestCase
     public function testAddDirectoryToVFSThrowsVFSNotInitializedWithoutSetupVFS(): void
     {
         $this->expectException(VFSNotInitializedException::class);
-        $this->expectExceptionMessageRegExp('/^Method setupVFS should be used\.$/');
+        $this->expectExceptionExactMessage('Method setupVFS should be used.');
 
         $this->addDirectoryToVFS('any_directory');
     }
@@ -167,7 +144,7 @@ final class WithVFSTests extends TestCase
     public function testAddStructureToVFSThrowsVFSNotInitializedWithoutSetupVFS(): void
     {
         $this->expectException(VFSNotInitializedException::class);
-        $this->expectExceptionMessageRegExp('/^Method setupVFS should be used\.$/');
+        $this->expectExceptionExactMessage('Method setupVFS should be used.');
         $structure = ['any_folder' => []];
 
         $this->addStructureToVFS($structure);

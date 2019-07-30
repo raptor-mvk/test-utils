@@ -39,4 +39,15 @@ trait ExtraUtils
             throw new BadMethodException("Method $methodName was not found.", 0, $e);
         }
     }
+
+    /**
+     * Checks that an exception is thrown with exact given message.
+     *
+     * @param string $message expected exact message
+     */
+    public function expectExceptionExactMessage(string $message): void
+    {
+        $message = preg_quote($message, '/');
+        $this->expectExceptionMessageRegExp("/^$message$/");
+    }
 }
