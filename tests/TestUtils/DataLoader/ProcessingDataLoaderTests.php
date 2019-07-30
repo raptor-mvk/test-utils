@@ -12,6 +12,7 @@ use Raptor\TestUtils\DataLoader\ProcessingDataLoader;
 use Raptor\TestUtils\DataProcessor\DataProcessor;
 use Raptor\TestUtils\Exceptions\DataFileNotFoundException;
 use Raptor\TestUtils\ExtraAssertions;
+use Raptor\TestUtils\ExtraUtils;
 use Raptor\TestUtils\WithVFS;
 
 /**
@@ -21,7 +22,7 @@ use Raptor\TestUtils\WithVFS;
  */
 final class ProcessingDataLoaderTests extends TestCase
 {
-    use MockeryPHPUnitIntegration, ExtraAssertions, WithVFS;
+    use MockeryPHPUnitIntegration, ExtraAssertions, WithVFS, ExtraUtils;
 
     /** @noinspection PhpMissingParentCallCommonInspection __approved__ parent method is overridden */
     protected function setUp(): void
@@ -35,11 +36,10 @@ final class ProcessingDataLoaderTests extends TestCase
     public function testLoadThrowsDataFileNotFoundForNonExistingFile(): void
     {
         $filename = 'nonexistent.json';
-        $escapedFilename = $this->getEscapedFullPath($filename);
-        $this->expectException(DataFileNotFoundException::class);
-        $this->expectExceptionMessageRegExp("/^Data file $escapedFilename was not found\.$/");
-
         $fullFilename = $this->getFullPath($filename);
+        $this->expectException(DataFileNotFoundException::class);
+        $this->expectExceptionExactMessage("Data file $fullFilename was not found.");
+
         $dataLoader = $this->prepareDataLoader();
 
         $dataLoader->load($fullFilename);
@@ -68,11 +68,10 @@ final class ProcessingDataLoaderTests extends TestCase
     {
         $filename = 'forbidden.json';
         $this->addFileToVFS($filename, 0);
-        $escapedFilename = $this->getEscapedFullPath($filename);
-        $this->expectException(DataFileNotFoundException::class);
-        $this->expectExceptionMessageRegExp("/^Data file $escapedFilename was not found.$/");
-
         $fullFilename = $this->getFullPath($filename);
+        $this->expectException(DataFileNotFoundException::class);
+        $this->expectExceptionExactMessage("Data file $fullFilename was not found.");
+
         $dataLoader = $this->prepareDataLoader();
 
         $dataLoader->load($fullFilename);
@@ -85,11 +84,10 @@ final class ProcessingDataLoaderTests extends TestCase
     {
         $dirname = 'accessible_dir';
         $this->addDirectoryToVFS($dirname);
-        $escapedFilename = $this->getEscapedFullPath($dirname);
-        $this->expectException(DataFileNotFoundException::class);
-        $this->expectExceptionMessageRegExp("/^Data file $escapedFilename was not found.$/");
-
         $fullFilename = $this->getFullPath($dirname);
+        $this->expectException(DataFileNotFoundException::class);
+        $this->expectExceptionExactMessage("Data file $fullFilename was not found.");
+
         $dataLoader = $this->prepareDataLoader();
 
         $dataLoader->load($fullFilename);

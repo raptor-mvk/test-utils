@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0](https://github.com/raptor-mvk/test-utils/compare/v1.2.6...v1.3.0) - 2019-07-30
+### Added
+- Following methods are added to trait `ExtraUtils`:
+  - `expectExceptionExactMessage(string $message)`
+#### Removed
+- Following methods are removed from trait `WithVFS`:  
+  - `getEscapedFullPath(string $path)`
+
 ## [1.2.6](https://github.com/raptor-mvk/test-utils/compare/v1.2.5...v1.2.6) - 2019-07-15
 ### Added
 - Following methods are added to trait `ExtraAssertions`:

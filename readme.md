@@ -34,6 +34,7 @@ that the following static methods will be available:
 
 - `invokeMethod(object $object, string $methodName, ?array $parameters = null)` invokes protected or private method
   with the given parameters
+- `expectExceptionExactMessage(string $message)` checks that an exception is thrown with exact given message
 
 ### Additional assertions
 
@@ -78,9 +79,6 @@ available:
   where leaves are files with key as the file name and value as the file content
 
 - `getFullPath(string $path)` returns full path to the file that is used outside virtual file system
-
-- `getEscapedFullPath(string $path)` returns full path to the file with escaped slashes that is used in regular
-  expressions
 
 ### Test data loader
 

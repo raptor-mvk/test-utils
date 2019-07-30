@@ -13,6 +13,7 @@ use Raptor\TestUtils\DataLoader\DirectoryDataLoader;
 use Raptor\TestUtils\DataLoader\RecursiveDirectoryDataLoader;
 use Raptor\TestUtils\Exceptions\DataDirectoryNotFoundException;
 use Raptor\TestUtils\ExtraAssertions;
+use Raptor\TestUtils\ExtraUtils;
 use Raptor\TestUtils\WithVFS;
 
 /**
@@ -22,7 +23,7 @@ use Raptor\TestUtils\WithVFS;
  */
 final class RecursiveDirectoryDataLoaderTests extends TestCase
 {
-    use MockeryPHPUnitIntegration, ExtraAssertions, WithVFS;
+    use MockeryPHPUnitIntegration, ExtraAssertions, WithVFS, ExtraUtils;
 
     /** @noinspection PhpMissingParentCallCommonInspection __approved__ parent method is overridden */
     protected function setUp(): void
@@ -36,11 +37,10 @@ final class RecursiveDirectoryDataLoaderTests extends TestCase
     public function testLoadThrowsDataDirectoryNotFoundForNonExistingDir(): void
     {
         $dirname = 'nonexistent';
-        $escapedPath = $this->getEscapedFullPath($dirname);
-        $this->expectException(DataDirectoryNotFoundException::class);
-        $this->expectExceptionMessageRegExp("/^Root folder $escapedPath was not found\.$/");
-
         $path = $this->getFullPath($dirname);
+        $this->expectException(DataDirectoryNotFoundException::class);
+        $this->expectExceptionExactMessage("Root folder $path was not found.");
+
         $directoryDataLoader = $this->prepareDirectoryDataLoader();
 
         $directoryDataLoader->load($path, '/^.*\..*$/');
@@ -69,11 +69,10 @@ final class RecursiveDirectoryDataLoaderTests extends TestCase
     {
         $dirname = 'forbidden';
         $this->addDirectoryToVFS($dirname, 0);
-        $escapedPath = $this->getEscapedFullPath($dirname);
-        $this->expectException(DataDirectoryNotFoundException::class);
-        $this->expectExceptionMessageRegExp("/^Root folder $escapedPath was not found\.$/");
-
         $path = $this->getFullPath($dirname);
+        $this->expectException(DataDirectoryNotFoundException::class);
+        $this->expectExceptionExactMessage("Root folder $path was not found.");
+
         $directoryDataLoader = $this->prepareDirectoryDataLoader();
 
         $directoryDataLoader->load($path, '/^.*\..*$/');
@@ -86,11 +85,10 @@ final class RecursiveDirectoryDataLoaderTests extends TestCase
     {
         $filename = 'accessible.json';
         $this->addFileToVFS($filename);
-        $escapedPath = $this->getEscapedFullPath($filename);
-        $this->expectException(DataDirectoryNotFoundException::class);
-        $this->expectExceptionMessageRegExp("/^Root folder $escapedPath was not found\.$/");
-
         $path = $this->getFullPath($filename);
+        $this->expectException(DataDirectoryNotFoundException::class);
+        $this->expectExceptionExactMessage("Root folder $path was not found.");
+
         $directoryDataLoader = $this->prepareDirectoryDataLoader();
 
         $directoryDataLoader->load($path, '/^.*\..*$/');
