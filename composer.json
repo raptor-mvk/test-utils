@@ -14,16 +14,18 @@
     "mockery/mockery": "1.2.*",
     "phpmd/phpmd": "@stable",
     "squizlabs/php_codesniffer": "3.4.*",
-    "roave/security-advisories": "dev-master"
+    "roave/security-advisories": "dev-master",
+    "escapestudios/symfony2-coding-standard": "3.9.*"
   },
   "autoload": {
     "psr-4": {
-      "Raptor\\": "src/"
+      "Raptor\\TestUtils\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "RaptorTests\\": "tests/"
+      "Raptor\\TestUtils\\UnitTests\\": "tests/unit",
+      "Raptor\\TestUtils\\TestUtils\\": "tests/utils"
     }
   },
   "scripts": {

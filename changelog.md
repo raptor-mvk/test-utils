@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.0](https://github.com/raptor-mvk/test-utils/compare/v1.3.0...v1.4.0) - 2019-08-31
+### Changed
+- Symfony code style applied instead of PSR-12
+  - All interfaces have  `Interface` suffix
+  - All traits have `Trait` suffix
+
 ## [1.3.0](https://github.com/raptor-mvk/test-utils/compare/v1.2.6...v1.3.0) - 2019-07-30
 ### Added
 - Following methods are added to trait `ExtraUtils`:

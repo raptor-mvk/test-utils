@@ -11,9 +11,9 @@
 ## Overview
 
 Package contains following components:
-- trait `ExtraUtils` that contains set of service methods used to make testing easier
-- trait `ExtraAssertions` that contains set of additional assertions
-- trait `WithVFS` that provides adapted interface for `mikey179/vfsstream` (virtual file system)
+- trait `ExtraUtilsTrait` that contains set of service methods used to make testing easier
+- trait `ExtraAssertionsTrait` that contains set of additional assertions
+- trait `WithVFSTrait` that provides adapted interface for `mikey179/vfsstream` (virtual file system)
 - test data loader from JSON files that wraps each test case into test data container
 - command `generate-ide-test-containers` that generate service file for IDE used to autocomplete
 
@@ -29,7 +29,7 @@ php composer.phar require raptor/test-utils:@stable
 
 ### Additional service methods
 
-Add trait `ExtraUtils` to the class that contains tests or to the common base test class. After
+Add trait `ExtraUtilsTrait` to the class that contains tests or to the common base test class. After
 that the following static methods will be available:
 
 - `invokeMethod(object $object, string $methodName, ?array $parameters = null)` invokes protected or private method
@@ -38,7 +38,7 @@ that the following static methods will be available:
 
 ### Additional assertions
 
-Add trait `ExtraAssertions` to the class that contains tests or to the common base test class. After that the following
+Add trait `ExtraAssertionsTrait` to the class that contains tests or to the common base test class. After that the following
 additional assertions will be available:
 
 - `assertArraysAreSame(array $expected, array $actual, ?string $message = null)` checks the assertion that two arrays
@@ -64,10 +64,9 @@ additional assertions will be available:
 
 ### Virtual file system
 
-Add trait `ExtraUtils` or `ExtraAssertions` to the class that contains tests or to the common base test class. Method
-`setupVFS` should be used in `setUp` method or in the test method just before using other methods of the trait.
-No tearDown actions is needed regarding virtual file system. After that the following additional methods will be
-available:
+Add trait `WithVFSTrait` to the class that contains tests or to the common base test class. Method `setupVFS` should be
+used in `setUp` method or in the test method just before using other methods of the trait. No tearDown actions is needed
+regarding virtual file system. After that the following additional methods will be available:
 
 - `addFileToVFS(string $filename, ?int $permissions = null, ?string $content = null)` adds file with given permissions
   and content to virtual file system.
@@ -151,14 +150,14 @@ contains container class for each JSON file in the specified directory. Each con
 namespace and has the name obtained by converting the name of the JSON file to studly case and adding the suffix
 `DataContainer`. You can use auto-completion after adding a PHPDoc comment `@var` with appropriate class and variable.
 
-### Data loader usage example with trait WithDataLoader
+### Data loader usage example with trait WithDataLoaderTrait
 
 ```php
     use Raptor\Test\TestDataContainer\TestDataContainer;
 
     class someTests extends TestCase
     {
-        use WithDataLoader;
+        use WithDataLoaderTrait;
              
         ...
         
