@@ -7,6 +7,6 @@
 
  <file>tests</file>
 
- <rule ref="PSR12"/>
+ <rule ref="Symfony"/>
 
 </ruleset>
