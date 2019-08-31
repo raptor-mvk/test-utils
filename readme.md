@@ -38,8 +38,8 @@ that the following static methods will be available:
 
 ### Additional assertions
 
-Add trait `ExtraAssertionsTrait` to the class that contains tests or to the common base test class. After that the following
-additional assertions will be available:
+Add trait `ExtraAssertionsTrait` to the class that contains tests or to the common base test class. After that the
+following additional assertions will be available:
 
 - `assertArraysAreSame(array $expected, array $actual, ?string $message = null)` checks the assertion that two arrays
   are same (order of elements, their types coincides at every level). Before checking, arrays are encoded as JSON
