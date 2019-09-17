@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.0](https://github.com/raptor-mvk/test-utils/compare/v1.4.0...v1.5.0) - 2019-09-17
+### Changed
+- Change symfony/console version to ^3.0|^4.0 for better compatibility
+
 ## [1.4.0](https://github.com/raptor-mvk/test-utils/compare/v1.3.0...v1.4.0) - 2019-08-31
 ### Changed
 - Symfony code style applied instead of PSR-12
