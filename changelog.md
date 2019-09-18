@@ -16,7 +16,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Following methods are added to trait `ExtraUtils`:
   - `expectExceptionExactMessage(string $message)`
-#### Removed
+### Removed
 - Following methods are removed from trait `WithVFS`:  
   - `getEscapedFullPath(string $path)`
 
