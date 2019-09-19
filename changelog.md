@@ -100,13 +100,13 @@ following methods:
 
   - `addFileToVFS(string $filename, ?int $permissions = null, ?string $content =
   null)`
-  
+
   - `addDirectoryToVFS(string $dirname, ?int $permissions = null)`
-  
+
   - `addStructure(array $structure)`
-  
+
   - `getFullPath(string $path)`
-  
+
   - `getEscapedFullPath(string $path)`
 
 - trait `WithDataLoader` that provides method `loadDataFromFile(string

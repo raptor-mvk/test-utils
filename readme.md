@@ -131,7 +131,7 @@ below
   1. Test case. Such objects **should not** contain service field `_children`
   and **should** contain service field `_name`
 
-  2. Array of test cases with default values for some fields. Such objects
+  1. Array of test cases with default values for some fields. Such objects
   **should** contain service field `_children` and **should not** contain
   service field `_name`
 
