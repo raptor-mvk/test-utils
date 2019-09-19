@@ -1,6 +1,7 @@
 {
   "plugins": [
     "remark-preset-lint-markdown-style-guide",
+    ["no-dublicate-headers", false],
     ["remark-lint-list-item-indent", false]
   ]
 }
