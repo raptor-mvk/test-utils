@@ -99,7 +99,7 @@ composer.json
 following methods:
 
   - `addFileToVFS(string $filename, ?int $permissions = null, ?string $content =
-  null)`
+    null)`
 
   - `addDirectoryToVFS(string $dirname, ?int $permissions = null)`
 
